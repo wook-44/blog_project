@@ -29,7 +29,7 @@ jobs:
 
       - name: Run playlist check
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI }}
         run: python scripts/check_playlist.py
 
       - name: Commit changes
