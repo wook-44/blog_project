@@ -3,7 +3,7 @@
 YouTube 플레이리스트 신규 영상 체크 + Gemini 분석.
 
 매일 실행되어:
-  1) 지정된 플레이리스트의 RSS 피드를 읽어 현재 영상 목록을 가져옵니다.
+  1) YouTube Data API v3로 플레이리스트의 현재 영상 목록을 조회합니다.
   2) data/seen_videos.txt 에 기록된 이전 상태와 비교해 신규 영상을 찾습니다.
   3) 신규 영상마다 Gemini API 로 영상 분석을 요청합니다.
   4) 결과를 data/new_videos.csv 에 append 하고 seen_videos.txt 를 갱신합니다.
@@ -11,6 +11,10 @@ YouTube 플레이리스트 신규 영상 체크 + Gemini 분석.
 최초 실행(seen_videos.txt 비어있음)에는 현재 목록을 "이미 본 상태"로
 스냅샷만 저장하고 Gemini 호출/CSV 기록은 건너뜁니다.
 (과도한 API 사용 방지)
+
+필요한 환경변수:
+  GEMINI_API_KEY    : Gemini 분석용 (동시에 YouTube Data API v3 키로도 사용)
+  YOUTUBE_API_KEY   : (선택) 별도의 YouTube API 키를 쓸 경우. 없으면 GEMINI_API_KEY 사용.
 """
 from __future__ import annotations
 
@@ -19,8 +23,8 @@ import json
 import os
 import sys
 import time
+import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -28,7 +32,6 @@ from pathlib import Path
 # 설정
 # ---------------------------------------------------------------------------
 PLAYLIST_ID = "PLpDZdhM6kelSHHNdphTwAWuxxwbI4kGyX"
-RSS_URL = f"https://www.youtube.com/feeds/videos.xml?playlist_id={PLAYLIST_ID}"
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -36,16 +39,14 @@ SEEN_FILE = DATA_DIR / "seen_videos.txt"
 CSV_FILE = DATA_DIR / "new_videos.csv"
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+YT_API_KEY = os.environ.get("YOUTUBE_API_KEY", "").strip() or GEMINI_API_KEY
+
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_URL = (
     f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 )
 
-NS = {
-    "atom": "http://www.w3.org/2005/Atom",
-    "yt": "http://www.youtube.com/xml/schemas/2015",
-    "media": "http://search.yahoo.com/mf/rss",
-}
+YT_API_BASE = "https://www.googleapis.com/youtube/v3/playlistItems"
 
 ANALYSIS_PROMPT = """당신은 게임/앱 제품 기획자를 돕는 분석가입니다. 아래 YouTube 영상을 시청하고 한국어로 다음 구조로 정리해 주세요.
 
@@ -85,29 +86,57 @@ def save_seen(seen: set[str]) -> None:
 
 
 def fetch_playlist() -> list[dict]:
-    req = urllib.request.Request(RSS_URL, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = resp.read()
-
-    root = ET.fromstring(data)
-    entries: list[dict] = []
-    for entry in root.findall("atom:entry", NS):
-        vid_el = entry.find("yt:videoId", NS)
-        title_el = entry.find("atom:title", NS)
-        link_el = entry.find("atom:link", NS)
-        pub_el = entry.find("atom:published", NS)
-        author_el = entry.find("atom:author/atom:name", NS)
-        if vid_el is None or title_el is None or link_el is None:
-            continue
-        entries.append(
-            {
-                "video_id": (vid_el.text or "").strip(),
-                "title": (title_el.text or "").strip(),
-                "url": link_el.get("href", "").strip(),
-                "published": (pub_el.text.strip() if pub_el is not None and pub_el.text else ""),
-                "channel": (author_el.text.strip() if author_el is not None and author_el.text else ""),
-            }
+    """YouTube Data API v3의 playlistItems.list로 전체 페이지를 순회하여 수집."""
+    if not YT_API_KEY:
+        raise RuntimeError(
+            "YouTube API 키가 설정되지 않았습니다. GEMINI_API_KEY(또는 YOUTUBE_API_KEY) 환경변수를 확인하세요."
         )
+
+    entries: list[dict] = []
+    page_token: str | None = None
+
+    while True:
+        params: dict[str, str | int] = {
+            "part": "snippet,contentDetails",
+            "playlistId": PLAYLIST_ID,
+            "maxResults": 50,
+            "key": YT_API_KEY,
+        }
+        if page_token:
+            params["pageToken"] = page_token
+
+        url = f"{YT_API_BASE}?{urllib.parse.urlencode(params)}"
+        req = urllib.request.Request(url, headers={"User-Agent": "blog-project-check/1.0"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                payload = json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", errors="replace")
+            raise RuntimeError(
+                f"YouTube API HTTP {e.code}: {body[:500]}\n"
+                "→ Google Cloud Console에서 'YouTube Data API v3' 가 활성화되어 있는지 확인하세요."
+            ) from None
+
+        for item in payload.get("items", []):
+            snippet = item.get("snippet", {})
+            content = item.get("contentDetails", {})
+            video_id = content.get("videoId") or snippet.get("resourceId", {}).get("videoId")
+            if not video_id:
+                continue
+            entries.append(
+                {
+                    "video_id": video_id,
+                    "title": (snippet.get("title") or "").strip(),
+                    "url": f"https://www.youtube.com/watch?v={video_id}",
+                    "published": (content.get("videoPublishedAt") or snippet.get("publishedAt") or "").strip(),
+                    "channel": (snippet.get("videoOwnerChannelTitle") or snippet.get("channelTitle") or "").strip(),
+                }
+            )
+
+        page_token = payload.get("nextPageToken")
+        if not page_token:
+            break
+
     return entries
 
 
@@ -159,12 +188,12 @@ def append_csv(rows: list[dict]) -> None:
 # 메인
 # ---------------------------------------------------------------------------
 def main() -> int:
-    print(f"[info] RSS 가져오는 중: {RSS_URL}")
+    print(f"[info] YouTube API로 플레이리스트 조회: {PLAYLIST_ID}")
     videos = fetch_playlist()
-    print(f"[info] RSS 내 영상 수: {len(videos)}")
+    print(f"[info] 수집된 영상 수: {len(videos)}")
 
     if not videos:
-        print("[warn] RSS 피드에서 영상을 찾지 못했습니다. 플레이리스트 ID 또는 접근 권한을 확인하세요.")
+        print("[warn] 영상이 조회되지 않았습니다. 플레이리스트 ID 또는 API 키 권한을 확인하세요.")
         return 0
 
     seen = load_seen()
@@ -181,7 +210,6 @@ def main() -> int:
 
     if not new_videos:
         print("[info] 새로 올라온 영상이 없습니다.")
-        # seen 은 변동 없음 (혹시 영상이 제거됐더라도 과거 기록 유지)
         return 0
 
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -200,7 +228,7 @@ def main() -> int:
                 "gemini_analysis": analysis,
             }
         )
-        time.sleep(1)  # 연속 호출 완화
+        time.sleep(1)
 
     append_csv(rows)
     seen.update(v["video_id"] for v in new_videos)
