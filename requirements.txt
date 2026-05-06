@@ -1,0 +1,16 @@
+# 핵심 AI
+google-generativeai>=0.7.0
+
+# 웹 스크래핑 & HTTP
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Google Trends (SEO 키워드 트렌드)
+pytrends>=4.9.2
+
+# Chrome 자동화 (네이버, 브런치, 미디엄)
+selenium>=4.20.0
+webdriver-manager>=4.0.1
+
+# 기존 check_playlist.py 의존성
+feedparser>=6.0.10
