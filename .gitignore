@@ -1,37 +1,18 @@
+# 출력 결과 (git에 올리지 않음)
+output/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+
 # OS
 .DS_Store
 Thumbs.db
-Desktop.ini
 
-# Editors / IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Logs
+# 민감 정보
 *.log
-logs/
-
-# Dependencies
-node_modules/
-.venv/
-venv/
-__pycache__/
-*.pyc
-
-# Build output
-dist/
-build/
-out/
-
-# Environment / secrets
-.env
-.env.*
-!.env.example
-
-# Temp
-tmp/
-temp/
-*.tmp
+push_to_github.ps1
