@@ -1,255 +1,200 @@
 """
-YouTube 플레이리스트 신규 영상 체크 + Gemini 분석 스크립트.
-
-- YouTube의 공개 RSS 피드를 사용해 새 영상을 감지한다 (API 키 불필요).
-- 처음 보는 영상은 Gemini API로 한 줄 요약을 만들어 CSV에 추가한다.
-- 이미 본 영상 ID는 data/seen_videos.txt 에 누적 저장한다.
-
-환경변수:
-  GEMINI_API_KEY  (필수) Google AI Studio 발급 키
-  PLAYLIST_ID     (선택) 기본값 = '12시에 만나요' 플레이리스트
+유튜브 플레이리스트 최신 영상 체크
+- RSS 피드 조회 (3회 재시도)
+- RSS 실패 시 YouTube Data API v3 폴백
+- 최신 영상이 새 영상이면 output/latest_video.json 저장
 """
 
-from __future__ import annotations
-
-import csv
 import os
 import sys
+import json
 import time
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Iterable
-from xml.etree import ElementTree as ET
-
+import logging
+import argparse
 import urllib.request
 import urllib.error
+from datetime import datetime, timezone
+from pathlib import Path
 
-# ---------------------------------------------------------------------------
-# 설정
-# ---------------------------------------------------------------------------
-
-DEFAULT_PLAYLIST_ID = "PLpDZdhM6kelSHHNdphTwAWuxxwbI4kGyX"
-PLAYLIST_ID = os.environ.get("PLAYLIST_ID", DEFAULT_PLAYLIST_ID)
-
-REPO_ROOT = Path(__file__).resolve().parent.parent
-DATA_DIR = REPO_ROOT / "data"
-SEEN_FILE = DATA_DIR / "seen_videos.txt"
-CSV_FILE = DATA_DIR / "new_videos.csv"
-
-RSS_URL = f"https://www.youtube.com/feeds/videos.xml?playlist_id={PLAYLIST_ID}"
-
-# Atom 네임스페이스
-NS = {
-    "atom": "http://www.w3.org/2005/Atom",
-    "yt": "http://www.youtube.com/xml/schemas/2015",
-    "media": "http://search.yahoo.com/mrss/",
-}
-
-GEMINI_MODEL = "gemini-2.0-flash"
-GEMINI_ENDPOINT = (
-    f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+# ── 로깅 ──────────────────────────────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [Playlist] %(levelname)s %(message)s",
 )
+logger = logging.getLogger(__name__)
+
+# ── 설정 ──────────────────────────────────────────────────────────────────────
+PLAYLIST_ID   = os.getenv("PLAYLIST_ID", "PLpDZdhM6kelSHHNdphTwAWuxxwbI4kGyX")
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")          # 없으면 RSS만 사용
+SEEN_FILE     = Path("output/seen_videos.json")
+RSS_URL       = f"https://www.youtube.com/feeds/videos.xml?playlist_id={PLAYLIST_ID}"
+API_URL       = (
+    "https://www.googleapis.com/youtube/v3/playlistItems"
+    f"?part=snippet&maxResults=1&playlistId={PLAYLIST_ID}&key={{api_key}}"
+)
+RSS_RETRIES   = 3
+RSS_RETRY_DELAY = 5   # 초
 
 
-# ---------------------------------------------------------------------------
-# 유틸
-# ---------------------------------------------------------------------------
-
-def log(msg: str) -> None:
-    print(f"[info] {msg}", flush=True)
-
-
-def err(msg: str) -> None:
-    print(f"[error] {msg}", file=sys.stderr, flush=True)
-
-
-def http_get(url: str, timeout: int = 20) -> bytes:
+# ── RSS 피드 파싱 ─────────────────────────────────────────────────────────────
+def _fetch_url(url: str, timeout: int = 15) -> bytes:
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "blog_project-rss-checker/1.0"},
+        headers={"User-Agent": "Mozilla/5.0 (compatible; BlogBot/1.0)"},
     )
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read()
 
 
-def http_post_json(url: str, payload: dict, timeout: int = 30) -> dict:
-    import json
-    body = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=body,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+def fetch_latest_via_rss() -> dict | None:
+    """RSS 피드로 최신 영상 정보 반환. 실패하면 None."""
+    for attempt in range(1, RSS_RETRIES + 1):
+        try:
+            logger.info(f"RSS 피드 조회 (시도 {attempt}/{RSS_RETRIES}): {PLAYLIST_ID}")
+            raw = _fetch_url(RSS_URL)
+            return _parse_rss(raw)
+        except urllib.error.HTTPError as e:
+            logger.warning(f"RSS HTTP {e.code}: {e.reason}")
+            if attempt < RSS_RETRIES:
+                logger.info(f"{RSS_RETRY_DELAY}초 후 재시도...")
+                time.sleep(RSS_RETRY_DELAY)
+        except Exception as e:
+            logger.warning(f"RSS 조회 오류: {e}")
+            if attempt < RSS_RETRIES:
+                time.sleep(RSS_RETRY_DELAY)
+    logger.error("RSS 조회 모두 실패")
+    return None
 
 
-# ---------------------------------------------------------------------------
-# RSS 파싱
-# ---------------------------------------------------------------------------
+def _parse_rss(raw: bytes) -> dict:
+    """XML 파싱 없이 정규식으로 최신 항목 추출."""
+    import re
+    text = raw.decode("utf-8", errors="replace")
 
-def fetch_playlist_entries(playlist_id: str) -> list[dict]:
-    """RSS에서 최신 영상 목록을 끌어온다 (보통 최신 15개)."""
-    log(f"RSS 피드 조회: {playlist_id}")
-    try:
-        raw = http_get(RSS_URL)
-    except urllib.error.HTTPError as e:
-        err(f"RSS HTTP {e.code}: {e.reason}")
-        raise
-    except urllib.error.URLError as e:
-        err(f"RSS 연결 실패: {e.reason}")
-        raise
+    # <entry> 블록 첫 번째만
+    entry_m = re.search(r"<entry>(.*?)</entry>", text, re.DOTALL)
+    if not entry_m:
+        raise ValueError("RSS에서 <entry> 없음")
+    entry = entry_m.group(1)
 
-    root = ET.fromstring(raw)
-    entries = []
-    for entry in root.findall("atom:entry", NS):
-        video_id_el = entry.find("yt:videoId", NS)
-        title_el = entry.find("atom:title", NS)
-        published_el = entry.find("atom:published", NS)
-        link_el = entry.find("atom:link", NS)
-        author_el = entry.find("atom:author/atom:name", NS)
-        desc_el = entry.find("media:group/media:description", NS)
+    def tag(name):
+        m = re.search(rf"<{name}[^>]*>(.*?)</{name}>", entry, re.DOTALL)
+        return m.group(1).strip() if m else ""
 
-        if video_id_el is None or title_el is None:
-            continue
+    video_id_m = re.search(r"<yt:videoId>(.*?)</yt:videoId>", entry)
+    video_id   = video_id_m.group(1).strip() if video_id_m else ""
 
-        entries.append({
-            "video_id": (video_id_el.text or "").strip(),
-            "title": (title_el.text or "").strip(),
-            "published": (published_el.text or "").strip() if published_el is not None else "",
-            "url": link_el.attrib.get("href", "") if link_el is not None else "",
-            "channel": (author_el.text or "").strip() if author_el is not None else "",
-            "description": (desc_el.text or "").strip() if desc_el is not None else "",
-        })
+    published  = tag("published")
+    title      = tag("title")
 
-    log(f"RSS 영상 {len(entries)}개 수신")
-    return entries
+    # CDATA 언랩
+    title = re.sub(r"<!\[CDATA\[(.*?)\]\]>", r"\1", title)
 
-
-# ---------------------------------------------------------------------------
-# 본 영상 ID 관리
-# ---------------------------------------------------------------------------
-
-def load_seen() -> set[str]:
-    if not SEEN_FILE.exists():
-        return set()
-    with SEEN_FILE.open("r", encoding="utf-8") as f:
-        return {line.strip() for line in f if line.strip()}
-
-
-def append_seen(video_ids: Iterable[str]) -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    with SEEN_FILE.open("a", encoding="utf-8") as f:
-        for vid in video_ids:
-            f.write(vid + "\n")
-
-
-# ---------------------------------------------------------------------------
-# Gemini 분석
-# ---------------------------------------------------------------------------
-
-def analyze_with_gemini(entry: dict, api_key: str) -> str:
-    """제목+설명을 기반으로 한 줄 요약 생성. 실패 시 빈 문자열."""
-    title = entry["title"]
-    desc = entry["description"][:1500]
-
-    prompt = (
-        "다음은 한국 주식·투자 유튜브 영상의 제목과 설명입니다. "
-        "핵심 주제를 한국어 한 문장(최대 80자)으로 요약하세요. "
-        "광고/정형 문구는 제외하고 영상의 실제 내용에 집중합니다.\n\n"
-        f"[제목] {title}\n[설명] {desc}\n\n요약:"
-    )
-
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.3, "maxOutputTokens": 200},
+    return {
+        "video_id":   video_id,
+        "title":      title,
+        "url":        f"https://www.youtube.com/watch?v={video_id}",
+        "published":  published,
+        "playlist_id": PLAYLIST_ID,
     }
 
-    url = f"{GEMINI_ENDPOINT}?key={api_key}"
+
+# ── YouTube Data API 폴백 ─────────────────────────────────────────────────────
+def fetch_latest_via_api() -> dict | None:
+    """YouTube Data API v3로 최신 영상 정보 반환."""
+    if not YOUTUBE_API_KEY:
+        logger.warning("YOUTUBE_API_KEY 미설정 — API 폴백 불가")
+        return None
+
+    url = API_URL.format(api_key=YOUTUBE_API_KEY)
     try:
-        data = http_post_json(url, payload)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="ignore")
-        err(f"Gemini HTTP {e.code}: {body[:300]}")
-        return ""
-    except Exception as e:  # noqa: BLE001
-        err(f"Gemini 호출 실패: {e}")
-        return ""
+        logger.info("YouTube Data API v3로 폴백 시도")
+        raw  = _fetch_url(url)
+        data = json.loads(raw)
+        items = data.get("items", [])
+        if not items:
+            logger.error("API 결과 없음")
+            return None
+        snippet  = items[0]["snippet"]
+        resource = snippet["resourceId"]
+        video_id = resource["videoId"]
+        return {
+            "video_id":    video_id,
+            "title":       snippet.get("title", ""),
+            "url":         f"https://www.youtube.com/watch?v={video_id}",
+            "published":   snippet.get("publishedAt", ""),
+            "playlist_id": PLAYLIST_ID,
+        }
+    except Exception as e:
+        logger.error(f"API 조회 실패: {e}")
+        return None
 
+
+# ── 새 영상 여부 판단 ──────────────────────────────────────────────────────────
+def is_new_video(video_id: str) -> bool:
+    if not SEEN_FILE.exists():
+        return True
     try:
-        return data["candidates"][0]["content"]["parts"][0]["text"].strip()
-    except (KeyError, IndexError, TypeError):
-        err(f"Gemini 응답 구조 이상: {str(data)[:300]}")
-        return ""
+        seen = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
+        return video_id not in seen.get("seen_ids", [])
+    except Exception:
+        return True
 
 
-# ---------------------------------------------------------------------------
-# CSV 기록
-# ---------------------------------------------------------------------------
-
-CSV_HEADER = ["checked_at", "video_id", "title", "url", "channel", "published", "summary"]
-
-
-def append_csv(rows: list[dict]) -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    is_new = not CSV_FILE.exists() or CSV_FILE.stat().st_size == 0
-    with CSV_FILE.open("a", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_HEADER)
-        if is_new:
-            writer.writeheader()
-        for row in rows:
-            writer.writerow({k: row.get(k, "") for k in CSV_HEADER})
+def mark_seen(video_id: str):
+    SEEN_FILE.parent.mkdir(parents=True, exist_ok=True)
+    seen = {"seen_ids": []}
+    if SEEN_FILE.exists():
+        try:
+            seen = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    if video_id not in seen["seen_ids"]:
+        seen["seen_ids"].append(video_id)
+    SEEN_FILE.write_text(json.dumps(seen, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-# ---------------------------------------------------------------------------
-# 메인
-# ---------------------------------------------------------------------------
+# ── 메인 ──────────────────────────────────────────────────────────────────────
+def main():
+    parser = argparse.ArgumentParser(description="유튜브 플레이리스트 최신 영상 체크")
+    parser.add_argument("--output-json", default="output/latest_video.json",
+                        help="결과 JSON 저장 경로")
+    parser.add_argument("--force", action="store_true",
+                        help="이미 본 영상이어도 강제 처리")
+    args = parser.parse_args()
 
-def main() -> int:
-    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-    if not api_key:
-        err("환경변수 GEMINI_API_KEY 가 비어있습니다.")
-        return 1
+    Path(args.output_json).parent.mkdir(parents=True, exist_ok=True)
 
-    try:
-        entries = fetch_playlist_entries(PLAYLIST_ID)
-    except Exception as e:  # noqa: BLE001
-        err(f"RSS 조회 실패로 종료: {e}")
-        return 1
+    # 1) RSS 시도
+    video_info = fetch_latest_via_rss()
 
-    if not entries:
-        log("RSS에 영상이 없습니다. 종료.")
-        return 0
+    # 2) RSS 실패 시 API 폴백
+    if video_info is None:
+        video_info = fetch_latest_via_api()
 
-    seen = load_seen()
-    new_entries = [e for e in entries if e["video_id"] not in seen]
-    log(f"신규 영상 {len(new_entries)}개")
+    # 3) 모두 실패
+    if video_info is None:
+        logger.error("RSS와 API 모두 실패. 종료.")
+        sys.exit(1)
 
-    if not new_entries:
-        return 0
+    logger.info(f"최신 영상: [{video_info['video_id']}] {video_info['title']}")
 
-    checked_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    rows: list[dict] = []
-    for entry in new_entries:
-        log(f"분석 중: {entry['title']}")
-        summary = analyze_with_gemini(entry, api_key)
-        rows.append({
-            "checked_at": checked_at,
-            "video_id": entry["video_id"],
-            "title": entry["title"],
-            "url": entry["url"],
-            "channel": entry["channel"],
-            "published": entry["published"],
-            "summary": summary,
-        })
-        time.sleep(0.5)  # 가벼운 레이트리밋
+    # 4) 새 영상 판단
+    new = is_new_video(video_info["video_id"])
+    if not new and not args.force:
+        logger.info("이미 처리한 영상. 종료 (is_new=false)")
+        video_info["is_new"] = False
+    else:
+        video_info["is_new"] = True
+        mark_seen(video_info["video_id"])
+        logger.info("새 영상 감지! (is_new=true)")
 
-    append_csv(rows)
-    append_seen([e["video_id"] for e in new_entries])
-    log(f"CSV 기록 완료: {CSV_FILE}")
-    return 0
+    video_info["checked_at"] = datetime.now(timezone.utc).isoformat()
+
+    out_path = Path(args.output_json)
+    out_path.write_text(json.dumps(video_info, ensure_ascii=False, indent=2), encoding="utf-8")
+    logger.info(f"저장: {out_path}")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
