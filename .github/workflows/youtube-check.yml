@@ -24,6 +24,7 @@ jobs:
       - name: Run playlist checker
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python scripts/check_playlist.py
 
       - name: Commit & push if changed
