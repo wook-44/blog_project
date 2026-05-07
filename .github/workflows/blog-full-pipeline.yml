@@ -1,25 +1,25 @@
-name: 📝 주식 블로그 자동 포스팅 파이프라인
+name: ð ì£¼ì ë¸ë¡ê·¸ ìë í¬ì¤í íì´íë¼ì¸
 
 on:
-  # 기존 youtube-check.yml 워크플로우 완료 후 자동 실행
+  # ê¸°ì¡´ youtube-check.yml ìí¬íë¡ì° ìë£ í ìë ì¤í
   workflow_run:
-    workflows: ["YouTube 플레이리스트 체크"]
+    workflows: ["YouTube íë ì´ë¦¬ì¤í¸ ì²´í¬"]
     types:
       - completed
 
-  # 수동 실행 (특정 플랫폼만 선택 가능)
+  # ìë ì¤í (í¹ì  íë«í¼ë§ ì í ê°ë¥)
   workflow_dispatch:
     inputs:
       platforms:
-        description: '포스팅 플랫폼 (쉼표 구분, 기본: 전체)'
+        description: 'í¬ì¤í íë«í¼ (ì¼í êµ¬ë¶, ê¸°ë³¸: ì ì²´)'
         required: false
         default: 'naver,tistory,wordpress,brunch,medium'
       video_info_path:
-        description: '영상 정보 JSON 경로 (기본: output/latest_video.json)'
+        description: 'ìì ì ë³´ JSON ê²½ë¡ (ê¸°ë³¸: output/latest_video.json)'
         required: false
         default: 'output/latest_video.json'
 
-  # 매일 09:00 KST (00:00 UTC) — youtube-check.yml이 08:00에 실행되므로 1시간 후
+  # ë§¤ì¼ 09:00 KST (00:00 UTC) â youtube-check.ymlì´ 08:00ì ì¤íëë¯ë¡ 1ìê° í
   schedule:
     - cron: '0 0 * * *'
 
@@ -41,9 +41,11 @@ env:
   MEDIUM_PW: ${{ secrets.MEDIUM_PW }}
   MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
 
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   check-new-video:
-    name: 🎬 새 영상 확인
+    name: ð¬ ì ìì íì¸
     runs-on: ubuntu-latest
     outputs:
       has_new_video: ${{ steps.check.outputs.has_new_video }}
@@ -59,7 +61,7 @@ jobs:
       - name: Install dependencies
         run: pip install feedparser google-generativeai requests
 
-      - name: 새 영상 확인
+      - name: ì ìì íì¸
         id: check
         run: |
           python scripts/check_playlist.py --output-json output/latest_video.json
@@ -84,7 +86,7 @@ jobs:
           path: output/latest_video.json
 
   seo-analysis:
-    name: 🔍 SEO 분석
+    name: ð SEO ë¶ì
     runs-on: ubuntu-latest
     needs: check-new-video
     if: needs.check-new-video.outputs.has_new_video == 'true' || github.event_name == 'workflow_dispatch'
@@ -106,7 +108,7 @@ jobs:
           name: video-info
           path: output/
 
-      - name: SEO 분석 실행
+      - name: SEO ë¶ì ì¤í
         run: |
           mkdir -p output/seo logs
           python scripts/agents/01_seo_analyzer.py output/latest_video.json
@@ -118,7 +120,7 @@ jobs:
           path: output/seo/
 
   benchmark-analysis:
-    name: 📊 벤치마크 분석
+    name: ð ë²¤ì¹ë§í¬ ë¶ì
     runs-on: ubuntu-latest
     needs: check-new-video
     if: needs.check-new-video.outputs.has_new_video == 'true' || github.event_name == 'workflow_dispatch'
@@ -133,7 +135,7 @@ jobs:
       - name: Install dependencies
         run: pip install google-generativeai requests beautifulsoup4
 
-      # 캐시된 스타일 가이드 복원 (24시간 유효)
+      # ìºìë ì¤íì¼ ê°ì´ë ë³µì (24ìê° ì í¨)
       - name: Cache style guides
         uses: actions/cache@v4
         with:
@@ -141,7 +143,7 @@ jobs:
           key: style-guides-${{ hashFiles('scripts/agents/02_benchmark_analyzer.py') }}
           restore-keys: style-guides-
 
-      - name: 벤치마크 분석 실행
+      - name: ë²¤ì¹ë§í¬ ë¶ì ì¤í
         run: |
           mkdir -p output/style_guides logs
           python scripts/agents/02_benchmark_analyzer.py
@@ -153,7 +155,7 @@ jobs:
           path: output/style_guides/
 
   blog-writing:
-    name: ✍️ 블로그 작성
+    name: âï¸ ë¸ë¡ê·¸ ìì±
     runs-on: ubuntu-latest
     needs: [seo-analysis, benchmark-analysis]
     steps:
@@ -183,7 +185,7 @@ jobs:
           name: style-guides
           path: output/style_guides/
 
-      - name: 블로그 포스트 작성
+      - name: ë¸ë¡ê·¸ í¬ì¤í¸ ìì±
         run: |
           mkdir -p output/posts logs
           python scripts/agents/03_blog_writer.py output/latest_video.json
@@ -195,7 +197,7 @@ jobs:
           path: output/posts/
 
   quality-check:
-    name: ✅ 품질 검증
+    name: â íì§ ê²ì¦
     runs-on: ubuntu-latest
     needs: blog-writing
     steps:
@@ -225,7 +227,7 @@ jobs:
           name: style-guides
           path: output/style_guides/
 
-      - name: 품질 검증 실행
+      - name: íì§ ê²ì¦ ì¤í
         run: |
           mkdir -p output/quality logs
           for platform in naver tistory wordpress brunch medium; do
@@ -242,12 +244,12 @@ jobs:
           path: output/quality/
 
   posting:
-    name: 🚀 플랫폼 포스팅
+    name: ð íë«í¼ í¬ì¤í
     runs-on: ubuntu-latest
     needs: quality-check
     strategy:
       matrix:
-        platform: [tistory, wordpress]  # API 포스팅은 병렬 실행
+        platform: [tistory, wordpress]  # API í¬ì¤íì ë³ë ¬ ì¤í
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -271,7 +273,7 @@ jobs:
           name: quality-reports
           path: output/quality/
 
-      - name: ${{ matrix.platform }} 포스팅
+      - name: ${{ matrix.platform }} í¬ì¤í
         run: |
           META=$(find output/posts/${{ matrix.platform }} -name "*_meta.json" 2>/dev/null | head -1)
           if [ -n "$META" ]; then
@@ -280,12 +282,12 @@ jobs:
             if [ "$QUALITY" = "True" ]; then
               python scripts/agents/0$([[ "${{ matrix.platform }}" == "tistory" ]] && echo "5" || echo "6")_${{ matrix.platform }}_poster.py "$META"
             else
-              echo "❌ ${{ matrix.platform }} 품질 미달 포스팅 스킵"
+              echo "â ${{ matrix.platform }} íì§ ë¯¸ë¬ í¬ì¤í ì¤íµ"
             fi
           fi
 
   posting-chrome:
-    name: 🌐 Chrome 포스팅 (네이버/브런치/미디엄)
+    name: ð Chrome í¬ì¤í (ë¤ì´ë²/ë¸ë°ì¹/ë¯¸ëì)
     runs-on: ubuntu-latest
     needs: quality-check
     steps:
@@ -314,7 +316,7 @@ jobs:
           name: quality-reports
           path: output/quality/
 
-      - name: 네이버 포스팅
+      - name: ë¤ì´ë² í¬ì¤í
         continue-on-error: true
         run: |
           META=$(find output/posts/naver -name "*_meta.json" 2>/dev/null | head -1)
@@ -322,7 +324,7 @@ jobs:
             python scripts/agents/04_naver_poster.py "$META" --headless
           fi
 
-      - name: 브런치 포스팅
+      - name: ë¸ë°ì¹ í¬ì¤í
         continue-on-error: true
         run: |
           META=$(find output/posts/brunch -name "*_meta.json" 2>/dev/null | head -1)
@@ -330,7 +332,7 @@ jobs:
             python scripts/agents/07_brunch_medium_poster.py brunch "$META" --headless
           fi
 
-      - name: 미디엄 포스팅
+      - name: ë¯¸ëì í¬ì¤í
         continue-on-error: true
         run: |
           META=$(find output/posts/medium -name "*_meta.json" 2>/dev/null | head -1)
@@ -339,7 +341,7 @@ jobs:
           fi
 
   report:
-    name: 📋 파이프라인 리포트
+    name: ð íì´íë¼ì¸ ë¦¬í¬í¸
     runs-on: ubuntu-latest
     needs: [posting, posting-chrome]
     if: always()
@@ -351,11 +353,11 @@ jobs:
         with:
           path: output/
 
-      - name: 결과 요약
+      - name: ê²°ê³¼ ìì½
         run: |
-          echo "## 🗞️ 블로그 자동화 파이프라인 결과" >> $GITHUB_STEP_SUMMARY
+          echo "## ðï¸ ë¸ë¡ê·¸ ìëí íì´íë¼ì¸ ê²°ê³¼" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| 플랫폼 | 품질 점수 | 상태 |" >> $GITHUB_STEP_SUMMARY
+          echo "| íë«í¼ | íì§ ì ì | ìí |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-----------|------|" >> $GITHUB_STEP_SUMMARY
           for platform in naver tistory wordpress brunch medium; do
             REPORT=$(find output/quality-reports -name "${platform}_*_report.json" 2>/dev/null | head -1)
@@ -363,10 +365,10 @@ jobs:
               python -c "
           import json
           d = json.load(open('$REPORT'))
-          icon = '✅' if d.get('passed') else '❌'
+          icon = 'â' if d.get('passed') else 'â'
           print(f'| $platform | {d.get(\"overall_score\", \"?\")} | {icon} {d.get(\"action\", \"?\")} |')
-          " >> $GITHUB_STEP_SUMMARY || echo "| $platform | - | ⚠️ 리포트 없음 |" >> $GITHUB_STEP_SUMMARY
+          " >> $GITHUB_STEP_SUMMARY || echo "| $platform | - | â ï¸ ë¦¬í¬í¸ ìì |" >> $GITHUB_STEP_SUMMARY
             else
-              echo "| $platform | - | ⏭️ 스킵 |" >> $GITHUB_STEP_SUMMARY
+              echo "| $platform | - | â­ï¸ ì¤íµ |" >> $GITHUB_STEP_SUMMARY
             fi
           done
