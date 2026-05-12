@@ -1,0 +1,50 @@
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1923"/>
+      <stop offset="100%" style="stop-color:#1a2d3d"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa"/>
+      <stop offset="100%" style="stop-color:#00a882"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="380" fill="url(#bgGrad)" rx="16"/>
+  <text x="360" y="44" text-anchor="middle" font-size="13" font-weight="600" fill="#00d4aa" font-family="system-ui,sans-serif" letter-spacing="2">2026.04.27 — 국내 증시 현황</text>
+  <text x="360" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">코스피 사상 최고치 경신 🔥</text>
+  <line x1="60" y1="96" x2="660" y2="96" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="40" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#00d4aa" stroke-width="1.5"/>
+  <text x="110" y="143" text-anchor="middle" font-size="11" fill="#00d4aa" font-family="system-ui,sans-serif" font-weight="600">코스피</text>
+  <text x="110" y="178" text-anchor="middle" font-size="28" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">6,600</text>
+  <text x="110" y="200" text-anchor="middle" font-size="11" fill="#00d4aa" font-family="system-ui,sans-serif">▲ 사상 최고치</text>
+  <text x="110" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">선 돌파</text>
+  <rect x="200" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#4a9eff" stroke-width="1.5"/>
+  <text x="270" y="143" text-anchor="middle" font-size="11" fill="#4a9eff" font-family="system-ui,sans-serif" font-weight="600">코스닥</text>
+  <text x="270" y="178" text-anchor="middle" font-size="28" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">1,100</text>
+  <text x="270" y="200" text-anchor="middle" font-size="11" fill="#4a9eff" font-family="system-ui,sans-serif">▲ 동반 강세</text>
+  <text x="270" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">선 돌파</text>
+  <rect x="360" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#c084fc" stroke-width="1.5"/>
+  <text x="430" y="143" text-anchor="middle" font-size="11" fill="#c084fc" font-family="system-ui,sans-serif" font-weight="600">시가총액</text>
+  <text x="430" y="172" text-anchor="middle" font-size="26" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">6,000조</text>
+  <text x="430" y="196" text-anchor="middle" font-size="11" fill="#c084fc" font-family="system-ui,sans-serif">▲ 돌파</text>
+  <text x="430" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">국내 증시 전체</text>
+  <rect x="520" y="112" width="160" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="600" y="136" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="600">골드만삭스 목표</text>
+  <text x="600" y="172" text-anchor="middle" font-size="28" font-weight="800" fill="#f5a623" font-family="system-ui,sans-serif">7,000</text>
+  <text x="600" y="196" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif">코스피 목표치</text>
+  <text x="600" y="214" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">"보수적" 수치</text>
+  <text x="40" y="256" font-size="11" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">코스피 → 골드만삭스 목표까지</text>
+  <rect x="40" y="265" width="640" height="12" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+  <rect x="40" y="265" width="604" height="12" rx="6" fill="url(#barGrad)"/>
+  <text x="644" y="276" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="700">94%</text>
+  <text x="40" y="298" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif">현재 6,600</text>
+  <text x="680" y="298" text-anchor="end" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif">목표 7,000</text>
+  <rect x="40" y="316" width="96" height="24" rx="12" fill="#00d4aa" fill-opacity="0.15"/>
+  <text x="88" y="332" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 실적 장세</text>
+  <rect x="148" y="316" width="96" height="24" rx="12" fill="#4a9eff" fill-opacity="0.15"/>
+  <text x="196" y="332" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 수출 호조</text>
+  <rect x="256" y="316" width="96" height="24" rx="12" fill="#c084fc" fill-opacity="0.15"/>
+  <text x="304" y="332" text-anchor="middle" font-size="10" fill="#c084fc" font-family="system-ui,sans-serif"># 내수 반등</text>
+  <rect x="364" y="316" width="108" height="24" rx="12" fill="#f5a623" fill-opacity="0.15"/>
+  <text x="418" y="332" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif"># 사상 최고치</text>
+</svg>

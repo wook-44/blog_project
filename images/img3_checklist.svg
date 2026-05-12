@@ -1,0 +1,28 @@
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="320" fill="#0f1923" rx="16"/>
+  <rect x="0" y="0" width="720" height="70" fill="#1a2d3d" rx="16"/>
+  <rect x="0" y="50" width="720" height="20" fill="#1a2d3d"/>
+  <text x="36" y="30" font-size="13" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="1">이번 주 투자자 체크리스트</text>
+  <text x="36" y="54" font-size="11" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">2026년 4월 28일 ~ 5월 2일 — 놓치면 안 되는 3가지</text>
+  <rect x="30" y="90" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#4a9eff" stroke-width="1.2"/>
+  <rect x="50" y="108" width="26" height="26" rx="6" fill="#4a9eff" fill-opacity="0.2" stroke="#4a9eff" stroke-width="1.5"/>
+  <text x="63" y="126" text-anchor="middle" font-size="14" fill="#4a9eff" font-family="system-ui,sans-serif">1</text>
+  <text x="94" y="116" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">미국 빅테크 실적 발표 확인</text>
+  <text x="94" y="136" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">MS · 아마존 · 메타 등 실적 발표 → 글로벌 증시 방향성 결정</text>
+  <rect x="598" y="107" width="78" height="22" rx="11" fill="#4a9eff" fill-opacity="0.15"/>
+  <text x="637" y="122" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 글로벌 변수</text>
+  <rect x="30" y="166" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#00d4aa" stroke-width="1.2"/>
+  <rect x="50" y="184" width="26" height="26" rx="6" fill="#00d4aa" fill-opacity="0.2" stroke="#00d4aa" stroke-width="1.5"/>
+  <text x="63" y="202" text-anchor="middle" font-size="14" fill="#00d4aa" font-family="system-ui,sans-serif">2</text>
+  <text x="94" y="192" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">불타기 전략으로 평단가 관리</text>
+  <text x="94" y="212" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">오르는 종목 분할 매수 → 평단가 조정 → 장기 보유 기반 구축</text>
+  <rect x="598" y="183" width="78" height="22" rx="11" fill="#00d4aa" fill-opacity="0.15"/>
+  <text x="637" y="198" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 매매 전략</text>
+  <rect x="30" y="242" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#c084fc" stroke-width="1.2"/>
+  <rect x="50" y="260" width="26" height="26" rx="6" fill="#c084fc" fill-opacity="0.2" stroke="#c084fc" stroke-width="1.5"/>
+  <text x="63" y="278" text-anchor="middle" font-size="14" fill="#c084fc" font-family="system-ui,sans-serif">3</text>
+  <text x="94" y="268" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">전력 기기주 수주 잔고 모니터링</text>
+  <text x="94" y="288" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">효성중공업 등 수주 잔고 추이 · 주주친화 정책 변화 확인</text>
+  <rect x="598" y="259" width="78" height="22" rx="11" fill="#c084fc" fill-opacity="0.15"/>
+  <text x="637" y="274" text-anchor="middle" font-size="10" fill="#c084fc" font-family="system-ui,sans-serif"># 섹터 모니터</text>
+</svg>

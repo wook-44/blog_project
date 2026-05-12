@@ -1,0 +1,44 @@
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="300" fill="#0f1923" rx="16"/>
+  <text x="360" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">지금 주목할 섹터 3선</text>
+  <text x="360" y="58" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.45" font-family="system-ui,sans-serif">2026.04.27 기준 — 전문가 추천 종목군</text>
+  <rect x="24" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#4a9eff" stroke-width="1.8"/>
+  <rect x="24" y="76" width="206" height="52" rx="14" fill="#4a9eff" fill-opacity="0.2"/>
+  <rect x="24" y="104" width="206" height="24" fill="#4a9eff" fill-opacity="0.2"/>
+  <text x="127" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">🏬</text>
+  <text x="127" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#4a9eff" font-family="system-ui,sans-serif">내수주</text>
+  <text x="127" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">대표 종목</text>
+  <text x="127" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">현대백화점</text>
+  <line x1="44" y1="186" x2="210" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="44" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 소비 회복 신호</text>
+  <text x="44" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 경제 선순환 지표</text>
+  <text x="44" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 내수 반등 수혜주</text>
+  <rect x="44" y="252" width="86" height="20" rx="10" fill="#4a9eff" fill-opacity="0.2"/>
+  <text x="87" y="266" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 중장기 보유</text>
+  <rect x="257" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#00d4aa" stroke-width="1.8"/>
+  <rect x="257" y="76" width="206" height="52" rx="14" fill="#00d4aa" fill-opacity="0.2"/>
+  <rect x="257" y="104" width="206" height="24" fill="#00d4aa" fill-opacity="0.2"/>
+  <text x="360" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">🚢</text>
+  <text x="360" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#00d4aa" font-family="system-ui,sans-serif">조선주</text>
+  <text x="360" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">핵심 테마</text>
+  <text x="360" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">AI 데이터센터 엔진</text>
+  <line x1="277" y1="186" x2="443" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="277" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 선박 수주 → AI 엔진</text>
+  <text x="277" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 복합 성장 테마</text>
+  <text x="277" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 단기→중장기 재평가</text>
+  <rect x="277" y="252" width="86" height="20" rx="10" fill="#00d4aa" fill-opacity="0.2"/>
+  <text x="320" y="266" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 복합 성장</text>
+  <rect x="490" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#f5a623" stroke-width="1.8"/>
+  <rect x="490" y="76" width="206" height="52" rx="14" fill="#f5a623" fill-opacity="0.2"/>
+  <rect x="490" y="104" width="206" height="24" fill="#f5a623" fill-opacity="0.2"/>
+  <text x="593" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">⚡</text>
+  <text x="593" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#f5a623" font-family="system-ui,sans-serif">전력기기주</text>
+  <text x="593" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">대표 종목</text>
+  <text x="593" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">효성중공업</text>
+  <line x1="510" y1="186" x2="676" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="510" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 수주 잔고 모니터링</text>
+  <text x="510" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 주주친화 정책 확인</text>
+  <text x="510" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 전력 인프라 수혜</text>
+  <rect x="510" y="252" width="86" height="20" rx="10" fill="#f5a623" fill-opacity="0.2"/>
+  <text x="553" y="266" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif"># 인프라 수혜</text>
+</svg>

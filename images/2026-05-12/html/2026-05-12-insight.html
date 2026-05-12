@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'Apple SD Gothic Neo', 'AppleGothic', 'Malgun Gothic',
+                 'Noto Sans KR', 'NanumGothic', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 7px; height: 100%;
+    background: #FFA657;
+  }
+  .container {
+    padding: 36px 48px 28px 64px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 16px; }
+  .section-title {
+    font-size: 26px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .date { font-size: 13px; color: #8B949E; margin-top: 6px; }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 14px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid #21262D;
+    font-size: 12px; color: #8B949E;
+  }
+  .footer-tag { color: #FFA657; font-weight: 600; }
+
+      .body {
+        flex: 1; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 10px 0;
+      }
+      .quote-wrap {
+        text-align: center; position: relative;
+        padding: 0 40px; max-width: 880px;
+      }
+      .open-quote, .close-quote {
+        font-size: 80px; color: #FFA657; opacity: 0.35;
+        font-family: Georgia, serif; line-height: 0.6;
+      }
+      .open-quote { float: left; margin-right: 8px; }
+      .close-quote { float: right; margin-left: 8px; }
+      .quote-text {
+        font-size: 22px; font-weight: 700;
+        color: #E6EDF3; line-height: 1.65;
+        text-align: center; clear: both;
+        padding: 8px 0;
+      }
+      .quote-line {
+        width: 200px; height: 1px; background: #FFA657;
+        opacity: 0.45; margin: 16px auto 10px;
+      }
+      .quote-attr {
+        font-size: 12px; color: #8B949E;
+        font-style: italic; text-align: center;
+      }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">💡&nbsp; 내 인사이트</div>
+    <div class="date">2026-05-12</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="quote-wrap">
+      <div class="open-quote">&ldquo;</div>
+      <div class="close-quote">&rdquo;</div>
+      <div class="quote-text">8천피 세상은 게임 과금보다 주식이 먼저인 세상이다</div>
+      <div class="quote-line"></div>
+      <div class="quote-attr">— 게임/앱 기획자의 시장 인사이트</div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">💡 인사이트</span>
+  </div>
+</div>
+</body></html>

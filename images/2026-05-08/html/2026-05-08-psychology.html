@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'Apple SD Gothic Neo', 'AppleGothic', 'Malgun Gothic',
+                 'Noto Sans KR', 'NanumGothic', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 7px; height: 100%;
+    background: #BC8CFF;
+  }
+  .container {
+    padding: 36px 48px 28px 64px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 16px; }
+  .section-title {
+    font-size: 26px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .date { font-size: 13px; color: #8B949E; margin-top: 6px; }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 14px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid #21262D;
+    font-size: 12px; color: #8B949E;
+  }
+  .footer-tag { color: #BC8CFF; font-weight: 600; }
+
+      .body { display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }
+      .warn-card {
+        min-width: 220px; max-width: 220px; height: 180px;
+        background: #1E1B2E; border-radius: 14px;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 12px;
+        border: 1px solid #BC8CFF22;
+      }
+      .warn-icon { font-size: 36px; }
+      .warn-text { font-size: 20px; font-weight: 800; color: #BC8CFF; text-align: center; padding: 0 12px; }
+      .points-wrap { flex: 1; }
+      .list-label { font-size: 12px; color: #8B949E; margin-bottom: 10px; letter-spacing: 0.5px; }
+      .point { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+      .tag {
+        font-size: 10px; font-weight: 700; padding: 3px 8px;
+        border: 1px solid; border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+      }
+      .pt-text { font-size: 14px; color: #E6EDF3; line-height: 1.5; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">🧠&nbsp; 투자 심리 & 행동 교정</div>
+    <div class="date">2026-05-08</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="warn-card">
+      <div class="warn-icon">⚠️</div>
+      <div class="warn-text">전문가들은 왜 틀리는가?</div>
+    </div>
+    <div class="points-wrap">
+      <div class="list-label">체크리스트</div>
+      
+      <div class="point">
+        <span class="tag" style="color:#BC8CFF;
+          border-color:#BC8CFF22">
+          함정
+        </span>
+        <span class="pt-text">FOMO 함정: 반도체 쉬면 자동차로 추격 매수 → 항상 최고점 물림</span>
+      </div>
+      <div class="point">
+        <span class="tag" style="color:#BC8CFF;
+          border-color:#BC8CFF22">
+          함정
+        </span>
+        <span class="pt-text">빚투 경보: 30대 평균 월급 3개월치 빚내 투자 (코스피 7000 돌파 후)</span>
+      </div>
+      <div class="point">
+        <span class="tag" style="color:#3FB950;
+          border-color:#3FB95022">
+          교정
+        </span>
+        <span class="pt-text">후행 지표: 목표주가는 시장이 먼저 오른 뒤에야 올라온다</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">🧠 투자 심리</span>
+  </div>
+</div>
+</body></html>

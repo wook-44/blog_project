@@ -1,0 +1,46 @@
+<svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+  <rect width="720" height="420" fill="#0f1923" rx="16"/>
+  <text x="360" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">투자자의 심리 사이클</text>
+  <text x="360" y="58" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">— 김경일 교수 분석 —</text>
+  <text x="175" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">❌  잘못된 패턴</text>
+  <rect x="80" y="102" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">주가 급락</text>
+  <text x="175" y="144" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">시장이 흔들린다</text>
+  <line x1="175" y1="154" x2="175" y2="174" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="176" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">공포 반응 발생</text>
+  <text x="175" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">본능적인 두려움</text>
+  <line x1="175" y1="228" x2="175" y2="248" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="250" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">공포 = 결정으로 착각</text>
+  <text x="175" y="290" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">"지금 팔아야 해!" 충동</text>
+  <line x1="175" y1="302" x2="175" y2="322" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="324" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="2"/>
+  <text x="175" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">손절 실패 or 고점 매수</text>
+  <text x="175" y="366" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">FOMO로 뒤늦게 진입</text>
+  <line x1="360" y1="80" x2="360" y2="400" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="545" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">✅  올바른 접근</text>
+  <rect x="450" y="102" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">공포는 반응임을 인식</text>
+  <text x="545" y="144" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">"이건 본능이지 결정이 아니다"</text>
+  <line x1="545" y1="154" x2="545" y2="174" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="176" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">가격 아닌 가치 집중</text>
+  <text x="545" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">기업 이익 성장 여부 확인</text>
+  <line x1="545" y1="228" x2="545" y2="248" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="250" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">시스템 투자 실행</text>
+  <text x="545" y="290" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">분할매수 · 불타기 원칙</text>
+  <line x1="545" y1="302" x2="545" y2="322" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="324" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.18" stroke="#22c55e" stroke-width="2"/>
+  <text x="545" y="345" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">장기 보유 → 수익 실현</text>
+  <text x="545" y="366" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">투자 수명을 길게 설계</text>
+</svg>

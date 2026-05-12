@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>블로그 이미지 업로드</title>
+<style>
+  body { background: #0f1923; color: #fff; font-family: system-ui, sans-serif; padding: 24px; margin: 0; }
+  h2 { color: #00d4aa; }
+  .card { background: #1a2d3d; border-radius: 8px; padding: 10px 14px; margin: 6px 0; font-size: 13px; }
+  .ok  { border-left: 4px solid #00d4aa; }
+  .err { border-left: 4px solid #ef4444; }
+  .info{ border-left: 4px solid #4a9eff; }
+  #json-output { white-space: pre; font-family: monospace; font-size: 11px; line-height: 1.6;
+                 background: #0a1628; padding: 16px; border-radius: 8px; margin-top: 16px;
+                 border: 1px solid #2a4d6d; }
+  canvas { display: none; }
+</style>
+</head>
+<body>
+<h2>📸 블로그 이미지 → imgbb 업로드</h2>
+<div id="log"></div>
+<div id="json-output">처리 중...</div>
+<canvas id="cv"></canvas>
+
+<!-- ───── SVG 1: KOSPI Market ───── -->
+<template id="t1">
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1923"/>
+      <stop offset="100%" style="stop-color:#1a2d3d"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4aa"/>
+      <stop offset="100%" style="stop-color:#00a882"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="380" fill="url(#bgGrad)" rx="16"/>
+  <text x="360" y="44" text-anchor="middle" font-size="13" font-weight="600" fill="#00d4aa" font-family="system-ui,sans-serif" letter-spacing="2">2026.04.27 — 국내 증시 현황</text>
+  <text x="360" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">코스피 사상 최고치 경신 🔥</text>
+  <line x1="60" y1="96" x2="660" y2="96" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="40" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#00d4aa" stroke-width="1.5"/>
+  <text x="110" y="143" text-anchor="middle" font-size="11" fill="#00d4aa" font-family="system-ui,sans-serif" font-weight="600">코스피</text>
+  <text x="110" y="178" text-anchor="middle" font-size="28" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">6,600</text>
+  <text x="110" y="200" text-anchor="middle" font-size="11" fill="#00d4aa" font-family="system-ui,sans-serif">▲ 사상 최고치</text>
+  <text x="110" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">선 돌파</text>
+  <rect x="200" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#4a9eff" stroke-width="1.5"/>
+  <text x="270" y="143" text-anchor="middle" font-size="11" fill="#4a9eff" font-family="system-ui,sans-serif" font-weight="600">코스닥</text>
+  <text x="270" y="178" text-anchor="middle" font-size="28" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">1,100</text>
+  <text x="270" y="200" text-anchor="middle" font-size="11" fill="#4a9eff" font-family="system-ui,sans-serif">▲ 동반 강세</text>
+  <text x="270" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">선 돌파</text>
+  <rect x="360" y="112" width="140" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#c084fc" stroke-width="1.5"/>
+  <text x="430" y="143" text-anchor="middle" font-size="11" fill="#c084fc" font-family="system-ui,sans-serif" font-weight="600">시가총액</text>
+  <text x="430" y="172" text-anchor="middle" font-size="26" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">6,000조</text>
+  <text x="430" y="196" text-anchor="middle" font-size="11" fill="#c084fc" font-family="system-ui,sans-serif">▲ 돌파</text>
+  <text x="430" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">국내 증시 전체</text>
+  <rect x="520" y="112" width="160" height="110" rx="12" fill="#ffffff" fill-opacity="0.06" stroke="#f5a623" stroke-width="1.5"/>
+  <text x="600" y="136" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="600">골드만삭스 목표</text>
+  <text x="600" y="172" text-anchor="middle" font-size="28" font-weight="800" fill="#f5a623" font-family="system-ui,sans-serif">7,000</text>
+  <text x="600" y="196" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif">코스피 목표치</text>
+  <text x="600" y="214" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">&quot;보수적&quot; 수치</text>
+  <text x="40" y="256" font-size="11" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">코스피 → 골드만삭스 목표까지</text>
+  <rect x="40" y="265" width="640" height="12" rx="6" fill="#ffffff" fill-opacity="0.08"/>
+  <rect x="40" y="265" width="604" height="12" rx="6" fill="url(#barGrad)"/>
+  <text x="644" y="276" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="700">94%</text>
+  <text x="40" y="298" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif">현재 6,600</text>
+  <text x="680" y="298" text-anchor="end" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif">목표 7,000</text>
+  <rect x="40" y="316" width="96" height="24" rx="12" fill="#00d4aa" fill-opacity="0.15"/>
+  <text x="88" y="332" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 실적 장세</text>
+  <rect x="148" y="316" width="96" height="24" rx="12" fill="#4a9eff" fill-opacity="0.15"/>
+  <text x="196" y="332" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 수출 호조</text>
+  <rect x="256" y="316" width="96" height="24" rx="12" fill="#c084fc" fill-opacity="0.15"/>
+  <text x="304" y="332" text-anchor="middle" font-size="10" fill="#c084fc" font-family="system-ui,sans-serif"># 내수 반등</text>
+  <rect x="364" y="316" width="108" height="24" rx="12" fill="#f5a623" fill-opacity="0.15"/>
+  <text x="418" y="332" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif"># 사상 최고치</text>
+</svg>
+</template>
+
+<!-- ───── SVG 2: Psychology Diagram ───── -->
+<template id="t2">
+<svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+  </defs>
+  <rect width="720" height="420" fill="#0f1923" rx="16"/>
+  <text x="360" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">투자자의 심리 사이클</text>
+  <text x="360" y="58" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">— 김경일 교수 분석 —</text>
+  <text x="175" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">❌  잘못된 패턴</text>
+  <rect x="80" y="102" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">주가 급락</text>
+  <text x="175" y="144" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">시장이 흔들린다</text>
+  <line x1="175" y1="154" x2="175" y2="174" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="176" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">공포 반응 발생</text>
+  <text x="175" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">본능적인 두려움</text>
+  <line x1="175" y1="228" x2="175" y2="248" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="250" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">공포 = 결정으로 착각</text>
+  <text x="175" y="290" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">&quot;지금 팔아야 해!&quot; 충동</text>
+  <line x1="175" y1="302" x2="175" y2="322" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="80" y="324" width="190" height="52" rx="10" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="2"/>
+  <text x="175" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#ef4444" font-family="system-ui,sans-serif">손절 실패 or 고점 매수</text>
+  <text x="175" y="366" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">FOMO로 뒤늦게 진입</text>
+  <line x1="360" y1="80" x2="360" y2="400" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="545" y="90" text-anchor="middle" font-size="12" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">✅  올바른 접근</text>
+  <rect x="450" y="102" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">공포는 반응임을 인식</text>
+  <text x="545" y="144" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">&quot;이건 본능이지 결정이 아니다&quot;</text>
+  <line x1="545" y1="154" x2="545" y2="174" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="176" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">가격 아닌 가치 집중</text>
+  <text x="545" y="216" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">기업 이익 성장 여부 확인</text>
+  <line x1="545" y1="228" x2="545" y2="248" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="250" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.12" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="545" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">시스템 투자 실행</text>
+  <text x="545" y="290" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">분할매수 · 불타기 원칙</text>
+  <line x1="545" y1="302" x2="545" y2="322" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="450" y="324" width="190" height="52" rx="10" fill="#22c55e" fill-opacity="0.18" stroke="#22c55e" stroke-width="2"/>
+  <text x="545" y="345" text-anchor="middle" font-size="13" font-weight="700" fill="#22c55e" font-family="system-ui,sans-serif">장기 보유 → 수익 실현</text>
+  <text x="545" y="366" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.7" font-family="system-ui,sans-serif">투자 수명을 길게 설계</text>
+</svg>
+</template>
+
+<!-- ───── SVG 3: Checklist ───── -->
+<template id="t3">
+<svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="320" fill="#0f1923" rx="16"/>
+  <rect x="0" y="0" width="720" height="70" fill="#1a2d3d" rx="16"/>
+  <rect x="0" y="50" width="720" height="20" fill="#1a2d3d"/>
+  <text x="36" y="30" font-size="13" fill="#f5a623" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="1">이번 주 투자자 체크리스트</text>
+  <text x="36" y="54" font-size="11" fill="#ffffff" fill-opacity="0.5" font-family="system-ui,sans-serif">2026년 4월 28일 ~ 5월 2일 — 놓치면 안 되는 3가지</text>
+  <rect x="30" y="90" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#4a9eff" stroke-width="1.2"/>
+  <rect x="50" y="108" width="26" height="26" rx="6" fill="#4a9eff" fill-opacity="0.2" stroke="#4a9eff" stroke-width="1.5"/>
+  <text x="63" y="126" text-anchor="middle" font-size="14" fill="#4a9eff" font-family="system-ui,sans-serif">1</text>
+  <text x="94" y="116" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">미국 빅테크 실적 발표 확인</text>
+  <text x="94" y="136" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">MS · 아마존 · 메타 등 실적 발표 → 글로벌 증시 방향성 결정</text>
+  <rect x="598" y="107" width="78" height="22" rx="11" fill="#4a9eff" fill-opacity="0.15"/>
+  <text x="637" y="122" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 글로벌 변수</text>
+  <rect x="30" y="166" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#00d4aa" stroke-width="1.2"/>
+  <rect x="50" y="184" width="26" height="26" rx="6" fill="#00d4aa" fill-opacity="0.2" stroke="#00d4aa" stroke-width="1.5"/>
+  <text x="63" y="202" text-anchor="middle" font-size="14" fill="#00d4aa" font-family="system-ui,sans-serif">2</text>
+  <text x="94" y="192" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">불타기 전략으로 평단가 관리</text>
+  <text x="94" y="212" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">오르는 종목 분할 매수 → 평단가 조정 → 장기 보유 기반 구축</text>
+  <rect x="598" y="183" width="78" height="22" rx="11" fill="#00d4aa" fill-opacity="0.15"/>
+  <text x="637" y="198" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 매매 전략</text>
+  <rect x="30" y="242" width="660" height="62" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="#c084fc" stroke-width="1.2"/>
+  <rect x="50" y="260" width="26" height="26" rx="6" fill="#c084fc" fill-opacity="0.2" stroke="#c084fc" stroke-width="1.5"/>
+  <text x="63" y="278" text-anchor="middle" font-size="14" fill="#c084fc" font-family="system-ui,sans-serif">3</text>
+  <text x="94" y="268" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">전력 기기주 수주 잔고 모니터링</text>
+  <text x="94" y="288" font-size="11" fill="#ffffff" fill-opacity="0.55" font-family="system-ui,sans-serif">효성중공업 등 수주 잔고 추이 · 주주친화 정책 변화 확인</text>
+  <rect x="598" y="259" width="78" height="22" rx="11" fill="#c084fc" fill-opacity="0.15"/>
+  <text x="637" y="274" text-anchor="middle" font-size="10" fill="#c084fc" font-family="system-ui,sans-serif"># 섹터 모니터</text>
+</svg>
+</template>
+
+<!-- ───── SVG 4: Sector Cards ───── -->
+<template id="t4">
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="300" fill="#0f1923" rx="16"/>
+  <text x="360" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff" font-family="system-ui,sans-serif">지금 주목할 섹터 3선</text>
+  <text x="360" y="58" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.45" font-family="system-ui,sans-serif">2026.04.27 기준 — 전문가 추천 종목군</text>
+  <rect x="24" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#4a9eff" stroke-width="1.8"/>
+  <rect x="24" y="76" width="206" height="52" rx="14" fill="#4a9eff" fill-opacity="0.2"/>
+  <rect x="24" y="104" width="206" height="24" fill="#4a9eff" fill-opacity="0.2"/>
+  <text x="127" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">🏬</text>
+  <text x="127" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#4a9eff" font-family="system-ui,sans-serif">내수주</text>
+  <text x="127" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">대표 종목</text>
+  <text x="127" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">현대백화점</text>
+  <line x1="44" y1="186" x2="210" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="44" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 소비 회복 신호</text>
+  <text x="44" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 경제 선순환 지표</text>
+  <text x="44" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 내수 반등 수혜주</text>
+  <rect x="44" y="252" width="86" height="20" rx="10" fill="#4a9eff" fill-opacity="0.2"/>
+  <text x="87" y="266" text-anchor="middle" font-size="10" fill="#4a9eff" font-family="system-ui,sans-serif"># 중장기 보유</text>
+  <rect x="257" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#00d4aa" stroke-width="1.8"/>
+  <rect x="257" y="76" width="206" height="52" rx="14" fill="#00d4aa" fill-opacity="0.2"/>
+  <rect x="257" y="104" width="206" height="24" fill="#00d4aa" fill-opacity="0.2"/>
+  <text x="360" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">🚢</text>
+  <text x="360" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#00d4aa" font-family="system-ui,sans-serif">조선주</text>
+  <text x="360" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">핵심 테마</text>
+  <text x="360" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">AI 데이터센터 엔진</text>
+  <line x1="277" y1="186" x2="443" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="277" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 선박 수주 → AI 엔진</text>
+  <text x="277" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 복합 성장 테마</text>
+  <text x="277" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 단기→중장기 재평가</text>
+  <rect x="277" y="252" width="86" height="20" rx="10" fill="#00d4aa" fill-opacity="0.2"/>
+  <text x="320" y="266" text-anchor="middle" font-size="10" fill="#00d4aa" font-family="system-ui,sans-serif"># 복합 성장</text>
+  <rect x="490" y="76" width="206" height="200" rx="14" fill="#1a2d3d" stroke="#f5a623" stroke-width="1.8"/>
+  <rect x="490" y="76" width="206" height="52" rx="14" fill="#f5a623" fill-opacity="0.2"/>
+  <rect x="490" y="104" width="206" height="24" fill="#f5a623" fill-opacity="0.2"/>
+  <text x="593" y="107" text-anchor="middle" font-size="22" font-family="system-ui,sans-serif">⚡</text>
+  <text x="593" y="122" text-anchor="middle" font-size="14" font-weight="800" fill="#f5a623" font-family="system-ui,sans-serif">전력기기주</text>
+  <text x="593" y="156" text-anchor="middle" font-size="11" fill="#ffffff" fill-opacity="0.8" font-family="system-ui,sans-serif">대표 종목</text>
+  <text x="593" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" font-family="system-ui,sans-serif">효성중공업</text>
+  <line x1="510" y1="186" x2="676" y2="186" stroke="#ffffff" stroke-opacity="0.1" stroke-width="1"/>
+  <text x="510" y="204" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 수주 잔고 모니터링</text>
+  <text x="510" y="220" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 주주친화 정책 확인</text>
+  <text x="510" y="236" font-size="10" fill="#ffffff" fill-opacity="0.6" font-family="system-ui,sans-serif">• 전력 인프라 수혜</text>
+  <rect x="510" y="252" width="86" height="20" rx="10" fill="#f5a623" fill-opacity="0.2"/>
+  <text x="553" y="266" text-anchor="middle" font-size="10" fill="#f5a623" font-family="system-ui,sans-serif"># 인프라 수혜</text>
+</svg>
+</template>
+
+<script>
+const IMGBB_KEY = 'f1487d42e522939e8c7bb70feacde1f9';
+const DATE_STR  = '2026-04-27';
+const SCALE     = 2; // 2x = 1440px wide
+
+const images = [
+  { templateId: 't1', name: `img1_kospi_market_${DATE_STR}`,       w: 720, h: 380 },
+  { templateId: 't2', name: `img2_psychology_diagram_${DATE_STR}`, w: 720, h: 420 },
+  { templateId: 't3', name: `img3_checklist_${DATE_STR}`,          w: 720, h: 320 },
+  { templateId: 't4', name: `img4_sector_cards_${DATE_STR}`,       w: 720, h: 300 },
+];
+
+const logEl    = document.getElementById('log');
+const outputEl = document.getElementById('json-output');
+const canvas   = document.getElementById('cv');
+const ctx      = canvas.getContext('2d');
+
+function log(msg, type = 'info') {
+  const d = document.createElement('div');
+  d.className = `card ${type}`;
+  d.textContent = msg;
+  logEl.appendChild(d);
+}
+
+function svgToBlob(svgEl, w, h) {
+  // Clone and set explicit dimensions
+  const clone = svgEl.cloneNode(true);
+  clone.setAttribute('width',  w * SCALE);
+  clone.setAttribute('height', h * SCALE);
+  const xml = new XMLSerializer().serializeToString(clone);
+  return new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+}
+
+function drawSvgToCanvas(blob, w, h) {
+  return new Promise((resolve, reject) => {
+    canvas.width  = w * SCALE;
+    canvas.height = h * SCALE;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve();
+    };
+    img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+    img.src = url;
+  });
+}
+
+function canvasToBase64() {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(blob => {
+      if (!blob) { reject(new Error('toBlob failed')); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Strip data URL prefix
+        const b64 = reader.result.split(',')[1];
+        resolve(b64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    }, 'image/jpeg', 0.92);
+  });
+}
+
+async function uploadToImgbb(b64, name) {
+  const form = new FormData();
+  form.append('key',   IMGBB_KEY);
+  form.append('image', b64);
+  form.append('name',  name);
+
+  const resp = await fetch('https://api.imgbb.com/1/upload', {
+    method: 'POST',
+    body:   form,
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const json = await resp.json();
+  if (!json.success) throw new Error(JSON.stringify(json));
+  const d = json.data;
+  return {
+    name:        name,
+    url:         d.url,
+    display_url: d.display_url || d.url,
+    viewer_url:  d.url_viewer  || '',
+    delete_url:  d.delete_url  || '',
+  };
+}
+
+async function processAll() {
+  const results = [];
+  log('🚀 업로드 시작', 'info');
+
+  for (const img of images) {
+    try {
+      log(`⏳ ${img.name} 처리 중…`, 'info');
+
+      const tpl  = document.getElementById(img.templateId);
+      const svgEl = tpl.content.querySelector('svg');
+      const blob  = svgToBlob(svgEl, img.w, img.h);
+
+      await drawSvgToCanvas(blob, img.w, img.h);
+      log(`  ✏️ Canvas 렌더링 완료 (${img.w * SCALE}×${img.h * SCALE})`, 'info');
+
+      const b64  = await canvasToBase64();
+      log(`  📦 JPEG 변환 완료 (${Math.round(b64.length / 1024)} KB)`, 'info');
+
+      const info = await uploadToImgbb(b64, img.name);
+      results.push(info);
+      log(`  ✅ 업로드 완료 → ${info.url}`, 'ok');
+
+    } catch (err) {
+      log(`  ❌ ${img.name} 실패: ${err.message}`, 'err');
+      results.push({ name: img.name, error: err.message });
+    }
+  }
+
+  const jsonStr = JSON.stringify(results, null, 2);
+  outputEl.textContent = '===JSON_START===\n' + jsonStr + '\n===JSON_END===';
+  log('🎉 완료!', 'ok');
+}
+
+// Auto-run on load
+window.addEventListener('load', processAll);
+</script>
+</body>
+</html>

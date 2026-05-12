@@ -1,0 +1,74 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F0F1A"/>
+      <stop offset="100%" style="stop-color:#1A1A2E"/>
+    </linearGradient>
+    <linearGradient id="pink_grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#EC4899"/>
+      <stop offset="100%" style="stop-color:#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="card_grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E1E3A"/>
+      <stop offset="100%" style="stop-color:#16213E"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg3)"/>
+  <rect width="800" height="450" fill="url(#bg3)" rx="16"/>
+  <rect x="0" y="0" width="800" height="4" fill="url(#pink_grad)" rx="2"/>
+
+  <!-- Professor badge -->
+  <rect x="32" y="20" width="200" height="30" fill="#2D1B69" rx="15"/>
+  <text x="132" y="40" text-anchor="middle" fill="#C4B5FD" font-size="12" font-weight="700">🎓 김경일 교수 핵심 인사이트</text>
+
+  <!-- Section label -->
+  <text x="32" y="84" fill="#64748B" font-size="12" font-weight="600" letter-spacing="3">INVESTMENT PSYCHOLOGY</text>
+  <!-- Main title — ExtraBold 800 -->
+  <text x="32" y="116" fill="white" font-size="24" font-weight="800">시장이 오를수록 심리 관리가 중요하다</text>
+  <rect x="32" y="126" width="60" height="3" fill="url(#pink_grad)" rx="2"/>
+
+  <!-- Card 1: 공포 -->
+  <rect x="32" y="148" width="228" height="175" fill="url(#card_grad1)" rx="14" stroke="#4C1D95" stroke-width="1"/>
+  <rect x="32" y="148" width="228" height="5" fill="#8B5CF6" rx="7"/>
+  <text x="146" y="185" text-anchor="middle" font-size="36">😰</text>
+  <!-- Card title — ExtraBold 800 -->
+  <text x="146" y="218" text-anchor="middle" fill="#C4B5FD" font-size="15" font-weight="800">공포는 반응이다</text>
+  <text x="146" y="238" text-anchor="middle" fill="#7C3AED" font-size="13" font-weight="700">결정이 아니다</text>
+  <line x1="52" y1="248" x2="240" y2="248" stroke="#2D1B69" stroke-width="1"/>
+  <text x="146" y="270" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">급락 시 공포를 느끼는 것</text>
+  <text x="146" y="288" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">은 정상이지만, 그것을</text>
+  <text x="146" y="306" text-anchor="middle" fill="#F3F4F6" font-size="11" font-weight="700">'결정'으로 착각하면 안 된다</text>
+
+  <!-- Card 2: FOMO -->
+  <rect x="286" y="148" width="228" height="175" fill="url(#card_grad1)" rx="14" stroke="#1E3A5F" stroke-width="1"/>
+  <rect x="286" y="148" width="228" height="5" fill="#3B82F6" rx="7"/>
+  <text x="400" y="185" text-anchor="middle" font-size="36">🌊</text>
+  <!-- Card title — ExtraBold 800 -->
+  <text x="400" y="218" text-anchor="middle" fill="#93C5FD" font-size="15" font-weight="800">FOMO는 인정하라</text>
+  <text x="400" y="238" text-anchor="middle" fill="#1D4ED8" font-size="13" font-weight="700">억누르지 말고</text>
+  <line x1="306" y1="248" x2="494" y2="248" stroke="#1E2A3A" stroke-width="1"/>
+  <text x="400" y="270" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">기회를 놓칠 것 같은 공포,</text>
+  <text x="400" y="288" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">손실 회피 심리는 없앨 수</text>
+  <text x="400" y="306" text-anchor="middle" fill="#F3F4F6" font-size="11" font-weight="700">없다 — 체계적 장치로 관리</text>
+
+  <!-- Card 3: 투자 수명 -->
+  <rect x="540" y="148" width="228" height="175" fill="url(#card_grad1)" rx="14" stroke="#1A3A1A" stroke-width="1"/>
+  <rect x="540" y="148" width="228" height="5" fill="#10B981" rx="7"/>
+  <text x="654" y="185" text-anchor="middle" font-size="36">⏳</text>
+  <!-- Card title — ExtraBold 800 -->
+  <text x="654" y="218" text-anchor="middle" fill="#6EE7B7" font-size="15" font-weight="800">투자 수명을 길게</text>
+  <text x="654" y="238" text-anchor="middle" fill="#059669" font-size="13" font-weight="700">지금에 집착 말 것</text>
+  <line x1="560" y1="248" x2="748" y2="248" stroke="#1A2A1A" stroke-width="1"/>
+  <text x="654" y="270" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">"당신의 투자 수명은</text>
+  <text x="654" y="288" text-anchor="middle" fill="#F3F4F6" font-size="11" font-weight="700">생각보다 깁니다"</text>
+  <text x="654" y="306" text-anchor="middle" fill="#94A3B8" font-size="11" font-weight="700">긴 호흡의 심리 설계 필요</text>
+
+  <!-- Bottom quote -->
+  <rect x="32" y="342" width="736" height="50" fill="#150B2E" rx="10" stroke="#4C1D95" stroke-width="1" opacity="0.8"/>
+  <text x="48" y="360" fill="#EC4899" font-size="20" font-weight="900">"</text>
+  <text x="70" y="362" fill="#E2E8F0" font-size="13" font-weight="700">오르는 주식은 파는 것이 아닙니다. 가격이 아닌 가치에 집중하세요.</text>
+  <text x="48" y="382" fill="#64748B" font-size="11" font-weight="700">— 이광수 애널리스트</text>
+
+  <text x="768" y="438" text-anchor="end" fill="#334155" font-size="10">12시에 만나요 | 2026.04.27</text>
+</svg>
