@@ -26,9 +26,11 @@ jobs:
 
       - name: Run playlist checker
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: python scripts/check_playlist.py
+        # ✅ Fix 1: output/ 은 .gitignore → data/ 에 저장하도록 수정된 스크립트 사용
+        # ✅ Fix 2: RSS playlist_id 방식 제거 (YouTube 미지원) → API 전용
+        # ✅ Fix 3: --max-results 10 으로 누락 영상 일괄 감지
+        run: python scripts/check_playlist.py --max-results 10
 
       - name: Commit & push if changed
         run: |
@@ -39,5 +41,5 @@ jobs:
             git commit -m "chore: update new_videos & seen_videos ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
             git push
           else
-            echo "No changes to commit."
+            echo "No changes to commit — 신규 영상 없음"
           fi
