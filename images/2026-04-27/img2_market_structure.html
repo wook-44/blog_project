@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face {
+    font-family: 'NanumGothic';
+    src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'NanumGothic';
+    src: local('NanumGothic Bold'), local('NanumGothicBold');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: 'NanumGothic';
+    src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold');
+    font-weight: 800 900;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 800px; height: 450px; overflow: hidden; background: transparent; }
+  svg { width: 800px; height: 450px; display: block; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F172A"/>
+      <stop offset="100%" style="stop-color:#1E293B"/>
+    </linearGradient>
+    <linearGradient id="green_grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="blue_grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="purple_grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6"/>
+      <stop offset="100%" style="stop-color:#6D28D9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg2)" rx="16"/>
+  <rect x="0" y="0" width="800" height="4" fill="url(#green_grad)" rx="2"/>
+
+  <!-- Header -->
+  <text x="32" y="50" fill="#64748B" font-size="12" font-weight="600" letter-spacing="3">WHY IS IT RISING?</text>
+  <text x="32" y="82" fill="white" font-size="24" font-weight="700">지금 시장이 오르는 이유</text>
+  <text x="32" y="106" fill="#94A3B8" font-size="14">수출 호조 + 내수주 반등 = 실적 장세</text>
+  <rect x="32" y="118" width="50" height="3" fill="#10B981" rx="2"/>
+
+  <!-- Three pillars -->
+
+  <!-- Pillar 1: 수출 호조 -->
+  <rect x="32" y="145" width="220" height="220" fill="#0F2A1A" rx="14" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="32" y="145" width="220" height="6" fill="url(#green_grad)" rx="7"/>
+  <text x="142" y="180" text-anchor="middle" fill="#10B981" font-size="32">📦</text>
+  <text x="142" y="215" text-anchor="middle" fill="white" font-size="16" font-weight="700">수출 호조</text>
+  <text x="142" y="238" text-anchor="middle" fill="#94A3B8" font-size="12">글로벌 수요 회복</text>
+  <line x1="62" y1="250" x2="222" y2="250" stroke="#1E3A2A" stroke-width="1"/>
+  <text x="52" y="272" fill="#64748B" font-size="11">· IT·반도체 수출 강세</text>
+  <text x="52" y="292" fill="#64748B" font-size="11">· 미국·유럽 수요 회복세</text>
+  <text x="52" y="312" fill="#64748B" font-size="11">· 환율 효과 복합 작용</text>
+
+  <!-- Pillar 2: 내수주 반등 -->
+  <rect x="290" y="145" width="220" height="220" fill="#0F1A2A" rx="14" stroke="#3B82F6" stroke-width="1.5"/>
+  <rect x="290" y="145" width="220" height="6" fill="url(#blue_grad)" rx="7"/>
+  <text x="400" y="180" text-anchor="middle" fill="#3B82F6" font-size="32">🏬</text>
+  <text x="400" y="215" text-anchor="middle" fill="white" font-size="16" font-weight="700">내수주 반등</text>
+  <text x="400" y="238" text-anchor="middle" fill="#94A3B8" font-size="12">소비 회복 → 실적 개선</text>
+  <line x1="320" y1="250" x2="480" y2="250" stroke="#1E2A3A" stroke-width="1"/>
+  <text x="310" y="272" fill="#64748B" font-size="11">· 현대백화점 상승 주도</text>
+  <text x="310" y="292" fill="#64748B" font-size="11">· 소비 → 기업 실적 선순환</text>
+  <text x="310" y="312" fill="#64748B" font-size="11">· 단순 수급 아닌 펀더멘털</text>
+
+  <!-- Pillar 3: 조선업 AI -->
+  <rect x="548" y="145" width="220" height="220" fill="#1A0F2A" rx="14" stroke="#8B5CF6" stroke-width="1.5"/>
+  <rect x="548" y="145" width="220" height="6" fill="url(#purple_grad)" rx="7"/>
+  <text x="658" y="180" text-anchor="middle" fill="#8B5CF6" font-size="32">⚓</text>
+  <text x="658" y="215" text-anchor="middle" fill="white" font-size="16" font-weight="700">조선업 AI 테마</text>
+  <text x="658" y="238" text-anchor="middle" fill="#94A3B8" font-size="12">복합 성장 스토리</text>
+  <line x1="578" y1="250" x2="738" y2="250" stroke="#2A1A3A" stroke-width="1"/>
+  <text x="568" y="272" fill="#64748B" font-size="11">· AI 데이터센터 엔진 공급</text>
+  <text x="568" y="292" fill="#64748B" font-size="11">· 단기 테마 → 중장기 성장주</text>
+  <text x="568" y="312" fill="#64748B" font-size="11">· 박시동 애널 강력 추천</text>
+
+  <!-- Bottom flow: 버핏 지수 논란 -->
+  <rect x="32" y="385" width="736" height="45" fill="#1C1C2E" rx="10" stroke="#334155" stroke-width="1"/>
+  <text x="48" y="403" fill="#F59E0B" font-size="12" font-weight="700">⚠ 버핏 지수 고평가 논란?</text>
+  <text x="48" y="420" fill="#94A3B8" font-size="12">→ "저량(Stock) 관점 아닌 유량(Flow) 관점으로 봐야 — 기업 이익 증가가 핵심"</text>
+
+  <text x="768" y="443" text-anchor="end" fill="#334155" font-size="10">12시에 만나요 | 2026.04.27</text>
+</svg>
+
+</body>
+</html>
