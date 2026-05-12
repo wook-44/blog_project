@@ -2,8 +2,8 @@ name: YouTube Playlist Check
 
 on:
   schedule:
-    # 매일 08:00 KST = 23:00 UTC (전날)
-    - cron: "0 23 * * *"
+    # 매일 17:00 KST = 08:00 UTC
+    - cron: "0 8 * * *"
   workflow_dispatch:
 
 permissions:
