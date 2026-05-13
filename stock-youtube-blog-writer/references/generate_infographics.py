@@ -81,29 +81,19 @@ def _common_defs(accent_from: str, accent_to: str, hero_from: str, hero_to: str)
 
 
 def _header(date: str, label: str, title: str, accent_from: str, accent_to: str) -> str:
-    """공통 헤더 (날짜 배지 + 섹션 라벨 + 큰 타이틀 + 디바이더)."""
-    date_kor = ""
-    try:
-        d = datetime.strptime(date, "%Y-%m-%d")
-        date_kor = f"📅 {d.year}년 {d.month}월 {d.day}일"
-    except Exception:
-        date_kor = date
+    """공통 헤더 (섹션 라벨 + 큰 타이틀 + 디바이더). 날짜 배지는 표시 안 함."""
     return f"""
   <!-- 상단 accent bar -->
   <rect x="0" y="0" width="{SIZE}" height="8" fill="url(#accent)"/>
 
-  <!-- 날짜 배지 -->
-  <rect x="48" y="44" width="220" height="42" fill="{accent_from}33" rx="21" stroke="{accent_from}66" stroke-width="1"/>
-  <text x="158" y="71" text-anchor="middle" fill="{accent_from}" font-size="16" font-weight="700">{date_kor}</text>
-
   <!-- 섹션 라벨 -->
-  <text x="48" y="138" fill="{COLORS['text_dim']}" font-size="16" font-weight="700" letter-spacing="6">{label}</text>
+  <text x="48" y="80" fill="{COLORS['text_dim']}" font-size="16" font-weight="700" letter-spacing="6">{label}</text>
 
   <!-- 메인 타이틀 -->
-  <text x="48" y="186" fill="{COLORS['text_pri']}" font-size="38" font-weight="800">{title}</text>
+  <text x="48" y="138" fill="{COLORS['text_pri']}" font-size="42" font-weight="800">{title}</text>
 
   <!-- 디바이더 -->
-  <rect x="48" y="206" width="100" height="5" fill="url(#accent)" rx="2"/>
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
 """
 
 
@@ -144,15 +134,15 @@ def build_market_html(data: dict, date: str) -> str:
 
     # 카드 3개 (가로 배치, 카드 사이 간격 16px)
     card_w = (SIZE - 96 - 32) / 3  # 외곽 padding 48*2 = 96, 카드 사이 16*2 = 32
-    cards_y = 420
+    cards_y = 370
     cards_svg = ""
     for i, s in enumerate(sub):
         x = 48 + i * (card_w + 16)
         cards_svg += f"""
-  <rect x="{x}" y="{cards_y}" width="{card_w}" height="120" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="130" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
   <text x="{x+card_w/2}" y="{cards_y+30}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="13" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+78}" text-anchor="middle" fill="{a['from']}" font-size="40" font-weight="900">{s.get('value','—')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+105}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="13">{s.get('delta','')}</text>"""
+  <text x="{x+card_w/2}" y="{cards_y+80}" text-anchor="middle" fill="{a['from']}" font-size="40" font-weight="900">{s.get('value','—')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+110}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="13">{s.get('delta','')}</text>"""
 
     # 칩 (5개) — 카드 아래
     chip_y = cards_y + 150
@@ -185,12 +175,12 @@ def build_market_html(data: dict, date: str) -> str:
 {_header(date, a['label'], title, a['from'], a['to'])}
 
   <!-- HERO 영역 -->
-  <text x="48" y="320" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">{hero_value}</text>
-  <text x="48" y="360" fill="{COLORS['text_sec']}" font-size="20" font-weight="600">{hero_label}</text>
+  <text x="48" y="280" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">{hero_value}</text>
+  <text x="48" y="320" fill="{COLORS['text_sec']}" font-size="20" font-weight="600">{hero_label}</text>
 
   <!-- 우측 변동 표시 -->
-  <polygon points="{SIZE-180},250 {SIZE-150},300 {SIZE-120},250" fill="{a['from']}" opacity="0.95"/>
-  <text x="{SIZE-150}" y="335" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="800">{hero_delta}</text>
+  <polygon points="{SIZE-180},210 {SIZE-150},260 {SIZE-120},210" fill="{a['from']}" opacity="0.95"/>
+  <text x="{SIZE-150}" y="295" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="800">{hero_delta}</text>
 
   {cards_svg}
   {chips_svg}
@@ -216,7 +206,7 @@ def build_psychology_html(data: dict, date: str) -> str:
 
     # 함정 3개 카드 (가로 배치)
     card_w = (SIZE - 96 - 32) / 3
-    cards_y = 360
+    cards_y = 320
     cards_svg = ""
     for i, t in enumerate(traps):
         x = 48 + i * (card_w + 16)
@@ -242,7 +232,7 @@ def build_psychology_html(data: dict, date: str) -> str:
     hero_svg = ""
     if hero_msg:
         hero_svg = f"""
-  <text x="48" y="290" fill="url(#hero)" font-size="44" font-weight="900" filter="url(#glow)">{hero_msg}</text>"""
+  <text x="48" y="245" fill="url(#hero)" font-size="44" font-weight="900" filter="url(#glow)">{hero_msg}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
@@ -269,14 +259,14 @@ def build_summary_html(data: dict, date: str) -> str:
 
     # Hero takeaway 박스
     hero_svg = f"""
-  <rect x="48" y="240" width="{SIZE-96}" height="120" fill="{a['from']}1A" rx="18" stroke="{a['from']}66" stroke-width="2"/>
-  <text x="80" y="280" fill="{a['from']}" font-size="14" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
-  <foreignObject x="80" y="290" width="{SIZE-160}" height="64">
+  <rect x="48" y="200" width="{SIZE-96}" height="120" fill="{a['from']}1A" rx="18" stroke="{a['from']}66" stroke-width="2"/>
+  <text x="80" y="240" fill="{a['from']}" font-size="14" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
+  <foreignObject x="80" y="250" width="{SIZE-160}" height="64">
     <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:26px;font-weight:800;line-height:1.35;font-family:NanumGothic,sans-serif">{hero_takeaway}</div>
   </foreignObject>"""
 
     # 5 포인트 (큰 번호 + 텍스트, 컴팩트 리스트)
-    pts_y = 400
+    pts_y = 360
     pts_svg = ""
     for i, p in enumerate(points):
         y = pts_y + i * 84
