@@ -81,9 +81,10 @@ def md_to_html_body(md_text: str) -> str:
     in_list = False
 
     # ── 인라인 스타일 (네이버 에디터가 태그만 보고는 폰트 크기/굵기 보존 안 함) ──
-    H1 = 'style="font-size:24px;font-weight:bold;margin:20px 0 10px;line-height:1.4;"'
-    H2 = 'style="font-size:20px;font-weight:bold;margin:18px 0 8px;line-height:1.4;"'
-    H3 = 'style="font-size:17px;font-weight:bold;margin:14px 0 6px;line-height:1.4;"'
+    H1 = 'style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;"'
+    H2 = 'style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;"'
+    H3 = 'style="font-size:21px;font-weight:bold;margin:16px 0 8px;line-height:1.4;"'
+    SUB = 'style="font-size:18px;font-weight:bold;margin:14px 0 6px;line-height:1.4;color:#1e293b;"'
     BOLD = 'style="font-weight:bold;"'
     PARA = 'style="font-size:15px;line-height:1.7;margin:8px 0;"'
     LI = 'style="font-size:15px;line-height:1.7;margin:4px 0;"'
@@ -155,6 +156,13 @@ def md_to_html_body(md_text: str) -> str:
         else:
             if in_list: html_parts.append("</ul>"); in_list = False
             content = line.strip()
+
+            # 줄 전체가 **굵음** 한 번만 — 소제목으로 승격 (예: "**흐름 요약**", "**교정 방법**")
+            full_bold = re.fullmatch(r"\*\*([^*]+)\*\*", content)
+            if full_bold:
+                html_parts.append(f'<p {SUB}>{full_bold.group(1)}</p>')
+                continue
+
             content = re.sub(r'\*\*(.+?)\*\*', r'<span style="font-weight:bold;">\1</span>', content)
             content = re.sub(r'\*(.+?)\*', r'<span style="font-style:italic;">\1</span>', content)
             if content:
