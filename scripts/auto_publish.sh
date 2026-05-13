@@ -130,5 +130,16 @@ if [ "${SKIP_GDRIVE:-0}" != "1" ]; then
   fi
 fi
 
+# ── ③ 텔레그램 알림 (옵션) ─────────────────────────
+if [ -f "$BLOG/scripts/notify_telegram.sh" ]; then
+  echo ""
+  echo "📲 [3/3] 텔레그램 알림..."
+  TG_MSG="✅ *${PREFIX}* 완료 (${DATE})
+📂 GDrive: ${GDRIVE:+미러링됨}${GDRIVE:-스킵}
+🚀 Git: 푸시됨
+📋 copy_tool: output/${DATE}_copy_tool.html"
+  bash "$BLOG/scripts/notify_telegram.sh" "$TG_MSG" 2>/dev/null || true
+fi
+
 echo ""
 echo "──────────────────────────────────────────────"

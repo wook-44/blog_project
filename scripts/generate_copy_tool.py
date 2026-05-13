@@ -595,7 +595,7 @@ def main():
             same_date = [p for p in month_files if p.stem.startswith(date_str)]
             idx = month_files.index(same_date[0]) if same_date else 0
         episode = idx + 1
-        title = f"{title} {d.year}년 {d.month}월 {episode}화"
+        title = f"{title} ㅣ {d.year}년 {d.month}월 {episode}화"
     except ValueError:
         pass
     print(f"📝 제목: {title}")
