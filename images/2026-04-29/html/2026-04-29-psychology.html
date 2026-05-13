@@ -1,99 +1,81 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 900px; height: 900px; overflow: hidden;
-    background: #0D1117;
-    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
-                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-    color: #E6EDF3;
-    position: relative;
-  }
-  .accent-bar {
-    position: absolute; left: 0; top: 0;
-    width: 8px; height: 100%;
-    background: #BC8CFF;
-  }
-  .container {
-    padding: 44px 52px 36px 72px;
-    height: 100%; display: flex; flex-direction: column;
-  }
-  .header { margin-bottom: 18px; }
-  .section-title {
-    font-size: 32px; font-weight: 700;
-    color: #E6EDF3; line-height: 1.2;
-  }
-  .divider {
-    height: 1px; background: #21262D;
-    margin: 16px 0;
-  }
-  .footer {
-    margin-top: auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 14px; border-top: 1px solid #21262D;
-    font-size: 13px; color: #8B949E;
-  }
-  .footer-tag { color: #BC8CFF; font-weight: 600; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#A78BFA"/>
+    <stop offset="100%" style="stop-color:#EC4899"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#FBBF24"/>
+    <stop offset="100%" style="stop-color:#F472B6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
 
-      .body { display: flex; flex-direction: column; gap: 24px; flex: 1; margin-top: 4px; }
-      .warn-card {
-        width: 100%; padding: 20px 28px;
-        background: #1E1B2E; border-radius: 16px;
-        display: flex; align-items: center; gap: 20px;
-        border: 1px solid #BC8CFF33;
-      }
-      .warn-icon { font-size: 44px; }
-      .warn-text { font-size: 28px; font-weight: 800; color: #BC8CFF; }
-      .points-wrap { flex: 1; }
-      .list-label { font-size: 13px; color: #8B949E; margin-bottom: 14px; letter-spacing: 0.5px; font-weight: 700; text-transform: uppercase; }
-      .point { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
-      .tag {
-        font-size: 11px; font-weight: 700; padding: 4px 10px;
-        border: 1px solid; border-radius: 5px; flex-shrink: 0; margin-top: 2px;
-      }
-      .pt-text { font-size: 16px; color: #E6EDF3; line-height: 1.55; }
-    </style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">🧠&nbsp; 투자 심리 & 행동 교정</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="warn-card">
-      <div class="warn-icon">⚠️</div>
-      <div class="warn-text">악재 과잉 해석</div>
-    </div>
-    <div class="points-wrap">
-      <div class="list-label">체크리스트</div>
-      
-      <div class="point">
-        <span class="tag" style="color:#BC8CFF;
-          border-color:#BC8CFF22">
-          함정
-        </span>
-        <span class="pt-text">'악재 겹침 = 추세 전환' 오해 — UAE 탈퇴·MS 재편은 구조적 악재 아닌 단기 이벤트</span>
-      </div>
-      <div class="point">
-        <span class="tag" style="color:#BC8CFF;
-          border-color:#BC8CFF22">
-          함정
-        </span>
-        <span class="pt-text">30% 상승 후 심리적 취약 — 악재가 커서가 아니라 이미 올라서 흔들리는 것</span>
-      </div>
-      <div class="point">
-        <span class="tag" style="color:#3FB950;
-          border-color:#3FB95022">
-          교정
-        </span>
-        <span class="pt-text">투자 근거 3문항 체크 — ①AI 수요 훼손? ②1~2년 뒤 수요 감소? ③추세 붕괴? 모두 NO이면 조정은 매수 기회</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">🧠 투자 심리</span>
-  </div>
-</div>
-</body></html>
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="16" font-weight="700" letter-spacing="6">INVESTMENT PSYCHOLOGY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="138" fill="#FFFFFF" font-size="42" font-weight="800">30% 수익 후가 가장 취약하다</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="245" fill="url(#hero)" font-size="44" font-weight="900" filter="url(#glow)">흔들리는 이유는 악재가 아니다</text>
+  
+  <rect x="48.0" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="206.66666666666666" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="206.66666666666666" y="380" text-anchor="middle" font-size="34">😱</text>
+  <text x="206.66666666666666" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">추세 전환 오해</text>
+  <foreignObject x="64.0" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">단기 이벤트를 구조적 악재로 확대 해석</div>
+  </foreignObject>
+  <rect x="381.3333333333333" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="540.0" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="540.0" y="380" text-anchor="middle" font-size="34">🤯</text>
+  <text x="540.0" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">투자 근거 망각</text>
+  <foreignObject x="397.3333333333333" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">HBM·코스피 7,000 본질 점검 없이 가격에만 반응</div>
+  </foreignObject>
+  <rect x="714.6666666666666" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="873.3333333333333" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="873.3333333333333" y="380" text-anchor="middle" font-size="34">😩</text>
+  <text x="873.3333333333333" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">30% 후 심리 취약</text>
+  <foreignObject x="730.6666666666666" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">수익 정점에서 작은 악재도 과민 반응</div>
+  </foreignObject>
+  
+  <rect x="48" y="540" width="984" height="120" fill="#EC48991A" rx="16" stroke="#EC489966" stroke-width="2"/>
+  <text x="80" y="580" fill="#EC4899" font-size="14" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
+  <foreignObject x="80" y="590" width="920" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:22px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif">흔들리지 않는 3 질문 — 근거 훼손? 1~2년 AI 수요? 7,000 내러티브?</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
+  <text x="68" y="980" fill="#94A3B8" font-size="14">"</text>
+  <text x="84" y="980" fill="#FFFFFF" font-size="18" font-weight="600">이 순간이 개인과 기관을 가르는 변곡점</text>
+  <text x="68" y="1008" fill="#64748B" font-size="13">— 박시동 (경제평론가)</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1056" text-anchor="end" fill="#334155" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>

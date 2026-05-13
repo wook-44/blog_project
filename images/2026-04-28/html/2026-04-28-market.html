@@ -1,100 +1,95 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 900px; height: 900px; overflow: hidden;
-    background: #0D1117;
-    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
-                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
-    color: #E6EDF3;
-    position: relative;
-  }
-  .accent-bar {
-    position: absolute; left: 0; top: 0;
-    width: 8px; height: 100%;
-    background: #58A6FF;
-  }
-  .container {
-    padding: 44px 52px 36px 72px;
-    height: 100%; display: flex; flex-direction: column;
-  }
-  .header { margin-bottom: 18px; }
-  .section-title {
-    font-size: 32px; font-weight: 700;
-    color: #E6EDF3; line-height: 1.2;
-  }
-  .divider {
-    height: 1px; background: #21262D;
-    margin: 16px 0;
-  }
-  .footer {
-    margin-top: auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 14px; border-top: 1px solid #21262D;
-    font-size: 13px; color: #8B949E;
-  }
-  .footer-tag { color: #58A6FF; font-weight: 600; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#3B82F6"/>
+    <stop offset="100%" style="stop-color:#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#F59E0B"/>
+    <stop offset="100%" style="stop-color:#EF4444"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
 
-      .body { display: flex; flex-direction: column; gap: 24px; flex: 1; margin-top: 4px; }
-      .stat-card {
-        width: 100%; padding: 20px 28px;
-        background: #1C2B3A; border-radius: 16px;
-        display: flex; align-items: center; gap: 24px;
-        border: 1px solid #58A6FF33;
-      }
-      .stat-value { font-size: 46px; font-weight: 800; color: #58A6FF; min-width: 120px; }
-      .stat-label { font-size: 15px; color: #8B949E; }
-      .points-wrap { flex: 1; }
-      .points-label { font-size: 13px; color: #8B949E; margin-bottom: 14px; letter-spacing: 0.5px; font-weight: 700; text-transform: uppercase; }
-      .point {
-        display: flex; align-items: flex-start; gap: 16px;
-        margin-bottom: 20px;
-      }
-      .badge {
-        width: 30px; height: 30px; border-radius: 50%;
-        background: #58A6FF; color: #0D1117;
-        font-size: 14px; font-weight: 800;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; margin-top: 2px;
-      }
-      .pt-text { font-size: 16px; color: #E6EDF3; line-height: 1.5; }
-    </style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">📊&nbsp; 시장 분석 & 투자 전략</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="stat-card">
-      <div class="stat-value">6,600</div>
-      <div class="stat-label">핵심 지표</div>
-    </div>
-    <div class="points-wrap">
-      <div class="points-label">주요 포인트</div>
-      
-      <div class="point">
-        <span class="badge">1</span>
-        <span class="pt-text">코스피 6,600선 유지 — 외국인 수급이 반도체 → 자동차·로봇 섹터로 확산</span>
-      </div>
-      <div class="point">
-        <span class="badge">2</span>
-        <span class="pt-text">현대차 +7.25% 급등 — 구글 딥마인드·보스턴다이나믹스 협업 '피지컬 AI' 기대</span>
-      </div>
-      <div class="point">
-        <span class="badge">3</span>
-        <span class="pt-text">KB증권 현대차 목표가 80만원 제시 — AI 로봇 밸류에이션 첫 공식 적용</span>
-      </div>
-      <div class="point">
-        <span class="badge">4</span>
-        <span class="pt-text">코스피 시가총액 6,000조원 돌파 — 외국인 자동차·로봇 섹터 수급 분산 시작</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">📊 시장 분석</span>
-  </div>
-</div>
-</body></html>
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="16" font-weight="700" letter-spacing="6">MARKET STATUS</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="138" fill="#FFFFFF" font-size="42" font-weight="800">현대차 +7.25% — 피지컬 AI 동맹</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+
+  <!-- HERO 영역 -->
+  <text x="48" y="280" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">562,000</text>
+  <text x="48" y="320" fill="#94A3B8" font-size="20" font-weight="600">현대차 종가</text>
+
+  <!-- 우측 변동 표시 -->
+  <polygon points="900,210 930,260 960,210" fill="#3B82F6" opacity="0.95"/>
+  <text x="930" y="295" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="800">▲ +7.25%</text>
+
+  
+  <rect x="48.0" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="206.66666666666666" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">1Q 매출 (창사 최대)</text>
+  <text x="206.66666666666666" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">45.9조</text>
+  <text x="206.66666666666666" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">YoY +3.4%</text>
+  <rect x="381.3333333333333" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="540.0" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">교보·KB 목표가</text>
+  <text x="540.0" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">800,000</text>
+  <text x="540.0" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">신규 제시</text>
+  <rect x="714.6666666666666" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="873.3333333333333" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">아틀라스 양산</text>
+  <text x="873.3333333333333" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">2028</text>
+  <text x="873.3333333333333" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">3만 대</text>
+  
+  <rect x="48" y="520" width="142" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="119.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">구글 딥마인드 방한</text>
+  <rect x="198" y="520" width="120" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="258.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">보스턴다이나믹스</text>
+  <rect x="326" y="520" width="109" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="380.5" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">제미나이 탑재</text>
+  <rect x="443" y="520" width="120" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="503.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">HMGMA 공장</text>
+  <rect x="571" y="520" width="153" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="647.5" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">외국인 자동차로 확산</text>
+  
+  <text x="48" y="580" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">주요 포인트</text>
+  <circle cx="58" cy="603" r="11" fill="#3B82F6"/>
+  <text x="58" y="607" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">1</text>
+  <text x="80" y="608" fill="#FFFFFF" font-size="17" font-weight="600">완성차 실적 + 피지컬 AI + 구글 협력 3축</text>
+  <circle cx="58" cy="635" r="11" fill="#3B82F6"/>
+  <text x="58" y="639" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">2</text>
+  <text x="80" y="640" fill="#FFFFFF" font-size="17" font-weight="600">560,000 지지선 확인 후 분할 매수가 정답</text>
+  <circle cx="58" cy="667" r="11" fill="#3B82F6"/>
+  <text x="58" y="671" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">3</text>
+  <text x="80" y="672" fill="#FFFFFF" font-size="17" font-weight="600">공장 배치 진척도가 다음 레벨업 KPI</text>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
+  <text x="68" y="980" fill="#94A3B8" font-size="14">"</text>
+  <text x="84" y="980" fill="#FFFFFF" font-size="18" font-weight="600">압도적인 밸류에이션 매력, 목표가 800,000원</text>
+  <text x="68" y="1008" fill="#64748B" font-size="13">— KB증권</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1056" text-anchor="end" fill="#334155" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>
