@@ -232,13 +232,9 @@ def lint(post_path: Path) -> dict:
     else:
         passed.append(f"[B2] 투자 주의 문구 존재")
 
-    # ── 검사 11: 시리즈 내부 링크 (조건부)
-    if has_recent_keyword_post(date_str, body):
-        links = find_series_links(date_str, body)
-        if not links:
-            issues.append(f"[S1] 14일 내 동일 키워드 글이 있는데 '이전 분석' 링크 없음")
-        else:
-            passed.append(f"[S1] 시리즈 링크 {len(links)}개")
+    # ── 검사 11: 시리즈 내부 링크 — 비활성화됨
+    # 네이버 에디터가 마크다운 링크 `[제목](경로)`를 렌더링 못해서 깨져 보임.
+    # 사용자 요청으로 자동 추가 룰 제거 (2026-05-13).
 
     return {
         "post": str(post_path),

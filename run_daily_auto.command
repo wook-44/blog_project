@@ -78,7 +78,8 @@ echo "🔍 [4/6] 린터·시리즈 링커..."
   echo "  ⚠️ 린터 미통과 — copy_tool은 만들지만 사용자 검토 권고"
   notify "데일리 자동화 경고" "린터 미통과. $DATE 본문 검토 필요"
 }
-"$PYTHON" "$BLOG/scripts/agents/09_series_linker.py" "$POST" --apply 2>/dev/null || true
+# 시리즈 링커 비활성화 — 네이버에서 마크다운 링크가 깨져 보임
+# "$PYTHON" "$BLOG/scripts/agents/09_series_linker.py" "$POST" --apply 2>/dev/null || true
 
 # ── ⑤ copy_tool.html 생성 ────────────────────────────
 echo ""
