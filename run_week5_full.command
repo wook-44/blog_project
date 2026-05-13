@@ -12,7 +12,7 @@ echo ""
 # Step 1: HTML → PNG
 echo "🖼️  [1/2] HTML → PNG 변환..."
 TOTAL=0; OK=0
-for d in 2026-05-01 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12; do
+for d in 2026-05-01 2026-05-04 2026-05-05 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12 2026-05-13; do
   HTML_DIR="$BLOG/images/$d/html"
   OUT_DIR="$BLOG/images/$d"
   [ ! -d "$HTML_DIR" ] && continue
@@ -39,18 +39,18 @@ echo "  PNG: $OK / $TOTAL"
 echo ""
 echo "📋 [2/2] copy_tool.html 생성..."
 mkdir -p "$BLOG/output"
-for d in 2026-05-01 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12; do
+for d in 2026-05-01 2026-05-04 2026-05-05 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12 2026-05-13; do
   python3 "$BLOG/scripts/generate_copy_tool.py" "$d" 2>&1 | grep -E "📝|저장"
 done
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  ✅ 처리 완료"
-ls -1 "$BLOG/output/"2026-05-{01,06,07,08,11,12}_copy_tool.html 2>/dev/null
+ls -1 "$BLOG/output/"2026-05-{01,04,05,06,07,08,11,12,13}_copy_tool.html 2>/dev/null
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # 자동 배포 (Git + Google Drive)
-for d in 2026-05-01 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12; do
+for d in 2026-05-01 2026-05-04 2026-05-05 2026-05-06 2026-05-07 2026-05-08 2026-05-11 2026-05-12 2026-05-13; do
   SKIP_GIT=1 bash "$BLOG/scripts/auto_publish.sh" "$d" "5월 1·2주차 배치" >/dev/null 2>&1
 done
 bash "$BLOG/scripts/auto_publish.sh" "$(date +%Y-%m-%d)" "5월 1·2주차 배치"
