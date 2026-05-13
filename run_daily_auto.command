@@ -119,12 +119,10 @@ echo "📋 [6/7] copy_tool.html 생성..."
 }
 COPY_TOOL="$BLOG/output/${DATE}_copy_tool.html"
 
-# ── ⑦ Git 자동 커밋·푸시 ────────────────────────────
+# ── ⑦ 자동 배포 (Git + Google Drive) ─────────────────
 echo ""
-echo "🚀 [7/7] Git 커밋·푸시..."
-git -C "$BLOG" add -A
-git -C "$BLOG" commit -m "feat: $DATE 블로그 자동 생성 (본문+이미지+copy_tool)" 2>&1 || echo "  변경 없음"
-git -C "$BLOG" push origin main 2>&1 || echo "  ⚠️ 푸시 실패 (네트워크 확인)"
+echo "🚀 [7/7] 자동 배포 (Git push + Google Drive 미러링)..."
+bash "$BLOG/scripts/auto_publish.sh" "$DATE" "데일리 자동 생성"
 
 # ── 완료 알림 ────────────────────────────────────────
 echo ""

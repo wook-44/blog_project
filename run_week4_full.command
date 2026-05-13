@@ -46,7 +46,14 @@ done
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅ 완료"
+echo "  ✅ 처리 완료"
 ls -1 "$BLOG/output/"2026-04-{27,28,29,30}_copy_tool.html 2>/dev/null
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 자동 배포 (Git + Google Drive) — 4주차분 각 날짜별 GDrive 미러링 + git push 1회
+for d in 2026-04-27 2026-04-28 2026-04-29 2026-04-30; do
+  SKIP_GIT=1 bash "$BLOG/scripts/auto_publish.sh" "$d" "4월 4주차 배치" >/dev/null 2>&1
+done
+bash "$BLOG/scripts/auto_publish.sh" "$(date +%Y-%m-%d)" "4월 4주차 배치"
+
 read -p "엔터로 닫기..." _

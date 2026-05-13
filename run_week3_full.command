@@ -52,10 +52,17 @@ echo "  copy_tool 결과: $GEN_OK / 5"
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅ 완료. 결과물:"
+echo "  ✅ 처리 완료. 결과물:"
 echo ""
 ls -1 "$BLOG/output/"2026-04-{20,21,22,23,24}*_copy_tool.html 2>/dev/null | while read f; do
   echo "    📄 $f"
 done
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# 자동 배포 (Git + Google Drive) — 4주차분 일괄
+for d in 2026-04-20 2026-04-21 2026-04-22 2026-04-23 2026-04-24; do
+  SKIP_GIT=1 bash "$BLOG/scripts/auto_publish.sh" "$d" "4월 3주차 배치" >/dev/null 2>&1
+done
+bash "$BLOG/scripts/auto_publish.sh" "$(date +%Y-%m-%d)" "4월 3주차 배치"
+
 read -p "엔터로 닫기..." _
