@@ -263,15 +263,21 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
     # 태그 섹션 (마지막 STEP)
     tag_step_idx = len(png_files[:5]) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
-    tags_for_paste = " ".join(f"#{t}" for t in tags)
-    tags_pretty = " ".join(f'<span class="tag-chip">#{t}</span>' for t in tags)
+    # 네이버 호환: 줄바꿈으로 구분 — 일부 환경에서 자동 분리, 시각적으로도 명확
+    tags_for_paste = "\n".join(f"#{t}" for t in tags)
+    # 각 태그 chip — 클릭 시 그 태그만 복사
+    tags_pretty = " ".join(
+        f'<span class="tag-chip" onclick="copyOneTag(this, \'#{t}\')" title="클릭하면 이 태그만 복사">#{t}</span>'
+        for t in tags
+    )
     tag_section = f"""
 <!-- STEP {tag_step_idx}: 태그 -->
 <div class="step">
-  <div class="step-title"><span class="order" style="background:#f59e0b;">{tag_step_idx}</span> 해시태그 복사 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
-  <p style="font-size:13px;color:#64748b;margin-bottom:10px;">총 {len(tags)}개 — 네이버 권장 30개</p>
+  <div class="step-title"><span class="order" style="background:#f59e0b;">{tag_step_idx}</span> 해시태그 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:6px;">총 {len(tags)}개 — 네이버 권장 30개</p>
+  <p style="font-size:12px;color:#dc2626;margin-bottom:10px;">⚠️ 네이버는 태그 한 개씩 입력 → Enter 필요. 각 태그(노란 칩)를 클릭하면 그 태그만 복사됩니다. 빠른 방법은 칩을 차례로 클릭→네이버 태그칸 붙여넣기→Enter 반복.</p>
   <div class="tag-box" id="tagBox">{tags_pretty}</div>
-  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 (줄바꿈 구분) 복사</button>
   <span class="toast" id="toastTag">✅ 복사됨!</span>
   <div class="hidden-body" id="tagsRaw">{tags_for_paste}</div>
 </div>
@@ -299,7 +305,10 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   .btn-text {{ background: #3b82f6; color: #fff; }}
   .btn-img  {{ background: #10b981; color: #fff; margin-top: 10px; }}
   .btn-tag  {{ background: #f59e0b; color: #fff; margin-top: 10px; }}
-  .tag-chip {{ display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; }}
+  .tag-chip {{ display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }}
+  .tag-chip:hover {{ background: #fde68a; }}
+  .tag-chip:active {{ background: #f59e0b; color: #fff; }}
+  .tag-chip.copied {{ background: #10b981; color: #fff; }}
   .tag-box  {{ background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }}
   .body-preview {{ background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }}
   .body-preview h1 {{ font-size: 20px; margin: 8px 0 12px; color: #0f172a; }}
@@ -357,6 +366,22 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 {tag_section}
 
 <script>
+async function copyOneTag(el, tag) {{
+  try {{
+    await navigator.clipboard.writeText(tag);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1200);
+  }} catch(e) {{
+    const ta = document.createElement('textarea');
+    ta.value = tag;
+    document.body.appendChild(ta);
+    ta.select();
+    try {{ document.execCommand('copy'); el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1200); }}
+    catch(e2) {{ alert('태그 복사 실패'); }}
+    document.body.removeChild(ta);
+  }}
+}}
+
 async function copyTags() {{
   const raw = document.getElementById('tagsRaw').innerText;
   try {{
