@@ -109,6 +109,16 @@ def md_to_html_body(md_text: str) -> str:
             in_table = False
             if line.strip():
                 html_parts.append(f"<p>{line}</p>")
+        # 인용/마커 (>)
+        elif line.startswith("> "):
+            if in_list: html_parts.append("</ul>"); in_list = False
+            content = line[2:].strip()
+            content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', content)
+            # 이미지 마커는 눈에 띄게 강조
+            if "👇" in content or "🖼️" in content:
+                html_parts.append(f'<blockquote style="background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 16px;margin:14px 0;font-size:15px;color:#92400e;font-weight:600;border-radius:4px;">{content}</blockquote>')
+            else:
+                html_parts.append(f"<blockquote>{content}</blockquote>")
         # 리스트
         elif line.startswith("- ") or line.startswith("* "):
             if not in_list:
@@ -155,6 +165,49 @@ def extract_title(md_text: str) -> str:
         if line.startswith("# "):
             return line[2:].strip()
     return "블로그 제목"
+
+
+def strip_appendix_sections(md_text: str) -> str:
+    """본문 복사용 — '## 태그'와 '## [부록]...' 섹션 제거. 투자 주의 문구는 유지."""
+    # 투자 주의 문구 미리 추출 (잘려도 되살리기 위함)
+    disclaimer = ""
+    m = re.search(r"\*[^*\n]*(?:본인에게 있|투자의 책임|참고용)[^*\n]*\*", md_text)
+    if m:
+        disclaimer = m.group()
+
+    # ## 태그 / ## [부록] 섹션을 다음 ## 헤더 또는 EOF까지 통째 삭제
+    text = re.sub(r"^##\s+태그.*?(?=^##\s|\Z)", "", md_text,
+                  flags=re.DOTALL | re.MULTILINE)
+    text = re.sub(r"^##\s+\[부록\].*?(?=^##\s|\Z)", "", text,
+                  flags=re.DOTALL | re.MULTILINE)
+
+    # 투자 주의 문구가 잘렸으면 본문 끝에 다시 부착
+    if disclaimer and disclaimer not in text:
+        text = text.rstrip() + "\n\n---\n\n" + disclaimer + "\n"
+
+    # 연속된 빈 줄 정리
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text
+
+
+def inject_image_markers(md_text: str) -> str:
+    """본문 안에 이미지 삽입 마커 추가. ## 시장 분석 등 키워드 헤더 직후."""
+    markers = [
+        (r"^(##\s+.*시장 분석.*)$", "🖼️ 이미지 1 (market)"),
+        (r"^(##\s+.*투자 심리.*)$", "🖼️ 이미지 2 (psychology)"),
+        (r"^(##\s+.*핵심 포인트.*)$", "🖼️ 이미지 3 (summary)"),
+    ]
+    lines = md_text.split("\n")
+    out = []
+    for line in lines:
+        out.append(line)
+        for pat, label in markers:
+            if re.match(pat, line):
+                out.append("")
+                out.append(f"> 👇 **{label} 여기에 붙여넣기**")
+                out.append("")
+                break
+    return "\n".join(out)
 
 
 def extract_tags(md_text: str) -> list[str]:
@@ -435,8 +488,10 @@ def main():
     title = extract_title(md_text)
     print(f"📝 제목: {title}")
 
-    # 본문 HTML 변환
-    body_html = md_to_html_body(md_text)
+    # 본문 HTML 변환 (부록 영상정보 + 태그 섹션 제거 + 이미지 삽입 마커 추가)
+    body_md = strip_appendix_sections(md_text)
+    body_md = inject_image_markers(body_md)
+    body_html = md_to_html_body(body_md)
 
     # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가
     insight_text = extract_insight(md_text)
