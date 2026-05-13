@@ -239,20 +239,27 @@ def extract_tags(md_text: str) -> list[str]:
     return ordered
 
 
-def _render_keyword_chips(tags: list[str]) -> str:
-    """# 없는 핵심 키워드 10개 chip 렌더링. 짧은(메인+서브) 우선 정렬."""
+def _render_keyword_chips(tags: list[str]) -> tuple[str, str]:
+    """# 없는 핵심 키워드 10개 chip 렌더링 + 전체 텍스트.
+    Returns: (chips_html, all_text_for_clipboard)
+    """
     # 한글 글자수 기준 짧은 순으로 정렬 (메인 > 서브 > 롱테일 자연 정렬)
     sorted_kw = sorted(tags, key=lambda t: (len(re.findall(r"[가-힣]", t)), t))
     top10 = sorted_kw[:10]
-    return "".join(
+    chips = "".join(
         f'<span class="kw-chip" onclick="copyOneTag(this, \'{kw}\')" title="클릭하면 복사">{kw}</span>'
         for kw in top10
     )
+    all_text = ", ".join(top10)  # 쉼표 + 공백 구분 (SEO 키워드 필드 호환)
+    return chips, all_text
 
 
 def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None) -> str:
     """HTML 복사 도구 생성"""
     tags = tags or []
+
+    # 핵심 키워드 chip 영역
+    _kw_chips, _kw_all = _render_keyword_chips(tags) if tags else ("", "")
 
     # 이미지 섹션 생성
     img_sections = ""
@@ -294,10 +301,13 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
   <div style="margin-top:18px;padding-top:14px;border-top:1px dashed #cbd5e1;">
     <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">🔑 핵심 키워드 10개 (# 없음)</div>
-    <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드를 클릭하면 바로 복사됩니다.</p>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드 클릭 = 개별 복사. 전체 한 번에 복사하려면 아래 버튼.</p>
     <div class="kw-box">
-{_render_keyword_chips(tags)}
+{_kw_chips}
     </div>
+    <button class="btn" style="background:#0ea5e9;color:#fff;margin-top:10px;" onclick="copyAllKeywords()">🔑 키워드 10개 전체 복사 (쉼표 구분)</button>
+    <span class="toast" id="toastKw">✅ 복사됨!</span>
+    <div class="hidden-body" id="kwAll">{_kw_all}</div>
   </div>
 </div>
 """
@@ -389,6 +399,22 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 {tag_section}
 
 <script>
+async function copyAllKeywords() {{
+  const raw = document.getElementById('kwAll').innerText;
+  try {{
+    await navigator.clipboard.writeText(raw);
+    showToast('toastKw');
+  }} catch(e) {{
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try {{ document.execCommand('copy'); showToast('toastKw'); }}
+    catch(e2) {{ alert('키워드 복사 실패'); }}
+    document.body.removeChild(ta);
+  }}
+}}
+
 async function copyOneTag(el, tag) {{
   try {{
     await navigator.clipboard.writeText(tag);
