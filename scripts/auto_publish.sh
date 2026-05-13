@@ -64,26 +64,40 @@ if [ "${SKIP_GDRIVE:-0}" != "1" ]; then
   echo ""
   echo "☁️  [2/2] Google Drive 미러링"
 
-  # GDrive 경로 자동 감지
+  # GDrive 경로 자동 감지 (쓰기 가능 우선)
   GDRIVE=""
   if [ -n "${GDRIVE_TARGET:-}" ] && [ -d "$GDRIVE_TARGET" ]; then
     GDRIVE="$GDRIVE_TARGET"
   else
-    for p in \
-      "$HOME/Library/CloudStorage"/GoogleDrive-*"/My Drive" \
-      "$HOME/Google Drive/My Drive" \
-      "$HOME/Google Drive" \
-      "/Volumes/GoogleDrive/My Drive"
-    do
-      if [ -d "$p" ]; then GDRIVE="$p"; break; fi
+    shopt -s nullglob 2>/dev/null
+    for gd in "$HOME"/Library/CloudStorage/GoogleDrive-*; do
+      [ -d "$gd" ] || continue
+      for sub in "$gd/My Drive" "$gd/내 드라이브" "$gd"; do
+        [ -d "$sub" ] || continue
+        PROBE="$sub/.write_test_$$"
+        if (touch "$PROBE" 2>/dev/null && rm -f "$PROBE"); then
+          GDRIVE="$sub"
+          break 2
+        fi
+      done
     done
+    if [ -z "$GDRIVE" ]; then
+      for p in "$HOME/Google Drive/My Drive" "/Volumes/GoogleDrive/My Drive" "$HOME/Google Drive"; do
+        [ -d "$p" ] || continue
+        PROBE="$p/.write_test_$$"
+        if (touch "$PROBE" 2>/dev/null && rm -f "$PROBE"); then
+          GDRIVE="$p"
+          break
+        fi
+      done
+    fi
   fi
 
   if [ -z "$GDRIVE" ]; then
     echo "  ⚠️  Google Drive 폴더를 못 찾음 — 스킵"
     echo "     수동 지정: GDRIVE_TARGET='~/...경로...' bash $0"
   else
-    TARGET="$GDRIVE/12시에만나요/$DATE"
+    TARGET="$GDRIVE/blog/12시에만나요/$DATE"
     mkdir -p "$TARGET"
     echo "  📂 대상: $TARGET"
 
