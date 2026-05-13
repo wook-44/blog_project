@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 900px; height: 900px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Malgun Gothic',
+                 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 7px; height: 100%;
+    background: #3FB950;
+  }
+  .container {
+    padding: 36px 48px 28px 64px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 16px; }
+  .section-title {
+    font-size: 26px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 14px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid #21262D;
+    font-size: 12px; color: #8B949E;
+  }
+  .footer-tag { color: #3FB950; font-weight: 600; }
+
+      .body { flex: 1; margin-top: 4px; }
+      .point { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+      .badge {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: #3FB950; color: #0D1117;
+        font-size: 15px; font-weight: 800;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .pt-card {
+        flex: 1; background: #161B22; border-radius: 8px;
+        padding: 10px 18px;
+      }
+      .pt-text { font-size: 14px; color: #E6EDF3; line-height: 1.4; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">✅&nbsp; 오늘의 핵심 포인트</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+      <div class="point">
+        <div class="badge">1</div>
+        <div class="pt-card"><span class="pt-text">코스피 7000 = 외국인의 한국 증시 재평가 신호</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">2</div>
+        <div class="pt-card"><span class="pt-text">삼전·하이닉스는 7400 이후에도 주도주</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">3</div>
+        <div class="pt-card"><span class="pt-text">공포로 버티는 것은 전략이 아닌 감정</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">4</div>
+        <div class="pt-card"><span class="pt-text">분산·분할 매수 원칙은 불장에서도 불변</span></div>
+      </div></div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">✅ 핵심 포인트</span>
+  </div>
+</div>
+</body></html>

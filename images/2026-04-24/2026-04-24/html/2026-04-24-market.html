@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Malgun Gothic',
+                 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 7px; height: 100%;
+    background: #58A6FF;
+  }
+  .container {
+    padding: 36px 48px 28px 64px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 16px; }
+  .section-title {
+    font-size: 26px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .date { font-size: 13px; color: #8B949E; margin-top: 6px; }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 14px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid #21262D;
+    font-size: 12px; color: #8B949E;
+  }
+  .footer-tag { color: #58A6FF; font-weight: 600; }
+
+      .body { display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }
+      .stat-card {
+        min-width: 220px; max-width: 220px; height: 180px;
+        background: #1C2B3A; border-radius: 14px;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 10px;
+        border: 1px solid #58A6FF22;
+      }
+      .stat-value { font-size: 38px; font-weight: 800; color: #58A6FF; }
+      .stat-label { font-size: 13px; color: #8B949E; }
+      .points-wrap { flex: 1; }
+      .points-label { font-size: 12px; color: #8B949E; margin-bottom: 10px; letter-spacing: 0.5px; }
+      .point {
+        display: flex; align-items: center; gap: 14px;
+        margin-bottom: 16px;
+      }
+      .badge {
+        width: 26px; height: 26px; border-radius: 50%;
+        background: #58A6FF; color: #0D1117;
+        font-size: 12px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .pt-text { font-size: 14px; color: #E6EDF3; line-height: 1.4; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">📊&nbsp; 시장 분석 & 투자 전략</div>
+    <div class="date">2026-04-24</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="stat-card">
+      <div class="stat-value">코스닥 26년 만에 1,200 돌파</div>
+      <div class="stat-label">핵심 지표</div>
+    </div>
+    <div class="points-wrap">
+      <div class="points-label">주요 포인트</div>
+      
+      <div class="point">
+        <span class="badge">1</span>
+        <span class="pt-text">외국인 1576억 순매도 — 차익실현, 이탈 아닌 속도 조절</span>
+      </div>
+      <div class="point">
+        <span class="badge">2</span>
+        <span class="pt-text">현대로템 1분기 매출 1.4조 역대 최대, 영업이익 2242억</span>
+      </div>
+      <div class="point">
+        <span class="badge">3</span>
+        <span class="pt-text">K-방산 수출 200억달러 목전, 납기+가격+기술 삼위일체</span>
+      </div>
+      <div class="point">
+        <span class="badge">4</span>
+        <span class="pt-text">방산·조선·로봇이 반도체 다음 주도주로 부상</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">📊 시장 분석</span>
+  </div>
+</div>
+</body></html>

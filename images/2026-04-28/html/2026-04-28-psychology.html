@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 900px; height: 900px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 8px; height: 100%;
+    background: #BC8CFF;
+  }
+  .container {
+    padding: 44px 52px 36px 72px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 18px; }
+  .section-title {
+    font-size: 32px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 16px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid #21262D;
+    font-size: 13px; color: #8B949E;
+  }
+  .footer-tag { color: #BC8CFF; font-weight: 600; }
+
+      .body { display: flex; flex-direction: column; gap: 24px; flex: 1; margin-top: 4px; }
+      .warn-card {
+        width: 100%; padding: 20px 28px;
+        background: #1E1B2E; border-radius: 16px;
+        display: flex; align-items: center; gap: 20px;
+        border: 1px solid #BC8CFF33;
+      }
+      .warn-icon { font-size: 44px; }
+      .warn-text { font-size: 28px; font-weight: 800; color: #BC8CFF; }
+      .points-wrap { flex: 1; }
+      .list-label { font-size: 13px; color: #8B949E; margin-bottom: 14px; letter-spacing: 0.5px; font-weight: 700; text-transform: uppercase; }
+      .point { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+      .tag {
+        font-size: 11px; font-weight: 700; padding: 4px 10px;
+        border: 1px solid; border-radius: 5px; flex-shrink: 0; margin-top: 2px;
+      }
+      .pt-text { font-size: 16px; color: #E6EDF3; line-height: 1.55; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">🧠&nbsp; 투자 심리 & 행동 교정</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="warn-card">
+      <div class="warn-icon">⚠️</div>
+      <div class="warn-text">내러티브 함정</div>
+    </div>
+    <div class="points-wrap">
+      <div class="list-label">체크리스트</div>
+      
+      <div class="point">
+        <span class="tag" style="color:#BC8CFF;
+          border-color:#BC8CFF22">
+          함정
+        </span>
+        <span class="pt-text">'구글이 픽했다'에 흥분 — 2028년 3만 대 양산이라는 구체 수치와 수익 시점을 냉정히 계산</span>
+      </div>
+      <div class="point">
+        <span class="tag" style="color:#BC8CFF;
+          border-color:#BC8CFF22">
+          함정
+        </span>
+        <span class="pt-text">테마 추격 매수 — 피지컬 AI는 2~3년 시계의 구조 변화, 단기 급등 후 변동성 주의</span>
+      </div>
+      <div class="point">
+        <span class="tag" style="color:#3FB950;
+          border-color:#3FB95022">
+          교정
+        </span>
+        <span class="pt-text">실적 없는 밸류에이션 — 현재는 미래 기대감이 선반영, 분할 접근으로 리스크 분산</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">🧠 투자 심리</span>
+  </div>
+</div>
+</body></html>

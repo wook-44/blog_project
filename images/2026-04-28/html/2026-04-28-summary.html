@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 900px; height: 900px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 8px; height: 100%;
+    background: #3FB950;
+  }
+  .container {
+    padding: 44px 52px 36px 72px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 18px; }
+  .section-title {
+    font-size: 32px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 16px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid #21262D;
+    font-size: 13px; color: #8B949E;
+  }
+  .footer-tag { color: #3FB950; font-weight: 600; }
+
+      .body { flex: 1; margin-top: 4px; }
+      .point { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+      .badge {
+        width: 38px; height: 38px; border-radius: 50%;
+        background: #3FB950; color: #0D1117;
+        font-size: 17px; font-weight: 800;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .pt-card {
+        flex: 1; background: #161B22; border-radius: 10px;
+        padding: 13px 20px;
+      }
+      .pt-text { font-size: 16px; color: #E6EDF3; line-height: 1.5; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">✅&nbsp; 오늘의 핵심 포인트</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+      <div class="point">
+        <div class="badge">1</div>
+        <div class="pt-card"><span class="pt-text">현대차 +7.25% — 구글 딥마인드·아틀라스 협업으로 피지컬 AI 밸류에이션 부여 시작</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">2</div>
+        <div class="pt-card"><span class="pt-text">코스피 6,600 유지 — 외국인 수급 반도체 → 자동차·로봇으로 분산 확인</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">3</div>
+        <div class="pt-card"><span class="pt-text">시총 6,000조 돌파 — 지수 상승의 저변이 반도체에서 전 섹터로 확대</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">4</div>
+        <div class="pt-card"><span class="pt-text">KB증권 현대차 목표가 80만원 — AI 로봇 벨류에이션 공식화의 첫 사례</span></div>
+      </div>
+      <div class="point">
+        <div class="badge">5</div>
+        <div class="pt-card"><span class="pt-text">피지컬 AI는 구조적 성장 — 단기 변동성 있어도 2028년 양산 타임라인 주시</span></div>
+      </div></div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">✅ 핵심 포인트</span>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 900px; height: 900px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 8px; height: 100%;
+    background: #58A6FF;
+  }
+  .container {
+    padding: 44px 52px 36px 72px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 18px; }
+  .section-title {
+    font-size: 32px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 16px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid #21262D;
+    font-size: 13px; color: #8B949E;
+  }
+  .footer-tag { color: #58A6FF; font-weight: 600; }
+
+      .body { display: flex; flex-direction: column; gap: 24px; flex: 1; margin-top: 4px; }
+      .stat-card {
+        width: 100%; padding: 20px 28px;
+        background: #1C2B3A; border-radius: 16px;
+        display: flex; align-items: center; gap: 24px;
+        border: 1px solid #58A6FF33;
+      }
+      .stat-value { font-size: 46px; font-weight: 800; color: #58A6FF; min-width: 120px; }
+      .stat-label { font-size: 15px; color: #8B949E; }
+      .points-wrap { flex: 1; }
+      .points-label { font-size: 13px; color: #8B949E; margin-bottom: 14px; letter-spacing: 0.5px; font-weight: 700; text-transform: uppercase; }
+      .point {
+        display: flex; align-items: flex-start; gap: 16px;
+        margin-bottom: 20px;
+      }
+      .badge {
+        width: 30px; height: 30px; border-radius: 50%;
+        background: #58A6FF; color: #0D1117;
+        font-size: 14px; font-weight: 800;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; margin-top: 2px;
+      }
+      .pt-text { font-size: 16px; color: #E6EDF3; line-height: 1.5; }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">📊&nbsp; 시장 분석 & 투자 전략</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="stat-card">
+      <div class="stat-value">7,250억$</div>
+      <div class="stat-label">핵심 지표</div>
+    </div>
+    <div class="points-wrap">
+      <div class="points-label">주요 포인트</div>
+      
+      <div class="point">
+        <span class="badge">1</span>
+        <span class="pt-text">빅테크 5사 AI CapEx 7,250억 달러 (2026년) — 전년 4,100억 대비 +77% 급증</span>
+      </div>
+      <div class="point">
+        <span class="badge">2</span>
+        <span class="pt-text">구글 알파벳 Q1 매출 $1,099억 +22%, 순이익 +81% — AI 수익화 본격 확인</span>
+      </div>
+      <div class="point">
+        <span class="badge">3</span>
+        <span class="pt-text">메타 CapEx 1,450억 가이던스 → 주가 -8% '쇼크', HBM 등 메모리 수요 직접 수혜</span>
+      </div>
+      <div class="point">
+        <span class="badge">4</span>
+        <span class="pt-text">코스피 선행 EPS 926.8p (3월말 666.6p 대비 +39%) — 실적 장세 지속 근거 강화</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">📊 시장 분석</span>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 900px; height: 900px; overflow: hidden;
+    background: #0D1117;
+    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+    color: #E6EDF3;
+    position: relative;
+  }
+  .accent-bar {
+    position: absolute; left: 0; top: 0;
+    width: 8px; height: 100%;
+    background: #FFA657;
+  }
+  .container {
+    padding: 44px 52px 36px 72px;
+    height: 100%; display: flex; flex-direction: column;
+  }
+  .header { margin-bottom: 18px; }
+  .section-title {
+    font-size: 32px; font-weight: 700;
+    color: #E6EDF3; line-height: 1.2;
+  }
+  .divider {
+    height: 1px; background: #21262D;
+    margin: 16px 0;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 14px; border-top: 1px solid #21262D;
+    font-size: 13px; color: #8B949E;
+  }
+  .footer-tag { color: #FFA657; font-weight: 600; }
+
+      .body {
+        flex: 1; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 20px 0;
+      }
+      .quote-wrap {
+        text-align: center; position: relative;
+        padding: 0 20px; max-width: 780px;
+      }
+      .open-quote, .close-quote {
+        font-size: 100px; color: #FFA657; opacity: 0.3;
+        font-family: Georgia, serif; line-height: 0.6;
+      }
+      .open-quote { float: left; margin-right: 8px; }
+      .close-quote { float: right; margin-left: 8px; }
+      .quote-text {
+        font-size: 26px; font-weight: 700;
+        color: #E6EDF3; line-height: 1.7;
+        text-align: center; clear: both;
+        padding: 12px 0;
+      }
+      .quote-line {
+        width: 200px; height: 2px; background: #FFA657;
+        opacity: 0.5; margin: 20px auto 16px;
+      }
+      .quote-comment {
+        font-size: 16px; color: #8B949E;
+        line-height: 1.8; text-align: center;
+        max-width: 680px; margin: 0 auto;
+      }
+    </style></head><body>
+<div class="accent-bar"></div>
+<div class="container">
+  <div class="header">
+    <div class="section-title">💡&nbsp; 내 인사이트</div>
+  </div>
+  <div class="divider"></div>
+  <div class="body">
+    <div class="quote-wrap">
+      <div class="open-quote">&ldquo;</div>
+      <div class="close-quote">&rdquo;</div>
+      <div class="quote-text">실적발표 D-1은 '패치 노트 공개 직전'과 같다.
+기대가 이미 반영된 가격에서
+기대치 충족은 오히려 하락 트리거가 된다.</div>
+      <div class="quote-line"></div>
+      <div class="quote-comment">'마지막 기회'는 대부분 마지막이 아니다. 결과를 보고 판단해도 늦지 않다.</div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>12시에 만나요 | 주식 분석 블로그</span>
+    <span class="footer-tag">💡 인사이트</span>
+  </div>
+</div>
+</body></html>

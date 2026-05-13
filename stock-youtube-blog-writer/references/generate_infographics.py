@@ -1,345 +1,306 @@
 """
-stock-youtube-blog-writer / generate_infographics.py
------------------------------------------------------
-블로그 섹션별 인포그래픽 PNG 4장을 생성한다.
-출력 크기: 1200×630px (블로그/SNS OG 이미지 최적)
+stock-youtube-blog-writer / generate_infographics.py  (v3 — 정사각형 모바일 최적)
+================================================================================
+- 1080×1080 정사각형 (Instagram/네이버 모바일 친화)
+- 4/27 스타일 계승: 그라데이션 다크 네이비, hero 큰 숫자, 빼곡한 카드 그리드
+- 톤북 v1: 외곽 padding 최소화, stat-card 4열, 인용구 박스
+- 3종(market/psychology/summary) PNG 생성, insight는 본문 텍스트로만
 
-방식: HTML 파일 생성 → Claude in Chrome으로 스크린샷 캡처
-- 한글 폰트 깨짐 없음 (브라우저 시스템 폰트 사용)
-- 별도 라이브러리 설치 불필요
-
-사용법:
-  python generate_infographics.py --date 2026-05-04 \\
-    --data '{"market":{...},...}' \\
-    --output /path/to/output/
-
-테스트:
-  python generate_infographics.py --test --output ./images
+사용:
+  python generate_infographics.py --date 2026-05-13 \\
+    --data '{"market":{...},"psychology":{...},"summary":{...}}' \\
+    --output ./images/2026-05-13/
 """
 
 import argparse
 import json
 import os
+import subprocess
 from datetime import datetime
 from pathlib import Path
 
-# ── 디자인 토큰 ─────────────────────────────────────────────
+# ── 디자인 토큰 (4/27 스타일) ─────────────────────────────
+SIZE = 1080  # 정사각형 한 변
+
 COLORS = {
-    "bg":       "#0D1117",
-    "card":     "#161B22",
-    "border":   "#21262D",
-    "text_pri": "#E6EDF3",
-    "text_sec": "#8B949E",
-    "market":   "#58A6FF",
-    "psych":    "#BC8CFF",
-    "summary":  "#3FB950",
-    "insight":  "#FFA657",
+    "bg_start": "#0F172A",
+    "bg_end":   "#1E293B",
+    "card":     "#1E293B",
+    "card_alt": "#1E3A5F",
+    "border":   "#334155",
+    "text_pri": "#FFFFFF",
+    "text_sec": "#94A3B8",
+    "text_dim": "#64748B",
 }
 
-SECTION_META = {
-    "market":     {"icon": "📊", "label": "시장 분석",   "color": COLORS["market"],  "card_bg": "#1C2B3A"},
-    "psychology": {"icon": "🧠", "label": "투자 심리",   "color": COLORS["psych"],   "card_bg": "#1E1B2E"},
-    "summary":    {"icon": "✅", "label": "핵심 포인트", "color": COLORS["summary"], "card_bg": "#121D19"},
-    "insight":    {"icon": "💡", "label": "인사이트",    "color": COLORS["insight"], "card_bg": "#1F1A0E"},
+ACCENTS = {
+    "market":     {"icon": "📊", "label": "MARKET STATUS",      "kor": "시장 분석", "from": "#3B82F6", "to": "#06B6D4", "hero_from": "#F59E0B", "hero_to": "#EF4444"},
+    "psychology": {"icon": "🧠", "label": "INVESTMENT PSYCHOLOGY","kor": "투자 심리", "from": "#A78BFA", "to": "#EC4899", "hero_from": "#FBBF24", "hero_to": "#F472B6"},
+    "summary":    {"icon": "✅", "label": "KEY POINTS TODAY",     "kor": "핵심 포인트","from": "#10B981", "to": "#06B6D4", "hero_from": "#10B981", "hero_to": "#3B82F6"},
 }
 
-def base_css(accent: str) -> str:
-    """accent 색상을 받아 공통 CSS를 반환한다."""
+
+def html_doc(svg_inner: str) -> str:
+    """공통 HTML 래퍼."""
+    return f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }}
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }}
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }}
+  * {{ margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }}
+  html, body {{ width: {SIZE}px; height: {SIZE}px; overflow: hidden; background: transparent; }}
+  svg {{ width: {SIZE}px; height: {SIZE}px; display: block; }}
+</style></head>
+<body>{svg_inner}</body></html>"""
+
+
+def _common_defs(accent_from: str, accent_to: str, hero_from: str, hero_to: str) -> str:
+    return f"""<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:{COLORS['bg_start']}"/>
+    <stop offset="100%" style="stop-color:{COLORS['bg_end']}"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:{accent_from}"/>
+    <stop offset="100%" style="stop-color:{accent_to}"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:{hero_from}"/>
+    <stop offset="100%" style="stop-color:{hero_to}"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>"""
+
+
+def _header(date: str, label: str, title: str, accent_from: str, accent_to: str) -> str:
+    """공통 헤더 (날짜 배지 + 섹션 라벨 + 큰 타이틀 + 디바이더)."""
+    date_kor = ""
+    try:
+        d = datetime.strptime(date, "%Y-%m-%d")
+        date_kor = f"📅 {d.year}년 {d.month}월 {d.day}일"
+    except Exception:
+        date_kor = date
     return f"""
-  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-  body {{
-    width: 1200px; height: 630px; overflow: hidden;
-    background: {COLORS["bg"]};
-    font-family: 'Apple SD Gothic Neo', 'AppleGothic', 'Malgun Gothic',
-                 'Noto Sans KR', 'NanumGothic', sans-serif;
-    color: {COLORS["text_pri"]};
-    position: relative;
-  }}
-  .accent-bar {{
-    position: absolute; left: 0; top: 0;
-    width: 7px; height: 100%;
-    background: {accent};
-  }}
-  .container {{
-    padding: 36px 48px 28px 64px;
-    height: 100%; display: flex; flex-direction: column;
-  }}
-  .header {{ margin-bottom: 16px; }}
-  .section-title {{
-    font-size: 26px; font-weight: 700;
-    color: {COLORS["text_pri"]}; line-height: 1.2;
-  }}
-  .date {{ font-size: 13px; color: {COLORS["text_sec"]}; margin-top: 6px; }}
-  .divider {{
-    height: 1px; background: {COLORS["border"]};
-    margin: 14px 0;
-  }}
-  .footer {{
-    margin-top: auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 12px; border-top: 1px solid {COLORS["border"]};
-    font-size: 12px; color: {COLORS["text_sec"]};
-  }}
-  .footer-tag {{ color: {accent}; font-weight: 600; }}
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="{SIZE}" height="8" fill="url(#accent)"/>
+
+  <!-- 날짜 배지 -->
+  <rect x="48" y="44" width="220" height="42" fill="{accent_from}33" rx="21" stroke="{accent_from}66" stroke-width="1"/>
+  <text x="158" y="71" text-anchor="middle" fill="{accent_from}" font-size="16" font-weight="700">{date_kor}</text>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="138" fill="{COLORS['text_dim']}" font-size="16" font-weight="700" letter-spacing="6">{label}</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="186" fill="{COLORS['text_pri']}" font-size="38" font-weight="800">{title}</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="206" width="100" height="5" fill="url(#accent)" rx="2"/>
 """
 
 
-# ── 섹션별 HTML 빌더 ─────────────────────────────────────────
+def _footer(footer_quote: str, footer_author: str) -> str:
+    """공통 푸터 — 인용구 박스 + 브랜딩."""
+    quote_y = SIZE - 130
+    return f"""
+  <!-- 인용구 박스 -->
+  <rect x="48" y="{quote_y}" width="{SIZE-96}" height="78" fill="{COLORS['card_alt']}" rx="14" opacity="0.55"/>
+  <text x="68" y="{quote_y+30}" fill="{COLORS['text_sec']}" font-size="14">"</text>
+  <text x="84" y="{quote_y+30}" fill="{COLORS['text_pri']}" font-size="18" font-weight="600">{footer_quote}</text>
+  <text x="68" y="{quote_y+58}" fill="{COLORS['text_dim']}" font-size="13">— {footer_author}</text>
 
-def build_market_html(data: dict, date: str, accent: str, card_bg: str) -> str:
-    key_stat = data.get("key_stat", "—")
-    points   = data.get("points", [])[:4]
-    title    = data.get("title", "시장 분석 & 투자 전략")
-    icon     = SECTION_META["market"]["icon"]
-
-    pts_html = "".join(f"""
-      <div class="point">
-        <span class="badge">{i+1}</span>
-        <span class="pt-text">{p}</span>
-      </div>""" for i, p in enumerate(points))
-
-    css = base_css(accent) + f"""
-      .body {{ display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }}
-      .stat-card {{
-        min-width: 220px; max-width: 220px; height: 180px;
-        background: {card_bg}; border-radius: 14px;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 10px;
-        border: 1px solid {accent}22;
-      }}
-      .stat-value {{ font-size: 38px; font-weight: 800; color: {accent}; }}
-      .stat-label {{ font-size: 13px; color: {COLORS["text_sec"]}; }}
-      .points-wrap {{ flex: 1; }}
-      .points-label {{ font-size: 12px; color: {COLORS["text_sec"]}; margin-bottom: 10px; letter-spacing: 0.5px; }}
-      .point {{
-        display: flex; align-items: center; gap: 14px;
-        margin-bottom: 16px;
-      }}
-      .badge {{
-        width: 26px; height: 26px; border-radius: 50%;
-        background: {accent}; color: {COLORS["bg"]};
-        font-size: 12px; font-weight: 700;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-      }}
-      .pt-text {{ font-size: 14px; color: {COLORS["text_pri"]}; line-height: 1.4; }}
-    """
-
-    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-<style>{css}</style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">{icon}&nbsp; {title}</div>
-    <div class="date">{date}</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="stat-card">
-      <div class="stat-value">{key_stat}</div>
-      <div class="stat-label">핵심 지표</div>
-    </div>
-    <div class="points-wrap">
-      <div class="points-label">주요 포인트</div>
-      {pts_html}
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">{icon} 시장 분석</span>
-  </div>
-</div>
-</body></html>"""
+  <!-- 우측 하단 브랜딩 -->
+  <text x="{SIZE-48}" y="{SIZE-24}" text-anchor="end" fill="{COLORS['border']}" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+"""
 
 
-def build_psychology_html(data: dict, date: str, accent: str, card_bg: str) -> str:
-    key_stat = data.get("key_stat", "주의")
-    points   = data.get("points", [])[:3]
-    title    = data.get("title", "투자 심리 & 행동 교정")
-    icon     = SECTION_META["psychology"]["icon"]
-    labels   = [("함정", accent), ("함정", accent), ("교정", COLORS["summary"])]
+# ── MARKET 빌더 ────────────────────────────────────────────
+def build_market_html(data: dict, date: str) -> str:
+    a = ACCENTS["market"]
+    title = data.get("title", "코스피가 보낸 신호")
+    stats = data.get("stats", [])[:4]
+    while len(stats) < 4:
+        stats.append({"value": "—", "label": "데이터", "delta": ""})
 
-    pts_html = "".join(f"""
-      <div class="point">
-        <span class="tag" style="color:{labels[i][1] if i < len(labels) else accent};
-          border-color:{labels[i][1] if i < len(labels) else accent}22">
-          {labels[i][0] if i < len(labels) else "—"}
-        </span>
-        <span class="pt-text">{p}</span>
-      </div>""" for i, p in enumerate(points))
+    hero = stats[0]  # 첫 번째 스탯이 hero
+    sub = stats[1:4]  # 나머지 3개가 카드
+    chips = data.get("chips", [])[:5]
+    points = data.get("points", [])[:3]
+    footer_q = data.get("footer_quote", "")
+    footer_a = data.get("footer_author", "12시에 만나요")
 
-    css = base_css(accent) + f"""
-      .body {{ display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }}
-      .warn-card {{
-        min-width: 220px; max-width: 220px; height: 180px;
-        background: {card_bg}; border-radius: 14px;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 12px;
-        border: 1px solid {accent}22;
-      }}
-      .warn-icon {{ font-size: 36px; }}
-      .warn-text {{ font-size: 20px; font-weight: 800; color: {accent}; text-align: center; padding: 0 12px; }}
-      .points-wrap {{ flex: 1; }}
-      .list-label {{ font-size: 12px; color: {COLORS["text_sec"]}; margin-bottom: 10px; letter-spacing: 0.5px; }}
-      .point {{ display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }}
-      .tag {{
-        font-size: 10px; font-weight: 700; padding: 3px 8px;
-        border: 1px solid; border-radius: 4px; flex-shrink: 0; margin-top: 2px;
-      }}
-      .pt-text {{ font-size: 14px; color: {COLORS["text_pri"]}; line-height: 1.5; }}
-    """
+    # 우측 화살표 영역에 들어갈 보조 정보
+    hero_delta = hero.get("delta", "")
+    hero_label = hero.get("label", "")
+    hero_value = hero.get("value", "—")
 
-    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-<style>{css}</style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">{icon}&nbsp; {title}</div>
-    <div class="date">{date}</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="warn-card">
-      <div class="warn-icon">⚠️</div>
-      <div class="warn-text">{key_stat}</div>
-    </div>
-    <div class="points-wrap">
-      <div class="list-label">체크리스트</div>
-      {pts_html}
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">{icon} 투자 심리</span>
-  </div>
-</div>
-</body></html>"""
+    # 카드 3개 (가로 배치, 카드 사이 간격 16px)
+    card_w = (SIZE - 96 - 32) / 3  # 외곽 padding 48*2 = 96, 카드 사이 16*2 = 32
+    cards_y = 420
+    cards_svg = ""
+    for i, s in enumerate(sub):
+        x = 48 + i * (card_w + 16)
+        cards_svg += f"""
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="120" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
+  <text x="{x+card_w/2}" y="{cards_y+30}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="13" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+78}" text-anchor="middle" fill="{a['from']}" font-size="40" font-weight="900">{s.get('value','—')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+105}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="13">{s.get('delta','')}</text>"""
+
+    # 칩 (5개) — 카드 아래
+    chip_y = cards_y + 150
+    chip_x = 48
+    chips_svg = ""
+    if chips:
+        for c in chips:
+            chip_w = len(c) * 11 + 32
+            chips_svg += f"""
+  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="34" fill="{a['from']}1A" rx="17" stroke="{a['from']}44" stroke-width="1"/>
+  <text x="{chip_x+chip_w/2}" y="{chip_y+22}" text-anchor="middle" fill="{a['from']}" font-size="13" font-weight="700">{c}</text>"""
+            chip_x += chip_w + 8
+
+    # 주요 포인트 3개 — 칩 아래
+    points_y = chip_y + 60
+    points_svg = ""
+    if points:
+        points_svg = f"""
+  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="13" font-weight="700" letter-spacing="2">주요 포인트</text>"""
+        for i, p in enumerate(points):
+            y = points_y + 28 + i * 32
+            points_svg += f"""
+  <circle cx="58" cy="{y-5}" r="11" fill="{a['from']}"/>
+  <text x="58" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="13" font-weight="800">{i+1}</text>
+  <text x="80" y="{y}" fill="{COLORS['text_pri']}" font-size="17" font-weight="600">{p}</text>"""
+
+    svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+{_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
+  <rect width="{SIZE}" height="{SIZE}" fill="url(#bg)"/>
+{_header(date, a['label'], title, a['from'], a['to'])}
+
+  <!-- HERO 영역 -->
+  <text x="48" y="320" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">{hero_value}</text>
+  <text x="48" y="360" fill="{COLORS['text_sec']}" font-size="20" font-weight="600">{hero_label}</text>
+
+  <!-- 우측 변동 표시 -->
+  <polygon points="{SIZE-180},250 {SIZE-150},300 {SIZE-120},250" fill="{a['from']}" opacity="0.95"/>
+  <text x="{SIZE-150}" y="335" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="800">{hero_delta}</text>
+
+  {cards_svg}
+  {chips_svg}
+  {points_svg}
+{_footer(footer_q or '오늘의 시장은 숫자가 말한다', footer_a)}
+</svg>"""
+    return html_doc(svg)
 
 
-def build_summary_html(data: dict, date: str, accent: str, card_bg: str) -> str:
+# ── PSYCHOLOGY 빌더 ────────────────────────────────────────
+def build_psychology_html(data: dict, date: str) -> str:
+    a = ACCENTS["psychology"]
+    title = data.get("title", "시장이 오를수록 심리가 중요하다")
+    hero_msg = data.get("hero_msg", data.get("key_stat", ""))
+    traps = data.get("traps", [])[:3]
+    correction = data.get("correction", data.get("points", ["수급 데이터로 방향 재확인"])[-1])
+    footer_q = data.get("footer_quote", "")
+    footer_a = data.get("footer_author", "12시에 만나요")
+
+    if not traps and data.get("points"):
+        pts = data["points"]
+        traps = [{"name": "함정", "desc": p} for p in pts[:3]]
+
+    # 함정 3개 카드 (가로 배치)
+    card_w = (SIZE - 96 - 32) / 3
+    cards_y = 360
+    cards_svg = ""
+    for i, t in enumerate(traps):
+        x = 48 + i * (card_w + 16)
+        cards_svg += f"""
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="200" fill="{COLORS['card']}" rx="16" stroke="{a['from']}44" stroke-width="2"/>
+  <circle cx="{x+card_w/2}" cy="{cards_y+50}" r="32" fill="{a['from']}22"/>
+  <text x="{x+card_w/2}" y="{cards_y+60}" text-anchor="middle" font-size="34">{['😱','🤯','😩'][i] if i<3 else '⚠️'}</text>
+  <text x="{x+card_w/2}" y="{cards_y+110}" text-anchor="middle" fill="{a['from']}" font-size="20" font-weight="800">{t.get('name','함정')}</text>
+  <foreignObject x="{x+16}" y="{cards_y+126}" width="{card_w-32}" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:{COLORS['text_sec']};font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">{t.get('desc','')}</div>
+  </foreignObject>"""
+
+    # 교정 카드 (큰 카드, 함정 아래)
+    cor_y = cards_y + 220
+    correction_svg = f"""
+  <rect x="48" y="{cor_y}" width="{SIZE-96}" height="120" fill="{a['to']}1A" rx="16" stroke="{a['to']}66" stroke-width="2"/>
+  <text x="80" y="{cor_y+40}" fill="{a['to']}" font-size="14" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
+  <foreignObject x="80" y="{cor_y+50}" width="{SIZE-160}" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:22px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif">{correction}</div>
+  </foreignObject>"""
+
+    # Hero 메시지 (헤더 아래, 함정 위)
+    hero_svg = ""
+    if hero_msg:
+        hero_svg = f"""
+  <text x="48" y="290" fill="url(#hero)" font-size="44" font-weight="900" filter="url(#glow)">{hero_msg}</text>"""
+
+    svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+{_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
+  <rect width="{SIZE}" height="{SIZE}" fill="url(#bg)"/>
+{_header(date, a['label'], title, a['from'], a['to'])}
+  {hero_svg}
+  {cards_svg}
+  {correction_svg}
+{_footer(footer_q or '오르는 시장도, 빠지는 시장도 — 결국 심리가 결정한다', footer_a)}
+</svg>"""
+    return html_doc(svg)
+
+
+# ── SUMMARY 빌더 ───────────────────────────────────────────
+def build_summary_html(data: dict, date: str) -> str:
+    a = ACCENTS["summary"]
+    title = data.get("title", "오늘의 핵심 5포인트")
     points = data.get("points", [])[:5]
-    title  = data.get("title", "오늘의 핵심 포인트")
-    icon   = SECTION_META["summary"]["icon"]
+    while len(points) < 5:
+        points.append("—")
+    hero_takeaway = data.get("hero_takeaway", points[0] if points else "")
+    footer_q = data.get("footer_quote", "")
+    footer_a = data.get("footer_author", "12시에 만나요")
 
-    pts_html = "".join(f"""
-      <div class="point">
-        <div class="badge">{i+1}</div>
-        <div class="pt-card"><span class="pt-text">{p}</span></div>
-      </div>""" for i, p in enumerate(points))
+    # Hero takeaway 박스
+    hero_svg = f"""
+  <rect x="48" y="240" width="{SIZE-96}" height="120" fill="{a['from']}1A" rx="18" stroke="{a['from']}66" stroke-width="2"/>
+  <text x="80" y="280" fill="{a['from']}" font-size="14" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
+  <foreignObject x="80" y="290" width="{SIZE-160}" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:26px;font-weight:800;line-height:1.35;font-family:NanumGothic,sans-serif">{hero_takeaway}</div>
+  </foreignObject>"""
 
-    gap = 14 if len(points) >= 5 else 18
+    # 5 포인트 (큰 번호 + 텍스트, 컴팩트 리스트)
+    pts_y = 400
+    pts_svg = ""
+    for i, p in enumerate(points):
+        y = pts_y + i * 84
+        pts_svg += f"""
+  <rect x="48" y="{y}" width="{SIZE-96}" height="68" fill="{COLORS['card']}" rx="12" stroke="{COLORS['border']}" stroke-width="1"/>
+  <circle cx="92" cy="{y+34}" r="22" fill="url(#accent)"/>
+  <text x="92" y="{y+42}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="22" font-weight="900">{i+1}</text>
+  <foreignObject x="128" y="{y+14}" width="{SIZE-200}" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">{p}</div>
+  </foreignObject>"""
 
-    css = base_css(accent) + f"""
-      .body {{ flex: 1; margin-top: 4px; }}
-      .point {{ display: flex; align-items: center; gap: 16px; margin-bottom: {gap}px; }}
-      .badge {{
-        width: 34px; height: 34px; border-radius: 50%;
-        background: {accent}; color: {COLORS["bg"]};
-        font-size: 15px; font-weight: 800;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-      }}
-      .pt-card {{
-        flex: 1; background: {COLORS["card"]}; border-radius: 8px;
-        padding: 10px 18px;
-      }}
-      .pt-text {{ font-size: 14px; color: {COLORS["text_pri"]}; line-height: 1.4; }}
-    """
-
-    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-<style>{css}</style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">{icon}&nbsp; {title}</div>
-    <div class="date">{date}</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">{pts_html}</div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">{icon} 핵심 포인트</span>
-  </div>
-</div>
-</body></html>"""
-
-
-def build_insight_html(data: dict, date: str, accent: str, card_bg: str) -> str:
-    quote = data.get("quote", "오늘 영상에서 얻은 핵심 한 줄")
-    title = data.get("title", "내 인사이트")
-    icon  = SECTION_META["insight"]["icon"]
-
-    css = base_css(accent) + f"""
-      .body {{
-        flex: 1; display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        padding: 10px 0;
-      }}
-      .quote-wrap {{
-        text-align: center; position: relative;
-        padding: 0 40px; max-width: 880px;
-      }}
-      .open-quote, .close-quote {{
-        font-size: 80px; color: {accent}; opacity: 0.35;
-        font-family: Georgia, serif; line-height: 0.6;
-      }}
-      .open-quote {{ float: left; margin-right: 8px; }}
-      .close-quote {{ float: right; margin-left: 8px; }}
-      .quote-text {{
-        font-size: 22px; font-weight: 700;
-        color: {COLORS["text_pri"]}; line-height: 1.65;
-        text-align: center; clear: both;
-        padding: 8px 0;
-      }}
-      .quote-line {{
-        width: 200px; height: 1px; background: {accent};
-        opacity: 0.45; margin: 16px auto 10px;
-      }}
-      .quote-attr {{
-        font-size: 12px; color: {COLORS["text_sec"]};
-        font-style: italic; text-align: center;
-      }}
-    """
-
-    return f"""<!DOCTYPE html><html><head><meta charset="UTF-8">
-<style>{css}</style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">{icon}&nbsp; {title}</div>
-    <div class="date">{date}</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="quote-wrap">
-      <div class="open-quote">&ldquo;</div>
-      <div class="close-quote">&rdquo;</div>
-      <div class="quote-text">{quote}</div>
-      <div class="quote-line"></div>
-      <div class="quote-attr">— 게임/앱 기획자의 시장 인사이트</div>
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">{icon} 인사이트</span>
-  </div>
-</div>
-</body></html>"""
+    svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+{_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
+  <rect width="{SIZE}" height="{SIZE}" fill="url(#bg)"/>
+{_header(date, a['label'], title, a['from'], a['to'])}
+  {hero_svg}
+  {pts_svg}
+{_footer(footer_q or '오늘 배운 것을 내일 매매에 반영한다', footer_a)}
+</svg>"""
+    return html_doc(svg)
 
 
 BUILDERS = {
     "market":     build_market_html,
     "psychology": build_psychology_html,
     "summary":    build_summary_html,
-    "insight":    build_insight_html,
 }
 
 
 # ── HTML → PNG 변환 ──────────────────────────────────────────
-
 def html_to_png_via_chrome(html_path: Path, png_path: Path) -> bool:
-    """Chrome headless로 HTML을 PNG로 변환. 실패 시 False 반환."""
-    import subprocess
     chrome_candidates = [
         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
         "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -347,16 +308,17 @@ def html_to_png_via_chrome(html_path: Path, png_path: Path) -> bool:
     ]
     for chrome in chrome_candidates:
         try:
-            result = subprocess.run([
+            subprocess.run([
                 chrome,
                 "--headless=new",
                 "--disable-gpu",
+                "--hide-scrollbars",
                 "--no-sandbox",
-                f"--window-size=1200,630",
+                f"--window-size={SIZE},{SIZE}",
                 f"--screenshot={png_path}",
                 f"file://{html_path.resolve()}",
-            ], capture_output=True, timeout=15)
-            if png_path.exists() and png_path.stat().st_size > 1000:
+            ], capture_output=True, timeout=20)
+            if png_path.exists() and png_path.stat().st_size > 5000:
                 return True
         except (FileNotFoundError, subprocess.TimeoutExpired):
             continue
@@ -364,14 +326,13 @@ def html_to_png_via_chrome(html_path: Path, png_path: Path) -> bool:
 
 
 def html_to_png_via_playwright(html_path: Path, png_path: Path) -> bool:
-    """playwright chromium으로 변환 (설치된 경우)."""
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            page = browser.new_page(viewport={"width": 1200, "height": 630})
+            page = browser.new_page(viewport={"width": SIZE, "height": SIZE})
             page.goto(f"file://{html_path.resolve()}")
-            page.screenshot(path=str(png_path), clip={"x":0,"y":0,"width":1200,"height":630})
+            page.screenshot(path=str(png_path), clip={"x":0,"y":0,"width":SIZE,"height":SIZE})
             browser.close()
         return png_path.exists()
     except Exception:
@@ -379,21 +340,21 @@ def html_to_png_via_playwright(html_path: Path, png_path: Path) -> bool:
 
 
 def html_to_png_fallback(html_path: Path, png_path: Path) -> bool:
-    """matplotlib로 HTML 경로를 텍스트 이미지로 변환 (최후 수단, 한글 깨짐 가능)."""
+    """matplotlib 임시 안내 이미지 — 한글 깨짐 가능."""
     try:
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(figsize=(12, 6.3), dpi=100)
-        fig.patch.set_facecolor("#0D1117")
-        ax.set_facecolor("#0D1117")
+        fig, ax = plt.subplots(figsize=(10.8, 10.8), dpi=100)
+        fig.patch.set_facecolor("#0F172A")
+        ax.set_facecolor("#0F172A")
         ax.axis("off")
         ax.text(0.5, 0.5,
-                f"[미리보기 불가]\n한글 폰트 미설치\nHTML 파일을 Chrome에서 열어 확인하세요:\n{html_path.name}",
+                f"[PNG fallback]\nChrome 없음 — HTML 파일을 브라우저로 열어 확인:\n{html_path.name}",
                 color="#E6EDF3", fontsize=14, ha="center", va="center",
                 transform=ax.transAxes, linespacing=2.0)
         plt.tight_layout(pad=0)
-        fig.savefig(str(png_path), dpi=100, bbox_inches="tight", facecolor="#0D1117")
+        fig.savefig(str(png_path), dpi=100, bbox_inches="tight", facecolor="#0F172A")
         plt.close(fig)
         return True
     except Exception:
@@ -401,17 +362,15 @@ def html_to_png_fallback(html_path: Path, png_path: Path) -> bool:
 
 
 def convert_html_to_png(html_path: Path, png_path: Path) -> str:
-    """가능한 방법으로 HTML → PNG 변환. 사용한 방법 반환."""
     if html_to_png_via_playwright(html_path, png_path):
         return "playwright"
     if html_to_png_via_chrome(html_path, png_path):
         return "chrome-headless"
     html_to_png_fallback(html_path, png_path)
-    return "fallback (HTML 파일을 브라우저로 열어 확인하세요)"
+    return "fallback"
 
 
-# ── 메인 생성 로직 ────────────────────────────────────────────
-
+# ── 메인 생성 ─────────────────────────────────────────────────
 def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     html_dir = output_dir / "html"
@@ -419,78 +378,86 @@ def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
 
     results = {}
     for key, builder in BUILDERS.items():
-        data     = infographic_data.get(key, {})
-        meta     = SECTION_META[key]
-        accent   = meta["color"]
-        card_bg  = meta["card_bg"]
-
+        data = infographic_data.get(key, {})
         html_path = html_dir / f"{date}-{key}.html"
-        png_path  = output_dir / f"{date}-{key}.png"
+        png_path = output_dir / f"{date}-{key}.png"
 
-        html_content = builder(data, date, accent, card_bg)
+        html_content = builder(data, date)
         html_path.write_text(html_content, encoding="utf-8")
 
         method = convert_html_to_png(html_path, png_path)
         results[key] = {"png": str(png_path), "html": str(html_path), "method": method}
         print(f"  ✅ {png_path.name}  [{method}]")
-
     return results
 
 
 # ── 테스트 데이터 ─────────────────────────────────────────────
 TEST_DATA = {
     "market": {
-        "title": "시장 분석 & 투자 전략",
-        "key_stat": "+12.4%",
-        "points": [
-            "나스닥 기술주 12주 연속 상승세 지속",
-            "빅테크 4사 합산 시총 15조 달러 돌파",
-            "금리 동결 기대감에 성장주 재평가 시작",
-            "AI 반도체 수요 2025년 전년비 +87% 전망",
+        "title": "코스피, 8천 시대를 향한 발걸음",
+        "stats": [
+            {"value": "6,219", "label": "코스피 종가", "delta": "+0.44%"},
+            {"value": "+22.6%", "label": "4월 수익률", "delta": "글로벌 1위"},
+            {"value": "824p", "label": "12M Fwd EPS", "delta": "PER 7.5배"},
+            {"value": "+405%", "label": "SK하이닉스 영업이익", "delta": "YoY"},
         ],
+        "chips": ["호르무즈 봉쇄", "유가 +7%", "외국인 -2조", "기관 +2조"],
+        "points": [
+            "EPS 한 달 +24% 상향, 이익 사이클 진행",
+            "SK하이닉스 영업이익률 70%대, HBM 독점",
+            "지정학 악재를 반도체 실적으로 흡수",
+        ],
+        "footer_quote": "코스피 8천 시대, 이제는 현실적 목표",
+        "footer_author": "이광수 (광수네 복덕방)",
     },
     "psychology": {
-        "title": "투자 심리 & 행동 교정",
-        "key_stat": "FOMO 주의",
-        "points": [
-            "급등 후 뒤늦은 추격 매수 — 평균 -18% 손실",
-            "손절 타이밍 놓치면 평단 물타기 반복",
-            "분할 매수 원칙 준수로 리스크 분산",
+        "title": "공포에 팔지 마라, 학습하라",
+        "hero_msg": "시장은 이미 메타 학습 중",
+        "traps": [
+            {"name": "헤드라인 매매", "desc": "뉴스 단어 보고 즉각 매도"},
+            {"name": "지수 위치 혼동", "desc": "수치가 크다고 비싼 게 아니다"},
+            {"name": "악재에 팔고 호재에 사기", "desc": "최악의 사이클 반복"},
         ],
+        "correction": "뉴스 이후가 아닌 이전의 EPS·PER로 판단하라",
+        "footer_quote": "오르는 시장도, 빠지는 시장도 — 심리가 결정한다",
+        "footer_author": "12시에 만나요",
     },
     "summary": {
-        "title": "오늘의 핵심 포인트",
+        "title": "오늘의 핵심 5포인트",
+        "hero_takeaway": "코스피 6,219 상승은 메타 학습의 증거",
         "points": [
-            "금리 동결 시그널은 성장주 재진입 기회",
-            "AI 수혜주 중 실적이 뒷받침되는 종목만 선별",
-            "변동성 구간에서 현금 비중 30% 이상 유지",
-            "섹터 로테이션: 반도체 → 소프트웨어로 이동 중",
+            "코스피 6,219.09 (+0.44%) 상승 마감",
+            "SK하이닉스 영업이익 37.6조 YoY +405%",
+            "12M Fwd EPS 824p, PER 7.5배 저평가",
+            "코스피 8,000 목표 복수 기관 상향",
+            "공포에 팔고 추격 매수 사이클 경계",
         ],
-    },
-    "insight": {
-        "title": "내 인사이트",
-        "quote": "시장은 항상 기대보다 오래 비이성적일 수 있다.\n하지만 기업 실적은 거짓말을 하지 않는다.",
+        "footer_quote": "오늘 배운 것을 내일 매매에 반영한다",
+        "footer_author": "12시에 만나요",
     },
 }
 
 
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--date", required=True)
+    ap.add_argument("--data", help="JSON string")
+    ap.add_argument("--data-file", help="JSON file path")
+    ap.add_argument("--output", required=True)
+    ap.add_argument("--test", action="store_true")
+    args = ap.parse_args()
+
+    if args.test:
+        data = TEST_DATA
+    elif args.data_file:
+        data = json.loads(Path(args.data_file).read_text(encoding="utf-8"))
+    elif args.data:
+        data = json.loads(args.data)
+    else:
+        raise SystemExit("--data 또는 --data-file 또는 --test 필요")
+
+    generate_all(args.date, data, Path(args.output))
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="블로그 섹션별 인포그래픽 PNG 생성")
-    parser.add_argument("--date",   default=datetime.today().strftime("%Y-%m-%d"))
-    parser.add_argument("--data",   default=None, help="인포그래픽 데이터 JSON 문자열")
-    parser.add_argument("--output", default="./images")
-    parser.add_argument("--test",   action="store_true", help="테스트 데이터로 실행")
-    args = parser.parse_args()
-
-    data = TEST_DATA if (args.test or not args.data) else json.loads(args.data)
-    output_dir = Path(args.output) / args.date
-
-    print(f"\n🖼  인포그래픽 생성 시작 ({args.date})")
-    print(f"   저장 위치: {output_dir}\n")
-
-    results = generate_all(args.date, data, output_dir)
-
-    print(f"\n🎉 완료! 생성된 파일:")
-    for key, info in results.items():
-        print(f"   PNG : {info['png']}")
-        print(f"   HTML: {info['html']}  (브라우저에서 직접 확인 가능)")
+    main()

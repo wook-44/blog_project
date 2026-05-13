@@ -15,6 +15,14 @@ description: |
 
 유튜브 주식 영상을 분석해서 **분석 아카이브(Google Sheets)**, **발행용 블로그(Notion + 로컬 .md)**, **섹션별 인포그래픽 PNG**, **플랫폼별 SEO 최적화본**을 자동 생성하는 6단계 파이프라인 스킬.
 
+## ⚠️ 모든 에이전트는 톤북을 먼저 읽는다
+
+`references/tone-book.md` — 제목 룰, 첫 100자 후킹 공식, 태그 30개 템플릿,
+인포그래픽 여백/카드 룰, 영상 메타 처리, 시리즈 내부 링크 규칙의 단일 SoT.
+
+발행 직전 `scripts/agents/00_title_tag_linter.py`가 톤북 룰을 강제 검사하며,
+실패 시 발행 차단. 자세한 검수는 `blog-content-linter` 스킬 참조.
+
 ## 파이프라인 구조
 
 ```
@@ -171,13 +179,19 @@ python stock-youtube-blog-writer/references/generate_infographics.py \
   --output [블로그 폴더]/images/YYYY-MM-DD/
 ```
 
-### 출력 파일 (4장)
+### 출력 파일 (3장 — insight는 이미지로 만들지 않음)
 - `YYYY-MM-DD-market.png` — 시장 분석 & 투자 전략
 - `YYYY-MM-DD-psychology.png` — 투자 심리 & 행동 교정
 - `YYYY-MM-DD-summary.png` — 오늘의 핵심 포인트
-- `YYYY-MM-DD-insight.png` — 내 인사이트
 
-각 이미지 크기: 1200×630px (SNS/블로그 OG 이미지 최적 사이즈)
+각 이미지 크기: **1080×1080 정사각형** (모바일/네이버 최적, 2026-05-13 v3 결정).
+상세 스펙은 `references/tone-book.md` §5 참조.
+
+### Mac에서 PNG 변환
+샌드박스에 Chrome 없으므로 Mac에서 실행해야 한다:
+- 일괄: `run_week3_full.command` 등 .command 더블클릭 (Chrome headless `--window-size=1080,1080`)
+- 단건: `python stock-youtube-blog-writer/references/generate_infographics.py --date YYYY-MM-DD --data '...' --output images/YYYY-MM-DD/`
+- PNG 사이즈 정상치 280~400KB. 18KB 이하면 fallback(Chrome 실행 실패) — 재실행 필요.
 
 ---
 

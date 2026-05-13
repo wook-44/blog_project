@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#10B981"/>
+    <stop offset="100%" style="stop-color:#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#10B981"/>
+    <stop offset="100%" style="stop-color:#3B82F6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 날짜 배지 -->
+  <rect x="48" y="44" width="220" height="42" fill="#10B98133" rx="21" stroke="#10B98166" stroke-width="1"/>
+  <text x="158" y="71" text-anchor="middle" fill="#10B981" font-size="16" font-weight="700">📅 2026년 4월 23일</text>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="138" fill="#64748B" font-size="16" font-weight="700" letter-spacing="6">KEY POINTS TODAY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="186" fill="#FFFFFF" font-size="38" font-weight="800">오늘의 핵심 5포인트</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="206" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <rect x="48" y="240" width="984" height="120" fill="#10B9811A" rx="18" stroke="#10B98166" stroke-width="2"/>
+  <text x="80" y="280" fill="#10B981" font-size="14" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
+  <foreignObject x="80" y="290" width="920" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:26px;font-weight:800;line-height:1.35;font-family:NanumGothic,sans-serif">창사 최대 실적 + 신고가도 하락 전환</div>
+  </foreignObject>
+  
+  <rect x="48" y="400" width="984" height="68" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="434" r="22" fill="url(#accent)"/>
+  <text x="92" y="442" text-anchor="middle" fill="#0F172A" font-size="22" font-weight="900">1</text>
+  <foreignObject x="128" y="414" width="880" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">코스피 6,417.93 사상 첫 6,400 돌파</div>
+  </foreignObject>
+  <rect x="48" y="484" width="984" height="68" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="518" r="22" fill="url(#accent)"/>
+  <text x="92" y="526" text-anchor="middle" fill="#0F172A" font-size="22" font-weight="900">2</text>
+  <foreignObject x="128" y="498" width="880" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">SK하이닉스 영업이익 37.6조, 이익률 71.5%</div>
+  </foreignObject>
+  <rect x="48" y="568" width="984" height="68" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="602" r="22" fill="url(#accent)"/>
+  <text x="92" y="610" text-anchor="middle" fill="#0F172A" font-size="22" font-weight="900">3</text>
+  <foreignObject x="128" y="582" width="880" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">삼성+SK 합산 시총 2,173조 (코스피의 40.96%)</div>
+  </foreignObject>
+  <rect x="48" y="652" width="984" height="68" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="686" r="22" fill="url(#accent)"/>
+  <text x="92" y="694" text-anchor="middle" fill="#0F172A" font-size="22" font-weight="900">4</text>
+  <foreignObject x="128" y="666" width="880" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">장중 신고가 후 하락 — Sell the news 패턴</div>
+  </foreignObject>
+  <rect x="48" y="736" width="984" height="68" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="770" r="22" fill="url(#accent)"/>
+  <text x="92" y="778" text-anchor="middle" fill="#0F172A" font-size="22" font-weight="900">5</text>
+  <foreignObject x="128" y="750" width="880" height="44">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:17px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:40px">다음 변수: 2분기 HBM4 가이던스</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
+  <text x="68" y="980" fill="#94A3B8" font-size="14">"</text>
+  <text x="84" y="980" fill="#FFFFFF" font-size="18" font-weight="600">HBM 사이클은 Blackwell → Rubin으로 다년간 이어진다</text>
+  <text x="68" y="1008" fill="#64748B" font-size="13">— 12시에 만나요</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1056" text-anchor="end" fill="#334155" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>
