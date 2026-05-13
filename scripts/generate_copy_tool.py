@@ -578,8 +578,13 @@ def main():
     print(f"📄 블로그 파일: {md_file.name}")
     md_text = md_file.read_text(encoding="utf-8")
 
-    # 제목 추출
+    # 제목 추출 + 끝에 yy/mm/dd 추가 (네이버 발행용)
     title = extract_title(md_text)
+    try:
+        d = datetime.strptime(date_str, "%Y-%m-%d")
+        title = f"{title} {d.strftime('%y/%m/%d')}"
+    except ValueError:
+        pass
     print(f"📝 제목: {title}")
 
     # 본문 HTML 변환 (부록 영상정보 + 태그 섹션 제거 + 이미지 삽입 마커 추가)
