@@ -239,6 +239,17 @@ def extract_tags(md_text: str) -> list[str]:
     return ordered
 
 
+def _render_keyword_chips(tags: list[str]) -> str:
+    """# 없는 핵심 키워드 10개 chip 렌더링. 짧은(메인+서브) 우선 정렬."""
+    # 한글 글자수 기준 짧은 순으로 정렬 (메인 > 서브 > 롱테일 자연 정렬)
+    sorted_kw = sorted(tags, key=lambda t: (len(re.findall(r"[가-힣]", t)), t))
+    top10 = sorted_kw[:10]
+    return "".join(
+        f'<span class="kw-chip" onclick="copyOneTag(this, \'{kw}\')" title="클릭하면 복사">{kw}</span>'
+        for kw in top10
+    )
+
+
 def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None) -> str:
     """HTML 복사 도구 생성"""
     tags = tags or []
@@ -280,6 +291,14 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 (줄바꿈 구분) 복사</button>
   <span class="toast" id="toastTag">✅ 복사됨!</span>
   <div class="hidden-body" id="tagsRaw">{tags_for_paste}</div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px dashed #cbd5e1;">
+    <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">🔑 핵심 키워드 10개 (# 없음)</div>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드를 클릭하면 바로 복사됩니다.</p>
+    <div class="kw-box">
+{_render_keyword_chips(tags)}
+    </div>
+  </div>
 </div>
 """
 
@@ -309,6 +328,10 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   .tag-chip:hover {{ background: #fde68a; }}
   .tag-chip:active {{ background: #f59e0b; color: #fff; }}
   .tag-chip.copied {{ background: #10b981; color: #fff; }}
+  .kw-chip {{ display: inline-block; padding: 5px 12px; margin: 3px; background: #e0f2fe; color: #075985; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }}
+  .kw-chip:hover {{ background: #bae6fd; }}
+  .kw-chip.copied {{ background: #10b981; color: #fff; }}
+  .kw-box {{ background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 14px; line-height: 1.9; }}
   .tag-box  {{ background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }}
   .body-preview {{ background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }}
   .body-preview h1 {{ font-size: 20px; margin: 8px 0 12px; color: #0f172a; }}
