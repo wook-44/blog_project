@@ -80,21 +80,29 @@ def md_to_html_body(md_text: str) -> str:
     in_table = False
     in_list = False
 
+    # ── 인라인 스타일 (네이버 에디터가 태그만 보고는 폰트 크기/굵기 보존 안 함) ──
+    H1 = 'style="font-size:24px;font-weight:bold;margin:20px 0 10px;line-height:1.4;"'
+    H2 = 'style="font-size:20px;font-weight:bold;margin:18px 0 8px;line-height:1.4;"'
+    H3 = 'style="font-size:17px;font-weight:bold;margin:14px 0 6px;line-height:1.4;"'
+    BOLD = 'style="font-weight:bold;"'
+    PARA = 'style="font-size:15px;line-height:1.7;margin:8px 0;"'
+    LI = 'style="font-size:15px;line-height:1.7;margin:4px 0;"'
+
     for line in lines:
-        # 헤더
+        # 헤더 — h 태그 + 인라인 스타일 둘 다
         if line.startswith("### "):
             if in_list: html_parts.append("</ul>"); in_list = False
-            html_parts.append(f"<h3>{line[4:].strip()}</h3>")
+            html_parts.append(f'<h3 {H3}>{line[4:].strip()}</h3>')
         elif line.startswith("## "):
             if in_list: html_parts.append("</ul>"); in_list = False
-            html_parts.append(f"<h2>{line[3:].strip()}</h2>")
+            html_parts.append(f'<h2 {H2}>{line[3:].strip()}</h2>')
         elif line.startswith("# "):
             if in_list: html_parts.append("</ul>"); in_list = False
-            html_parts.append(f"<h1>{line[2:].strip()}</h1>")
+            html_parts.append(f'<h1 {H1}>{line[2:].strip()}</h1>')
         # 구분선
         elif line.strip() == "---":
             if in_list: html_parts.append("</ul>"); in_list = False
-            html_parts.append("<hr>")
+            html_parts.append('<hr style="border:none;border-top:1px solid #d1d5db;margin:16px 0;">')
         # 테이블 행
         elif "|" in line and "---" not in line:
             if not in_table:
@@ -102,13 +110,14 @@ def md_to_html_body(md_text: str) -> str:
                 in_table = True
             cells = [c.strip() for c in line.split("|") if c.strip()]
             tag = "th" if html_parts and "<th>" not in html_parts[-1] and "<tr>" not in html_parts[-1] else "td"
-            row = "".join(f"<{tag}>{c}</{tag}>" for c in cells)
+            cell_style = 'style="padding:6px 10px;border:1px solid #d1d5db;' + ('background:#f3f4f6;font-weight:bold;' if tag == 'th' else '') + '"'
+            row = "".join(f'<{tag} {cell_style}>{c}</{tag}>' for c in cells)
             html_parts.append(f"<tr>{row}</tr>")
         elif in_table and "|" not in line:
             html_parts.append("</table>")
             in_table = False
             if line.strip():
-                html_parts.append(f"<p>{line}</p>")
+                html_parts.append(f'<p {PARA}>{line}</p>')
         # 인용/마커 (>)
         elif line.startswith("> "):
             if in_list: html_parts.append("</ul>"); in_list = False
@@ -116,24 +125,24 @@ def md_to_html_body(md_text: str) -> str:
             content = re.sub(r'\*\*(.+?)\*\*', r'\1', content)
             # 이미지 마커는 중앙 정렬 빨간색 글자만
             if "👇" in content or "🖼️" in content:
-                # 마커는 단순 텍스트로 — 이모지·강조 제거
                 clean = re.sub(r"[👇🖼️]\s*", "", content).strip()
-                html_parts.append(f'<p style="text-align:center;color:#dc2626;margin:14px 0;">{clean}</p>')
+                html_parts.append(f'<p style="text-align:center;color:#dc2626;font-size:15px;margin:18px 0;">{clean}</p>')
             else:
-                content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', line[2:].strip())
-                html_parts.append(f"<blockquote>{content}</blockquote>")
+                content = re.sub(r'\*\*(.+?)\*\*', r'<span style="font-weight:bold;">\1</span>', line[2:].strip())
+                html_parts.append(f'<blockquote style="margin:10px 0;padding:8px 14px;border-left:3px solid #94a3b8;background:#f8fafc;font-size:14px;color:#475569;">{content}</blockquote>')
         # 리스트
         elif line.startswith("- ") or line.startswith("* "):
             if not in_list:
-                html_parts.append("<ul>")
+                html_parts.append('<ul style="margin:8px 0;padding-left:20px;">')
                 in_list = True
             content = line[2:].strip()
-            content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', content)
-            html_parts.append(f"<li>{content}</li>")
+            content = re.sub(r'\*\*(.+?)\*\*', r'<span style="font-weight:bold;">\1</span>', content)
+            html_parts.append(f'<li {LI}>{content}</li>')
         elif line.startswith("  - ") or line.startswith("  * "):
             content = line[4:].strip()
-            html_parts.append(f"<li style='margin-left:20px'>{content}</li>")
-        # 빈 줄
+            content = re.sub(r'\*\*(.+?)\*\*', r'<span style="font-weight:bold;">\1</span>', content)
+            html_parts.append(f'<li style="font-size:15px;line-height:1.7;margin-left:20px;">{content}</li>')
+        # 빈 줄 — 네이버는 명시적 빈 단락이 있어야 여백 인식
         elif not line.strip():
             if in_list:
                 html_parts.append("</ul>")
@@ -141,15 +150,15 @@ def md_to_html_body(md_text: str) -> str:
             if in_table:
                 html_parts.append("</table>")
                 in_table = False
+            html_parts.append('<p>&nbsp;</p>')
         # 일반 텍스트
         else:
             if in_list: html_parts.append("</ul>"); in_list = False
             content = line.strip()
-            # 볼드/이탤릭 처리
-            content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', content)
-            content = re.sub(r'\*(.+?)\*', r'<i>\1</i>', content)
+            content = re.sub(r'\*\*(.+?)\*\*', r'<span style="font-weight:bold;">\1</span>', content)
+            content = re.sub(r'\*(.+?)\*', r'<span style="font-style:italic;">\1</span>', content)
             if content:
-                html_parts.append(f"<p>{content}</p>")
+                html_parts.append(f'<p {PARA}>{content}</p>')
 
     if in_list: html_parts.append("</ul>")
     if in_table: html_parts.append("</table>")
