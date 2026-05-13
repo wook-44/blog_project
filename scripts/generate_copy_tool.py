@@ -113,11 +113,14 @@ def md_to_html_body(md_text: str) -> str:
         elif line.startswith("> "):
             if in_list: html_parts.append("</ul>"); in_list = False
             content = line[2:].strip()
-            content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', content)
-            # 이미지 마커는 눈에 띄게 강조
+            content = re.sub(r'\*\*(.+?)\*\*', r'\1', content)
+            # 이미지 마커는 중앙 정렬 빨간색 글자만
             if "👇" in content or "🖼️" in content:
-                html_parts.append(f'<blockquote style="background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 16px;margin:14px 0;font-size:15px;color:#92400e;font-weight:600;border-radius:4px;">{content}</blockquote>')
+                # 마커는 단순 텍스트로 — 이모지·강조 제거
+                clean = re.sub(r"[👇🖼️]\s*", "", content).strip()
+                html_parts.append(f'<p style="text-align:center;color:#dc2626;margin:14px 0;">{clean}</p>')
             else:
+                content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', line[2:].strip())
                 html_parts.append(f"<blockquote>{content}</blockquote>")
         # 리스트
         elif line.startswith("- ") or line.startswith("* "):
@@ -193,9 +196,9 @@ def strip_appendix_sections(md_text: str) -> str:
 def inject_image_markers(md_text: str) -> str:
     """본문 안에 이미지 삽입 마커 추가. ## 시장 분석 등 키워드 헤더 직후."""
     markers = [
-        (r"^(##\s+.*시장 분석.*)$", "🖼️ 이미지 1 (market)"),
-        (r"^(##\s+.*투자 심리.*)$", "🖼️ 이미지 2 (psychology)"),
-        (r"^(##\s+.*핵심 포인트.*)$", "🖼️ 이미지 3 (summary)"),
+        (r"^(##\s+.*시장 분석.*)$", "이미지 1 여기에 붙여넣기"),
+        (r"^(##\s+.*투자 심리.*)$", "이미지 2 여기에 붙여넣기"),
+        (r"^(##\s+.*핵심 포인트.*)$", "이미지 3 여기에 붙여넣기"),
     ]
     lines = md_text.split("\n")
     out = []
@@ -204,7 +207,7 @@ def inject_image_markers(md_text: str) -> str:
         for pat, label in markers:
             if re.match(pat, line):
                 out.append("")
-                out.append(f"> 👇 **{label} 여기에 붙여넣기**")
+                out.append(f"> 🖼️ {label}")
                 out.append("")
                 break
     return "\n".join(out)
