@@ -117,9 +117,13 @@
 - ❌ `stat-value: "코스피 7,999.67 — 사상 최초 8천피 턱밑"` (19자)
 - ✅ `stat-value: "7,999.67"` + `stat-label: "코스피 8,000 턱밑 터치"`
 
-### 생성 종수
-- **market / psychology / summary 3종만** 생성.
+### 생성 종수 (가변, 2026-05-13 갱신)
+- **본문 INFOGRAPHIC_DATA에 있는 섹션만큼 자동 생성** — 강제 3종 제거. 짧은 영상 2종, 긴 영상 5종까지 가능.
+- 기본 권장 3종: `market` / `psychology` / `summary`.
+- 추가 가능 키 (전용 색상 토큰 ACCENTS 등록됨): `outlook`(전망), `checklist`(체크리스트), `sector`(섹터 순환), `risk`(리스크).
+- **사용자 커스텀 키**도 OK — generic 빌더가 자동 fallback (회색 톤). 새 키 색상 추가는 `generate_infographics.py` ACCENTS dict에만 항목 등록.
 - **insight는 이미지 만들지 않음** — 본문 최하단 `💡 *"..."*` 텍스트 한 줄.
+- 데이터가 빈 dict이거나 키가 누락되면 자동 스킵.
 
 ### 렌더링
 - Chrome headless `--window-size=1080,1080` 으로 HTML→PNG.

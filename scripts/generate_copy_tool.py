@@ -157,8 +157,35 @@ def extract_title(md_text: str) -> str:
     return "블로그 제목"
 
 
-def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path]) -> str:
+def extract_tags(md_text: str) -> list[str]:
+    """본문 어디서든 ## 태그 섹션 또는 마지막 #해시태그 라인에서 태그 추출."""
+    # 1) ## 태그 섹션 우선
+    in_tag = False
+    bucket = []
+    for line in md_text.split("\n"):
+        if re.match(r"^##\s+태그", line):
+            in_tag = True
+            continue
+        if in_tag:
+            if line.startswith("##") or line.startswith("# "):
+                break
+            if line.strip().startswith("---"):
+                break
+            bucket.append(line)
+    chunk = "\n".join(bucket) if bucket else md_text
+    tags = re.findall(r"#([\w가-힣]+)", chunk)
+    # 중복 제거하면서 순서 유지
+    seen, ordered = set(), []
+    for t in tags:
+        if t not in seen and len(t) > 0:
+            seen.add(t)
+            ordered.append(t)
+    return ordered
+
+
+def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None) -> str:
     """HTML 복사 도구 생성"""
+    tags = tags or []
 
     # 이미지 섹션 생성
     img_sections = ""
@@ -175,6 +202,22 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   <button class="btn btn-img" onclick="copyImg('img{i}','toast{i+1}')">🖼️ 이미지 {i} 복사</button>
   <span class="toast" id="toast{i+1}">✅ 복사됨!</span>
   <canvas id="img{i}" style="display:none"></canvas>
+</div>
+"""
+
+    # 태그 섹션 (마지막 STEP)
+    tag_step_idx = len(png_files[:5]) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
+    tags_for_paste = " ".join(f"#{t}" for t in tags)
+    tags_pretty = " ".join(f'<span class="tag-chip">#{t}</span>' for t in tags)
+    tag_section = f"""
+<!-- STEP {tag_step_idx}: 태그 -->
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#f59e0b;">{tag_step_idx}</span> 해시태그 복사 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:10px;">총 {len(tags)}개 — 네이버 권장 30개</p>
+  <div class="tag-box" id="tagBox">{tags_pretty}</div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTag">✅ 복사됨!</span>
+  <div class="hidden-body" id="tagsRaw">{tags_for_paste}</div>
 </div>
 """
 
@@ -199,6 +242,9 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   .btn {{ display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }}
   .btn-text {{ background: #3b82f6; color: #fff; }}
   .btn-img  {{ background: #10b981; color: #fff; margin-top: 10px; }}
+  .btn-tag  {{ background: #f59e0b; color: #fff; margin-top: 10px; }}
+  .tag-chip {{ display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; }}
+  .tag-box  {{ background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }}
   .btn:active {{ opacity: 0.8; }}
   .toast {{ display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }}
   img.preview {{ width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }}
@@ -241,7 +287,13 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
 {img_sections}
 
+{tag_section}
+
 <script>
+function copyTags() {{
+  const raw = document.getElementById('tagsRaw').innerText;
+  navigator.clipboard.writeText(raw).then(() => showToast('toastTag'));
+}}
 function showToast(id) {{
   const el = document.getElementById(id);
   el.style.display = 'inline';
@@ -340,8 +392,12 @@ def main():
     for p in png_files:
         print(f"   {p.name}")
 
+    # 태그 추출
+    tags = extract_tags(md_text)
+    print(f"🏷️  태그: {len(tags)}개")
+
     # HTML 생성
-    html = generate_html(date_str, title, body_html, png_files)
+    html = generate_html(date_str, title, body_html, png_files, tags)
 
     # 저장 (output/ 폴더)
     out_dir = BASE / "output"

@@ -34,10 +34,17 @@ COLORS = {
 }
 
 ACCENTS = {
-    "market":     {"icon": "📊", "label": "MARKET STATUS",      "kor": "시장 분석", "from": "#3B82F6", "to": "#06B6D4", "hero_from": "#F59E0B", "hero_to": "#EF4444"},
+    "market":     {"icon": "📊", "label": "MARKET STATUS",       "kor": "시장 분석", "from": "#3B82F6", "to": "#06B6D4", "hero_from": "#F59E0B", "hero_to": "#EF4444"},
     "psychology": {"icon": "🧠", "label": "INVESTMENT PSYCHOLOGY","kor": "투자 심리", "from": "#A78BFA", "to": "#EC4899", "hero_from": "#FBBF24", "hero_to": "#F472B6"},
     "summary":    {"icon": "✅", "label": "KEY POINTS TODAY",     "kor": "핵심 포인트","from": "#10B981", "to": "#06B6D4", "hero_from": "#10B981", "hero_to": "#3B82F6"},
+    "outlook":    {"icon": "🔭", "label": "MARKET OUTLOOK",       "kor": "전망/관전 포인트","from": "#0EA5E9", "to": "#22D3EE", "hero_from": "#22D3EE", "hero_to": "#A78BFA"},
+    "checklist":  {"icon": "☑️", "label": "ACTION CHECKLIST",     "kor": "체크리스트","from": "#F97316", "to": "#EF4444", "hero_from": "#F97316", "hero_to": "#FBBF24"},
+    "sector":     {"icon": "🏭", "label": "SECTOR ROTATION",      "kor": "섹터/순환매","from": "#14B8A6", "to": "#0EA5E9", "hero_from": "#14B8A6", "hero_to": "#3B82F6"},
+    "risk":       {"icon": "⚠️", "label": "RISK FACTORS",         "kor": "리스크",    "from": "#EF4444", "to": "#F97316", "hero_from": "#EF4444", "hero_to": "#FBBF24"},
 }
+
+# 알 수 없는 키 fallback (회색 톤)
+DEFAULT_ACCENT = {"icon": "📌", "label": "SECTION", "kor": "섹션", "from": "#94A3B8", "to": "#64748B", "hero_from": "#94A3B8", "hero_to": "#64748B"}
 
 
 def html_doc(svg_inner: str) -> str:
@@ -296,7 +303,90 @@ BUILDERS = {
     "market":     build_market_html,
     "psychology": build_psychology_html,
     "summary":    build_summary_html,
+    # 아래 키는 generic 빌더로 처리됨 — 별도 항목 추가시 ACCENTS만 채우면 OK
 }
+
+
+# ── GENERIC 빌더 ────────────────────────────────────────────
+def build_generic_html(data: dict, date: str, section_key: str = "section") -> str:
+    """알 수 없는 섹션 키 또는 사용자 커스텀 섹션을 위한 범용 빌더.
+    data 스키마:
+      title, hero_value/hero_label (선택), stats[], chips[], points[],
+      footer_quote, footer_author
+    """
+    a = ACCENTS.get(section_key, DEFAULT_ACCENT)
+    title = data.get("title", a["kor"])
+    hero_value = data.get("hero_value", "")
+    hero_label = data.get("hero_label", "")
+    hero_delta = data.get("hero_delta", "")
+    stats = data.get("stats", [])[:4]
+    chips = data.get("chips", [])[:6]
+    points = data.get("points", [])[:5]
+    footer_q = data.get("footer_quote", "")
+    footer_a = data.get("footer_author", "12시에 만나요")
+
+    # Hero 영역 (있으면)
+    hero_svg = ""
+    if hero_value:
+        hero_svg = f"""
+  <text x="48" y="320" fill="url(#hero)" font-size="100" font-weight="900" filter="url(#glow)">{hero_value}</text>
+  <text x="48" y="358" fill="{COLORS['text_sec']}" font-size="18" font-weight="600">{hero_label}</text>"""
+        if hero_delta:
+            hero_svg += f"""
+  <text x="{SIZE-150}" y="335" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="800">{hero_delta}</text>"""
+
+    # 카드 (있을 때만, 1~4개)
+    cards_y = 400 if hero_value else 260
+    cards_svg = ""
+    n = len(stats)
+    if n > 0:
+        gap = 16
+        total_gap = gap * (n - 1)
+        card_w = (SIZE - 96 - total_gap) / n
+        for i, s in enumerate(stats):
+            x = 48 + i * (card_w + gap)
+            cards_svg += f"""
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="120" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
+  <text x="{x+card_w/2}" y="{cards_y+30}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="13" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+76}" text-anchor="middle" fill="{a['from']}" font-size="38" font-weight="900">{s.get('value','—')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+103}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="13">{s.get('delta','')}</text>"""
+
+    # 칩
+    chip_y = cards_y + (150 if stats else 0)
+    chip_x = 48
+    chips_svg = ""
+    if chips:
+        for c in chips:
+            chip_w = len(c) * 11 + 32
+            chips_svg += f"""
+  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="34" fill="{a['from']}1A" rx="17" stroke="{a['from']}44" stroke-width="1"/>
+  <text x="{chip_x+chip_w/2}" y="{chip_y+22}" text-anchor="middle" fill="{a['from']}" font-size="13" font-weight="700">{c}</text>"""
+            chip_x += chip_w + 8
+
+    # 포인트
+    points_y = chip_y + (60 if chips else 30)
+    points_svg = ""
+    if points:
+        points_svg = f"""
+  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="13" font-weight="700" letter-spacing="2">주요 포인트</text>"""
+        for i, p in enumerate(points):
+            y = points_y + 32 + i * 36
+            points_svg += f"""
+  <circle cx="58" cy="{y-5}" r="11" fill="{a['from']}"/>
+  <text x="58" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="13" font-weight="800">{i+1}</text>
+  <text x="80" y="{y}" fill="{COLORS['text_pri']}" font-size="16" font-weight="600">{p}</text>"""
+
+    svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+{_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
+  <rect width="{SIZE}" height="{SIZE}" fill="url(#bg)"/>
+{_header(date, a['label'], title, a['from'], a['to'])}
+  {hero_svg}
+  {cards_svg}
+  {chips_svg}
+  {points_svg}
+{_footer(footer_q or a['kor'] + ' 한 줄', footer_a)}
+</svg>"""
+    return html_doc(svg)
 
 
 # ── HTML → PNG 변환 ──────────────────────────────────────────
@@ -372,22 +462,44 @@ def convert_html_to_png(html_path: Path, png_path: Path) -> str:
 
 # ── 메인 생성 ─────────────────────────────────────────────────
 def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
+    """가변 빌더 — infographic_data에 있는 섹션만 생성한다.
+    - 'market'/'psychology'/'summary'는 전용 빌더 사용
+    - 그 외 키('outlook', 'checklist', 'sector', 'risk', 사용자 커스텀)는 generic 빌더
+    - 데이터가 빈 dict면 스킵
+    - 'insight' 키는 톤북 v1에 따라 이미지 생성 금지 → 자동 스킵
+    """
     output_dir.mkdir(parents=True, exist_ok=True)
     html_dir = output_dir / "html"
     html_dir.mkdir(exist_ok=True)
 
+    SKIP_KEYS = {"insight"}  # 톤북 v1: insight는 이미지 X
     results = {}
-    for key, builder in BUILDERS.items():
-        data = infographic_data.get(key, {})
+
+    for key, data in infographic_data.items():
+        if key in SKIP_KEYS:
+            print(f"  ⏭️  {key}: 톤북 v1 룰로 이미지 생성 안 함")
+            continue
+        if not isinstance(data, dict) or not data:
+            print(f"  ⏭️  {key}: 데이터 비어있음, 스킵")
+            continue
+
+        builder = BUILDERS.get(key)
+        if builder is None:
+            # 알 수 없는 키 → generic 빌더 (커스텀 섹션 가능)
+            html_content = build_generic_html(data, date, key)
+        else:
+            html_content = builder(data, date)
+
         html_path = html_dir / f"{date}-{key}.html"
         png_path = output_dir / f"{date}-{key}.png"
 
-        html_content = builder(data, date)
         html_path.write_text(html_content, encoding="utf-8")
-
         method = convert_html_to_png(html_path, png_path)
         results[key] = {"png": str(png_path), "html": str(html_path), "method": method}
         print(f"  ✅ {png_path.name}  [{method}]")
+
+    if not results:
+        print("  ⚠️  생성된 인포그래픽 없음 — infographic_data 확인 필요")
     return results
 
 
