@@ -245,6 +245,17 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
   .btn-tag  {{ background: #f59e0b; color: #fff; margin-top: 10px; }}
   .tag-chip {{ display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; }}
   .tag-box  {{ background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }}
+  .body-preview {{ background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }}
+  .body-preview h1 {{ font-size: 20px; margin: 8px 0 12px; color: #0f172a; }}
+  .body-preview h2 {{ font-size: 17px; margin: 18px 0 8px; color: #1e293b; padding-top: 8px; border-top: 1px solid #e2e8f0; }}
+  .body-preview p {{ margin: 8px 0; }}
+  .body-preview ul {{ margin: 8px 0 8px 12px; }}
+  .body-preview li {{ margin: 4px 0; }}
+  .body-preview hr {{ border: none; border-top: 1px dashed #cbd5e1; margin: 16px 0; }}
+  .body-preview blockquote {{ margin: 8px 0; padding: 8px 14px; background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 4px; font-size: 14px; }}
+  .body-preview table {{ border-collapse: collapse; margin: 10px 0; font-size: 13px; }}
+  .body-preview th, .body-preview td {{ border: 1px solid #cbd5e1; padding: 6px 10px; }}
+  .body-preview th {{ background: #f1f5f9; }}
   .btn:active {{ opacity: 0.8; }}
   .toast {{ display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }}
   img.preview {{ width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }}
@@ -274,15 +285,15 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 <!-- STEP 1: 텍스트 복사 -->
 <div class="step">
   <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
-  <p style="font-size:13px;color:#64748b;margin-bottom:12px;">버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
+  <p style="font-size:13px;color:#64748b;margin-bottom:8px;">아래 본문 미리보기 확인 후 복사 버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
   <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
   <span class="toast" id="toastText">✅ 복사됨!</span>
   <div id="copyStatus">텍스트가 복사되었습니다. 네이버 블로그 에디터에 Cmd+V 로 붙여넣으세요.</div>
-</div>
 
-<!-- 숨겨진 본문 HTML (복사용) -->
-<div class="hidden-body" id="blogBodyHtml">
+  <!-- 본문 미리보기 (화면에 보임 + 복사 대상) -->
+  <div class="body-preview" id="blogBodyHtml">
 {body_html}
+  </div>
 </div>
 
 {img_sections}
@@ -290,9 +301,20 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 {tag_section}
 
 <script>
-function copyTags() {{
+async function copyTags() {{
   const raw = document.getElementById('tagsRaw').innerText;
-  navigator.clipboard.writeText(raw).then(() => showToast('toastTag'));
+  try {{
+    await navigator.clipboard.writeText(raw);
+    showToast('toastTag');
+  }} catch(e) {{
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try {{ document.execCommand('copy'); showToast('toastTag'); }}
+    catch(e2) {{ alert('태그 복사 실패'); }}
+    document.body.removeChild(ta);
+  }}
 }}
 function showToast(id) {{
   const el = document.getElementById(id);
@@ -300,28 +322,69 @@ function showToast(id) {{
   setTimeout(() => el.style.display = 'none', 2000);
 }}
 
-function copyPlain(boxId, toastId) {{
+async function copyPlain(boxId, toastId) {{
   const text = document.getElementById(boxId).innerText;
-  navigator.clipboard.writeText(text).then(() => showToast(toastId));
+  try {{
+    await navigator.clipboard.writeText(text);
+    showToast(toastId);
+  }} catch(e) {{
+    // Fallback — 임시 textarea + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try {{ document.execCommand('copy'); showToast(toastId); }}
+    catch(e2) {{ alert('복사 실패 — 직접 선택하여 복사하세요'); }}
+    document.body.removeChild(ta);
+  }}
 }}
 
-function copyText() {{
+async function copyText() {{
   const body = document.getElementById('blogBodyHtml');
-  const range = document.createRange();
-  range.selectNodeContents(body);
-  const sel = window.getSelection();
-  sel.removeAllRanges();
-  sel.addRange(range);
+  const html = body.innerHTML;
+  const text = body.innerText;
+  let ok = false;
+
+  // 1) 최신 Clipboard API — HTML + plain 같이 (네이버 에디터가 HTML 인식)
   try {{
-    document.execCommand('copy');
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {{
+      const item = new ClipboardItem({{
+        'text/html': new Blob([html], {{type: 'text/html'}}),
+        'text/plain': new Blob([text], {{type: 'text/plain'}})
+      }});
+      await navigator.clipboard.write([item]);
+      ok = true;
+    }}
+  }} catch(e) {{ console.warn('ClipboardItem 실패:', e); }}
+
+  // 2) Fallback — Selection + execCommand
+  if (!ok) {{
+    try {{
+      const range = document.createRange();
+      range.selectNodeContents(body);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      ok = document.execCommand('copy');
+      sel.removeAllRanges();
+    }} catch(e) {{ console.warn('execCommand 실패:', e); }}
+  }}
+
+  // 3) 최후 fallback — 일반 텍스트만
+  if (!ok) {{
+    try {{
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    }} catch(e) {{ console.error('clipboard.writeText 실패:', e); }}
+  }}
+
+  if (ok) {{
     document.getElementById('copyStatus').style.display = 'block';
     showToast('toastText');
     setTimeout(() => document.getElementById('copyStatus').style.display = 'none', 3000);
-  }} catch(e) {{
-    navigator.clipboard.writeText(body.innerText);
-    showToast('toastText');
+  }} else {{
+    alert('복사 실패 — 본문을 마우스로 드래그하여 직접 복사해주세요');
   }}
-  sel.removeAllRanges();
 }}
 
 function loadImgToCanvas(canvasId, src) {{
