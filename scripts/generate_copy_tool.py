@@ -578,11 +578,24 @@ def main():
     print(f"📄 블로그 파일: {md_file.name}")
     md_text = md_file.read_text(encoding="utf-8")
 
-    # 제목 추출 + 끝에 yy/mm/dd 추가 (네이버 발행용)
+    # 제목 추출 + 끝에 "YYYY년 M월 N화" 추가 (네이버 발행용)
     title = extract_title(md_text)
     try:
         d = datetime.strptime(date_str, "%Y-%m-%d")
-        title = f"{title} {d.strftime('%y/%m/%d')}"
+        # 같은 달에 발행된 영업일 순서로 화수 결정
+        month_files = sorted(
+            p for p in BASE.glob(f"{d.year}-{d.month:02d}-*.md")
+            if not p.name.endswith(".bak") and "seo" not in p.name.lower()
+            and "_" not in p.stem[:11]  # 인덱스/특수 파일 제외
+        )
+        # 현재 글 위치 찾기 (없으면 마지막에 가산)
+        try:
+            idx = month_files.index(md_file)
+        except (ValueError, NameError):
+            same_date = [p for p in month_files if p.stem.startswith(date_str)]
+            idx = month_files.index(same_date[0]) if same_date else 0
+        episode = idx + 1
+        title = f"{title} {d.year}년 {d.month}월 {episode}화"
     except ValueError:
         pass
     print(f"📝 제목: {title}")

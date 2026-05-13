@@ -1,101 +1,95 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 900px; height: 900px; overflow: hidden;
-    background: #0D1117;
-    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Malgun Gothic',
-                 'Noto Sans KR', sans-serif;
-    color: #E6EDF3;
-    position: relative;
-  }
-  .accent-bar {
-    position: absolute; left: 0; top: 0;
-    width: 7px; height: 100%;
-    background: #58A6FF;
-  }
-  .container {
-    padding: 36px 48px 28px 64px;
-    height: 100%; display: flex; flex-direction: column;
-  }
-  .header { margin-bottom: 16px; }
-  .section-title {
-    font-size: 26px; font-weight: 700;
-    color: #E6EDF3; line-height: 1.2;
-  }
-  .divider {
-    height: 1px; background: #21262D;
-    margin: 14px 0;
-  }
-  .footer {
-    margin-top: auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 12px; border-top: 1px solid #21262D;
-    font-size: 12px; color: #8B949E;
-  }
-  .footer-tag { color: #58A6FF; font-weight: 600; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#3B82F6"/>
+    <stop offset="100%" style="stop-color:#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#F59E0B"/>
+    <stop offset="100%" style="stop-color:#EF4444"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
 
-      .body { display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }
-      .stat-card {
-        min-width: 220px; max-width: 220px; height: 180px;
-        background: #1C2B3A; border-radius: 14px;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 10px;
-        border: 1px solid #58A6FF22;
-      }
-      .stat-value { font-size: 38px; font-weight: 800; color: #58A6FF; }
-      .stat-label { font-size: 13px; color: #8B949E; }
-      .points-wrap { flex: 1; }
-      .points-label { font-size: 12px; color: #8B949E; margin-bottom: 10px; letter-spacing: 0.5px; }
-      .point {
-        display: flex; align-items: center; gap: 14px;
-        margin-bottom: 16px;
-      }
-      .badge {
-        width: 26px; height: 26px; border-radius: 50%;
-        background: #58A6FF; color: #0D1117;
-        font-size: 12px; font-weight: 700;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-      }
-      .pt-text { font-size: 14px; color: #E6EDF3; line-height: 1.4; }
-    </style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">📊&nbsp; 시장 분석 & 투자 전략</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="stat-card">
-      <div class="stat-value">코스피 7,400 터치</div>
-      <div class="stat-label">핵심 지표</div>
-    </div>
-    <div class="points-wrap">
-      <div class="points-label">주요 포인트</div>
-      
-      <div class="point">
-        <span class="badge">1</span>
-        <span class="pt-text">삼성전자·SK하이닉스 주도, 외국인 집중 매수</span>
-      </div>
-      <div class="point">
-        <span class="badge">2</span>
-        <span class="pt-text">5월 4일 6,900에서 이틀 만에 7,400 급등</span>
-      </div>
-      <div class="point">
-        <span class="badge">3</span>
-        <span class="pt-text">AI 반도체 구조적 수요가 핵심 동력</span>
-      </div>
-      <div class="point">
-        <span class="badge">4</span>
-        <span class="pt-text">코스피/반도체 ETF 분산 접근 유효</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">📊 시장 분석</span>
-  </div>
-</div>
-</body></html>
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="16" font-weight="700" letter-spacing="6">MARKET STATUS</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="138" fill="#FFFFFF" font-size="42" font-weight="800">사상 첫 7,000 — 이틀 만 +6.7%</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+
+  <!-- HERO 영역 -->
+  <text x="48" y="280" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">7,402</text>
+  <text x="48" y="320" fill="#94A3B8" font-size="20" font-weight="600">코스피 5/6 고점</text>
+
+  <!-- 우측 변동 표시 -->
+  <polygon points="900,210 930,260 960,210" fill="#3B82F6" opacity="0.95"/>
+  <text x="930" y="295" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="800">▲ +6.7%</text>
+
+  
+  <rect x="48.0" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="206.66666666666666" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">삼성전자</text>
+  <text x="206.66666666666666" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">+13%</text>
+  <text x="206.66666666666666" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">동반 폭등</text>
+  <rect x="381.3333333333333" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="540.0" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">SK하이닉스</text>
+  <text x="540.0" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">+10%</text>
+  <text x="540.0" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">동반 폭등</text>
+  <rect x="714.6666666666666" y="370" width="317.3333333333333" height="130" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="873.3333333333333" y="400" text-anchor="middle" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">외국인 순매수</text>
+  <text x="873.3333333333333" y="450" text-anchor="middle" fill="#3B82F6" font-size="40" font-weight="900">+1.3조</text>
+  <text x="873.3333333333333" y="480" text-anchor="middle" fill="#94A3B8" font-size="13">당일</text>
+  
+  <rect x="48" y="520" width="186" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="141.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">MSCI 선진국 패스트트랙</text>
+  <rect x="242" y="520" width="186" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="335.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">400억$ 추가 수급 예상</text>
+  <rect x="436" y="520" width="131" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="501.5" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">환율 1,456원</text>
+  <rect x="575" y="520" width="153" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="651.5" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">제이알글로벌리스 사태</text>
+  <rect x="736" y="520" width="142" height="34" fill="#3B82F61A" rx="17" stroke="#3B82F644" stroke-width="1"/>
+  <text x="807.0" y="542" text-anchor="middle" fill="#3B82F6" font-size="13" font-weight="700">AI 반도체 구조적</text>
+  
+  <text x="48" y="580" fill="#64748B" font-size="13" font-weight="700" letter-spacing="2">주요 포인트</text>
+  <circle cx="58" cy="603" r="11" fill="#3B82F6"/>
+  <text x="58" y="607" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">1</text>
+  <text x="80" y="608" fill="#FFFFFF" font-size="17" font-weight="600">이틀 만 6,900 → 7,402, 500p 급등</text>
+  <circle cx="58" cy="635" r="11" fill="#3B82F6"/>
+  <text x="58" y="639" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">2</text>
+  <text x="80" y="640" fill="#FFFFFF" font-size="17" font-weight="600">외국인 자금 반도체 섹터 집중</text>
+  <circle cx="58" cy="667" r="11" fill="#3B82F6"/>
+  <text x="58" y="671" text-anchor="middle" fill="#0F172A" font-size="13" font-weight="800">3</text>
+  <text x="80" y="672" fill="#FFFFFF" font-size="17" font-weight="600">MSCI 편입 시 약 58조 원 추가 유입</text>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
+  <text x="68" y="980" fill="#94A3B8" font-size="14">"</text>
+  <text x="84" y="980" fill="#FFFFFF" font-size="18" font-weight="600">7,400 터치해도 아직 늦지 않았다</text>
+  <text x="68" y="1008" fill="#64748B" font-size="13">— 이광수 (광수네 복덕방)</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1056" text-anchor="end" fill="#334155" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>

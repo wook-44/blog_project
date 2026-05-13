@@ -1,100 +1,81 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 900px; height: 900px; overflow: hidden;
-    background: #0D1117;
-    font-family: 'NanumGothic', 'Nanum Gothic', 'Apple SD Gothic Neo', 'Malgun Gothic',
-                 'Noto Sans KR', sans-serif;
-    color: #E6EDF3;
-    position: relative;
-  }
-  .accent-bar {
-    position: absolute; left: 0; top: 0;
-    width: 7px; height: 100%;
-    background: #BC8CFF;
-  }
-  .container {
-    padding: 36px 48px 28px 64px;
-    height: 100%; display: flex; flex-direction: column;
-  }
-  .header { margin-bottom: 16px; }
-  .section-title {
-    font-size: 26px; font-weight: 700;
-    color: #E6EDF3; line-height: 1.2;
-  }
-  .divider {
-    height: 1px; background: #21262D;
-    margin: 14px 0;
-  }
-  .footer {
-    margin-top: auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 12px; border-top: 1px solid #21262D;
-    font-size: 12px; color: #8B949E;
-  }
-  .footer-tag { color: #BC8CFF; font-weight: 600; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#A78BFA"/>
+    <stop offset="100%" style="stop-color:#EC4899"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#FBBF24"/>
+    <stop offset="100%" style="stop-color:#F472B6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
 
-      .body { display: flex; gap: 40px; flex: 1; align-items: flex-start; margin-top: 4px; }
-      .warn-card {
-        min-width: 220px; max-width: 220px; height: 180px;
-        background: #1E1B2E; border-radius: 14px;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center; gap: 12px;
-        border: 1px solid #BC8CFF22;
-      }
-      .warn-icon { font-size: 36px; }
-      .warn-text { font-size: 20px; font-weight: 800; color: #BC8CFF; text-align: center; padding: 0 12px; }
-      .points-wrap { flex: 1; }
-      .list-label { font-size: 12px; color: #8B949E; margin-bottom: 10px; letter-spacing: 0.5px; }
-      .point { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
-      .tag {
-        font-size: 10px; font-weight: 700; padding: 3px 8px;
-        border: 1px solid; border-radius: 4px; flex-shrink: 0; margin-top: 2px;
-      }
-      .pt-text { font-size: 14px; color: #E6EDF3; line-height: 1.5; }
-    </style></head><body>
-<div class="accent-bar"></div>
-<div class="container">
-  <div class="header">
-    <div class="section-title">🧠&nbsp; 투자 심리 & 행동 교정</div>
-  </div>
-  <div class="divider"></div>
-  <div class="body">
-    <div class="warn-card">
-      <div class="warn-icon">⚠️</div>
-      <div class="warn-text">경험 편향 주의</div>
-    </div>
-    <div class="points-wrap">
-      <div class="list-label">체크리스트</div>
-      
-      <div class="point">
-        <span class="tag" style="color:#BC8CFF;
-          border-color:#BC8CFF22">
-          함정
-        </span>
-        <span class="pt-text">침체기 경험 세대는 상승장에서도 비관론 유지 (NBER 40년 연구)</span>
-      </div>
-      <div class="point">
-        <span class="tag" style="color:#BC8CFF;
-          border-color:#BC8CFF22">
-          함정
-        </span>
-        <span class="pt-text">목표주가 상향은 시장 예언이 아닌 추인 — 숫자에 흔들리지 말 것</span>
-      </div>
-      <div class="point">
-        <span class="tag" style="color:#3FB950;
-          border-color:#3FB95022">
-          교정
-        </span>
-        <span class="pt-text">내 비관이 최신 데이터 기반인지, 과거 경험 기반인지 먼저 분리하라</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer">
-    <span>12시에 만나요 | 주식 분석 블로그</span>
-    <span class="footer-tag">🧠 투자 심리</span>
-  </div>
-</div>
-</body></html>
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="16" font-weight="700" letter-spacing="6">INVESTMENT PSYCHOLOGY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="138" fill="#FFFFFF" font-size="42" font-weight="800">NBER 40년 — 경험 많은 자가 더 틀린다</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="245" fill="url(#hero)" font-size="44" font-weight="900" filter="url(#glow)">비관도 낙관도 데이터로 검증</text>
+  
+  <rect x="48.0" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="206.66666666666666" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="206.66666666666666" y="380" text-anchor="middle" font-size="34">😱</text>
+  <text x="206.66666666666666" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">그때 망했잖아</text>
+  <foreignObject x="64.0" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">1970~80년대 침체 경험이 2026년 상승장 못 보게 함</div>
+  </foreignObject>
+  <rect x="381.3333333333333" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="540.0" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="540.0" y="380" text-anchor="middle" font-size="34">🤯</text>
+  <text x="540.0" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">한국 주식 못 번다</text>
+  <foreignObject x="397.3333333333333" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">2025-06 이전 데이터 기반, 다른 시대 지도로 길 찾기</div>
+  </foreignObject>
+  <rect x="714.6666666666666" y="320" width="317.3333333333333" height="200" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="873.3333333333333" cy="370" r="32" fill="#A78BFA22"/>
+  <text x="873.3333333333333" y="380" text-anchor="middle" font-size="34">😩</text>
+  <text x="873.3333333333333" y="430" text-anchor="middle" fill="#A78BFA" font-size="20" font-weight="800">너무 올랐다</text>
+  <foreignObject x="730.6666666666666" y="446" width="285.3333333333333" height="64">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:14px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">비싸다 감각도 과거 레벨 고정된 경험 편향</div>
+  </foreignObject>
+  
+  <rect x="48" y="540" width="984" height="120" fill="#EC48991A" rx="16" stroke="#EC489966" stroke-width="2"/>
+  <text x="80" y="580" fill="#EC4899" font-size="14" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
+  <foreignObject x="80" y="590" width="920" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:22px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif">최근 6개월 데이터 vs 3년 이전 경험 분리, 새 데이터로 업데이트</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
+  <text x="68" y="980" fill="#94A3B8" font-size="14">"</text>
+  <text x="84" y="980" fill="#FFFFFF" font-size="18" font-weight="600">경험을 이겨내야 한다</text>
+  <text x="68" y="1008" fill="#64748B" font-size="13">— 박시동 (경제평론가)</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1056" text-anchor="end" fill="#334155" font-size="13" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>
