@@ -52,9 +52,11 @@ def html_doc(svg_inner: str) -> str:
     return f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <style>
-  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }}
-  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }}
-  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }}
+  /* 로컬 NanumGothic Bold/ExtraBold만 사용 — Regular(400)는 제거해서 항상 굵은 글자 보장 */
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'), local('나눔고딕 Bold'); font-weight: 700; }}
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'), local('나눔고딕 ExtraBold'); font-weight: 800 900; }}
+  /* 400 weight 요청 시에도 700으로 폴백 */
+  @font-face {{ font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 1 400; }}
   * {{ margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }}
   html, body {{ width: {SIZE}px; height: {SIZE}px; overflow: hidden; background: transparent; }}
   svg {{ width: {SIZE}px; height: {SIZE}px; display: block; }}
@@ -104,7 +106,7 @@ def _footer(footer_quote: str, footer_author: str) -> str:
   <!-- 인용구 박스 -->
   <rect x="48" y="{quote_y}" width="{SIZE-96}" height="78" fill="{COLORS['card_alt']}" rx="14" opacity="0.55"/>
   <text x="68" y="{quote_y+30}" fill="{COLORS['text_sec']}" font-size="18">"</text>
-  <text x="84" y="{quote_y+32}" fill="{COLORS['text_pri']}" font-size="21" font-weight="600">{footer_quote}</text>
+  <text x="84" y="{quote_y+32}" fill="{COLORS['text_pri']}" font-size="21" font-weight="700">{footer_quote}</text>
   <text x="68" y="{quote_y+62}" fill="{COLORS['text_dim']}" font-size="16">— {footer_author}</text>
 
   <!-- 우측 하단 브랜딩 -->
@@ -167,7 +169,7 @@ def build_market_html(data: dict, date: str) -> str:
             points_svg += f"""
   <circle cx="60" cy="{y-6}" r="14" fill="{a['from']}"/>
   <text x="60" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="16" font-weight="800">{i+1}</text>
-  <text x="88" y="{y}" fill="{COLORS['text_pri']}" font-size="21" font-weight="600">{p}</text>"""
+  <text x="88" y="{y}" fill="{COLORS['text_pri']}" font-size="21" font-weight="700">{p}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
@@ -176,7 +178,7 @@ def build_market_html(data: dict, date: str) -> str:
 
   <!-- HERO 영역 -->
   <text x="48" y="280" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">{hero_value}</text>
-  <text x="48" y="328" fill="{COLORS['text_sec']}" font-size="24" font-weight="600">{hero_label}</text>
+  <text x="48" y="328" fill="{COLORS['text_sec']}" font-size="24" font-weight="700">{hero_label}</text>
 
   <!-- 우측 변동 표시 -->
   <polygon points="{SIZE-180},210 {SIZE-150},260 {SIZE-120},210" fill="{a['from']}" opacity="0.95"/>
@@ -275,7 +277,7 @@ def build_summary_html(data: dict, date: str) -> str:
   <circle cx="92" cy="{y+39}" r="26" fill="url(#accent)"/>
   <text x="92" y="{y+48}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="26" font-weight="900">{i+1}</text>
   <foreignObject x="138" y="{y+16}" width="{SIZE-200}" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">{p}</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">{p}</div>
   </foreignObject>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
@@ -320,7 +322,7 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
     if hero_value:
         hero_svg = f"""
   <text x="48" y="320" fill="url(#hero)" font-size="100" font-weight="900" filter="url(#glow)">{hero_value}</text>
-  <text x="48" y="358" fill="{COLORS['text_sec']}" font-size="18" font-weight="600">{hero_label}</text>"""
+  <text x="48" y="358" fill="{COLORS['text_sec']}" font-size="18" font-weight="700">{hero_label}</text>"""
         if hero_delta:
             hero_svg += f"""
   <text x="{SIZE-150}" y="335" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="800">{hero_delta}</text>"""
@@ -364,7 +366,7 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
             points_svg += f"""
   <circle cx="58" cy="{y-5}" r="11" fill="{a['from']}"/>
   <text x="58" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="13" font-weight="800">{i+1}</text>
-  <text x="80" y="{y}" fill="{COLORS['text_pri']}" font-size="16" font-weight="600">{p}</text>"""
+  <text x="80" y="{y}" fill="{COLORS['text_pri']}" font-size="16" font-weight="700">{p}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}

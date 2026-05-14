@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <style>
-  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic'), local('Nanum Gothic'), local('나눔고딕'); font-weight: 400; }
-  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 700; }
-  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'); font-weight: 800 900; }
+  /* 로컬 NanumGothic Bold/ExtraBold만 사용 — Regular(400)는 제거해서 항상 굵은 글자 보장 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'), local('나눔고딕 Bold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'), local('나눔고딕 ExtraBold'); font-weight: 800 900; }
+  /* 400 weight 요청 시에도 700으로 폴백 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 1 400; }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
   html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
   svg { width: 1080px; height: 1080px; display: block; }
@@ -49,37 +51,37 @@
   <circle cx="92" cy="419" r="26" fill="url(#accent)"/>
   <text x="92" y="428" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">1</text>
   <foreignObject x="138" y="396" width="880" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">코스피 7,828 장중 신고가, 일주일 +13%</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">코스피 7,828 장중 신고가, 일주일 +13%</div>
   </foreignObject>
   <rect x="48" y="472" width="984" height="78" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
   <circle cx="92" cy="511" r="26" fill="url(#accent)"/>
   <text x="92" y="520" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">2</text>
   <foreignObject x="138" y="488" width="880" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">Goldman 9,000, 일부 증권사 12,500 계산</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">Goldman 9,000, 일부 증권사 12,500 계산</div>
   </foreignObject>
   <rect x="48" y="564" width="984" height="78" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
   <circle cx="92" cy="603" r="26" fill="url(#accent)"/>
   <text x="92" y="612" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">3</text>
   <foreignObject x="138" y="580" width="880" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">롱텀 머니 2025-06 진입이 진짜 변화</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">롱텀 머니 2025-06 진입이 진짜 변화</div>
   </foreignObject>
   <rect x="48" y="656" width="984" height="78" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
   <circle cx="92" cy="695" r="26" fill="url(#accent)"/>
   <text x="92" y="704" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">4</text>
   <foreignObject x="138" y="672" width="880" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">트럼프 방중 5/13~15 확정</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">트럼프 방중 5/13~15 확정</div>
   </foreignObject>
   <rect x="48" y="748" width="984" height="78" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
   <circle cx="92" cy="787" r="26" fill="url(#accent)"/>
   <text x="92" y="796" text-anchor="middle" fill="#0F172A" font-size="26" font-weight="900">5</text>
   <foreignObject x="138" y="764" width="880" height="50">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:600;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">NBER 40년: 경험 많은 자가 더 틀린다</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:21px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:46px">NBER 40년: 경험 많은 자가 더 틀린다</div>
   </foreignObject>
 
   <!-- 인용구 박스 -->
   <rect x="48" y="950" width="984" height="78" fill="#1E3A5F" rx="14" opacity="0.55"/>
   <text x="68" y="980" fill="#94A3B8" font-size="18">"</text>
-  <text x="84" y="982" fill="#FFFFFF" font-size="21" font-weight="600">수급 데이터 > 목표가</text>
+  <text x="84" y="982" fill="#FFFFFF" font-size="21" font-weight="700">수급 데이터 > 목표가</text>
   <text x="68" y="1012" fill="#64748B" font-size="16">— 12시에 만나요</text>
 
   <!-- 우측 하단 브랜딩 -->
