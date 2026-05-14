@@ -99,18 +99,19 @@ def _header(date: str, label: str, title: str, accent_from: str, accent_to: str)
 """
 
 
-def _footer(footer_quote: str, footer_author: str) -> str:
-    """공통 푸터 — 인용구 박스 + 브랜딩."""
-    quote_y = SIZE - 130
+def _footer(footer_quote: str, footer_author: str, accent_from: str = "#3B82F6") -> str:
+    """공통 푸터 — 인용구 박스 + 브랜딩. 강조형 카드(좌측 accent 막대 + 흰색 큰 인용)."""
+    quote_y = SIZE - 170
     return f"""
   <!-- 인용구 박스 -->
-  <rect x="48" y="{quote_y}" width="{SIZE-96}" height="78" fill="{COLORS['card_alt']}" rx="14" opacity="0.55"/>
-  <text x="68" y="{quote_y+30}" fill="{COLORS['text_sec']}" font-size="22">"</text>
-  <text x="84" y="{quote_y+32}" fill="{COLORS['text_pri']}" font-size="25" font-weight="700">{footer_quote}</text>
-  <text x="68" y="{quote_y+62}" fill="{COLORS['text_dim']}" font-size="19">— {footer_author}</text>
+  <rect x="48" y="{quote_y}" width="{SIZE-96}" height="120" fill="{COLORS['card_alt']}" rx="16" opacity="0.75"/>
+  <rect x="48" y="{quote_y}" width="6" height="120" fill="{accent_from}" rx="3"/>
+  <text x="76" y="{quote_y+44}" fill="{accent_from}" font-size="38" font-weight="900">"</text>
+  <text x="104" y="{quote_y+50}" fill="#FFFFFF" font-size="32" font-weight="800">{footer_quote}</text>
+  <text x="76" y="{quote_y+92}" fill="{COLORS['text_sec']}" font-size="20" font-weight="700">— {footer_author}</text>
 
   <!-- 우측 하단 브랜딩 -->
-  <text x="{SIZE-48}" y="{SIZE-24}" text-anchor="end" fill="{COLORS['border']}" font-size="17" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+  <text x="{SIZE-48}" y="{SIZE-22}" text-anchor="end" fill="{COLORS['text_dim']}" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
 """
 
 
@@ -136,40 +137,50 @@ def build_market_html(data: dict, date: str) -> str:
 
     # 카드 3개 (가로 배치, 카드 사이 간격 16px)
     card_w = (SIZE - 96 - 32) / 3  # 외곽 padding 48*2 = 96, 카드 사이 16*2 = 32
-    cards_y = 370
+    cards_y = 380
+    card_h = 180
     cards_svg = ""
     for i, s in enumerate(sub):
         x = 48 + i * (card_w + 16)
         cards_svg += f"""
-  <rect x="{x}" y="{cards_y}" width="{card_w}" height="190" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
-  <text x="{x+card_w/2}" y="{cards_y+44}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="20" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+118}" text-anchor="middle" fill="{a['from']}" font-size="62" font-weight="900">{s.get('value','—')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+162}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="19">{s.get('delta','')}</text>"""
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="{card_h}" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
+  <text x="{x+card_w/2}" y="{cards_y+40}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="19" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+112}" text-anchor="middle" fill="{a['from']}" font-size="58" font-weight="900">{s.get('value','—')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+154}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="18">{s.get('delta','')}</text>"""
 
-    # 칩 (5개) — 카드 아래
-    chip_y = cards_y + 150
+    # 칩 (5개) — 카드 끝나는 곳 아래 (자동 줄바꿈)
+    chip_y = cards_y + card_h + 24
     chip_x = 48
+    chip_h = 42
+    chip_max_x = SIZE - 48
     chips_svg = ""
     if chips:
         for c in chips:
-            chip_w = len(c) * 14 + 36
+            chip_w = max(len(c) * 16 + 32, 80)
+            # 줄바꿈
+            if chip_x + chip_w > chip_max_x:
+                chip_x = 48
+                chip_y += chip_h + 10
             chips_svg += f"""
-  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="46" fill="{a['from']}1A" rx="23" stroke="{a['from']}44" stroke-width="1"/>
-  <text x="{chip_x+chip_w/2}" y="{chip_y+26}" text-anchor="middle" fill="{a['from']}" font-size="19" font-weight="700">{c}</text>"""
-            chip_x += chip_w + 8
+  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="{chip_h}" fill="{a['from']}1A" rx="21" stroke="{a['from']}55" stroke-width="1"/>
+  <text x="{chip_x+chip_w/2}" y="{chip_y+27}" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="700">{c}</text>"""
+            chip_x += chip_w + 10
+        chip_bottom = chip_y + chip_h
+    else:
+        chip_bottom = chip_y
 
     # 주요 포인트 3개 — 칩 아래
-    points_y = chip_y + 60
+    points_y = chip_bottom + 36
     points_svg = ""
     if points:
         points_svg = f"""
-  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="20" font-weight="700" letter-spacing="2">주요 포인트</text>"""
+  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="19" font-weight="700" letter-spacing="2">주요 포인트</text>"""
         for i, p in enumerate(points):
-            y = points_y + 40 + i * 44
+            y = points_y + 42 + i * 42
             points_svg += f"""
-  <circle cx="60" cy="{y-6}" r="14" fill="{a['from']}"/>
-  <text x="60" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="19" font-weight="800">{i+1}</text>
-  <text x="88" y="{y}" fill="{COLORS['text_pri']}" font-size="25" font-weight="700">{p}</text>"""
+  <circle cx="60" cy="{y-7}" r="14" fill="{a['from']}"/>
+  <text x="60" y="{y-2}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="18" font-weight="800">{i+1}</text>
+  <text x="86" y="{y}" fill="{COLORS['text_pri']}" font-size="23" font-weight="700">{p}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
@@ -177,17 +188,17 @@ def build_market_html(data: dict, date: str) -> str:
 {_header(date, a['label'], title, a['from'], a['to'])}
 
   <!-- HERO 영역 -->
-  <text x="48" y="280" fill="url(#hero)" font-size="144" font-weight="900" filter="url(#glow)">{hero_value}</text>
-  <text x="48" y="328" fill="{COLORS['text_sec']}" font-size="29" font-weight="700">{hero_label}</text>
+  <text x="48" y="270" fill="url(#hero)" font-size="118" font-weight="900" filter="url(#glow)">{hero_value}</text>
+  <text x="48" y="318" fill="{COLORS['text_sec']}" font-size="24" font-weight="700">{hero_label}</text>
 
   <!-- 우측 변동 표시 -->
-  <polygon points="{SIZE-180},210 {SIZE-150},260 {SIZE-120},210" fill="{a['from']}" opacity="0.95"/>
-  <text x="{SIZE-150}" y="300" text-anchor="middle" fill="{a['from']}" font-size="26" font-weight="800">{hero_delta}</text>
+  <polygon points="{SIZE-180},220 {SIZE-150},270 {SIZE-120},220" fill="{a['from']}" opacity="0.95"/>
+  <text x="{SIZE-150}" y="312" text-anchor="middle" fill="{a['from']}" font-size="22" font-weight="800">{hero_delta}</text>
 
   {cards_svg}
   {chips_svg}
   {points_svg}
-{_footer(footer_q or '오늘의 시장은 숫자가 말한다', footer_a)}
+{_footer(footer_q or '오늘의 시장은 숫자가 말한다', footer_a, a['from'])}
 </svg>"""
     return html_doc(svg)
 
@@ -243,7 +254,7 @@ def build_psychology_html(data: dict, date: str) -> str:
   {hero_svg}
   {cards_svg}
   {correction_svg}
-{_footer(footer_q or '오르는 시장도, 빠지는 시장도 — 결국 심리가 결정한다', footer_a)}
+{_footer(footer_q or '오르는 시장도, 빠지는 시장도 — 결국 심리가 결정한다', footer_a, a['from'])}
 </svg>"""
     return html_doc(svg)
 
@@ -286,7 +297,7 @@ def build_summary_html(data: dict, date: str) -> str:
 {_header(date, a['label'], title, a['from'], a['to'])}
   {hero_svg}
   {pts_svg}
-{_footer(footer_q or '오늘 배운 것을 내일 매매에 반영한다', footer_a)}
+{_footer(footer_q or '오늘 배운 것을 내일 매매에 반영한다', footer_a, a['from'])}
 </svg>"""
     return html_doc(svg)
 
@@ -329,6 +340,7 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
 
     # 카드 (있을 때만, 1~4개)
     cards_y = 400 if hero_value else 260
+    card_h = 150
     cards_svg = ""
     n = len(stats)
     if n > 0:
@@ -338,35 +350,43 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
         for i, s in enumerate(stats):
             x = 48 + i * (card_w + gap)
             cards_svg += f"""
-  <rect x="{x}" y="{cards_y}" width="{card_w}" height="120" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
-  <text x="{x+card_w/2}" y="{cards_y+30}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="16" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+76}" text-anchor="middle" fill="{a['from']}" font-size="46" font-weight="900">{s.get('value','—')}</text>
-  <text x="{x+card_w/2}" y="{cards_y+103}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="16">{s.get('delta','')}</text>"""
+  <rect x="{x}" y="{cards_y}" width="{card_w}" height="{card_h}" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
+  <text x="{x+card_w/2}" y="{cards_y+36}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="17" font-weight="700" letter-spacing="2">{s.get('label','')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+96}" text-anchor="middle" fill="{a['from']}" font-size="48" font-weight="900">{s.get('value','—')}</text>
+  <text x="{x+card_w/2}" y="{cards_y+130}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="17">{s.get('delta','')}</text>"""
 
-    # 칩
-    chip_y = cards_y + (150 if stats else 0)
+    # 칩 (자동 줄바꿈)
+    chip_y = cards_y + card_h + 24 if stats else cards_y
     chip_x = 48
+    chip_h = 42
+    chip_max_x = SIZE - 48
     chips_svg = ""
     if chips:
         for c in chips:
-            chip_w = len(c) * 14 + 36
+            chip_w = max(len(c) * 16 + 32, 80)
+            if chip_x + chip_w > chip_max_x:
+                chip_x = 48
+                chip_y += chip_h + 10
             chips_svg += f"""
-  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="46" fill="{a['from']}1A" rx="23" stroke="{a['from']}44" stroke-width="1"/>
-  <text x="{chip_x+chip_w/2}" y="{chip_y+26}" text-anchor="middle" fill="{a['from']}" font-size="19" font-weight="700">{c}</text>"""
-            chip_x += chip_w + 8
+  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="{chip_h}" fill="{a['from']}1A" rx="21" stroke="{a['from']}55" stroke-width="1"/>
+  <text x="{chip_x+chip_w/2}" y="{chip_y+27}" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="700">{c}</text>"""
+            chip_x += chip_w + 10
+        chip_bottom = chip_y + chip_h
+    else:
+        chip_bottom = chip_y
 
     # 포인트
-    points_y = chip_y + (60 if chips else 30)
+    points_y = chip_bottom + (36 if chips else 30)
     points_svg = ""
     if points:
         points_svg = f"""
-  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="16" font-weight="700" letter-spacing="2">주요 포인트</text>"""
+  <text x="48" y="{points_y}" fill="{COLORS['text_dim']}" font-size="17" font-weight="700" letter-spacing="2">주요 포인트</text>"""
         for i, p in enumerate(points):
-            y = points_y + 32 + i * 36
+            y = points_y + 38 + i * 40
             points_svg += f"""
-  <circle cx="58" cy="{y-5}" r="11" fill="{a['from']}"/>
-  <text x="58" y="{y-1}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="16" font-weight="800">{i+1}</text>
-  <text x="80" y="{y}" fill="{COLORS['text_pri']}" font-size="19" font-weight="700">{p}</text>"""
+  <circle cx="60" cy="{y-7}" r="13" fill="{a['from']}"/>
+  <text x="60" y="{y-2}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="17" font-weight="800">{i+1}</text>
+  <text x="84" y="{y}" fill="{COLORS['text_pri']}" font-size="21" font-weight="700">{p}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
@@ -376,7 +396,7 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
   {cards_svg}
   {chips_svg}
   {points_svg}
-{_footer(footer_q or a['kor'] + ' 한 줄', footer_a)}
+{_footer(footer_q or a['kor'] + ' 한 줄', footer_a, a['from'])}
 </svg>"""
     return html_doc(svg)
 
