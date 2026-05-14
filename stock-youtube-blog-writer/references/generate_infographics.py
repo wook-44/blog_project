@@ -446,8 +446,11 @@ def convert_html_to_png(html_path: Path, png_path: Path) -> str:
         return "playwright"
     if html_to_png_via_chrome(html_path, png_path):
         return "chrome-headless"
-    html_to_png_fallback(html_path, png_path)
-    return "fallback"
+    # ❗ 한글 깨진 fallback PNG가 GDrive/Git에 올라가는 사고 방지
+    # — Chrome 미설치 환경(샌드박스/CI)에선 PNG를 만들지 않음
+    # 사용자가 Mac에서 별도 Chrome headless 실행 필요
+    print(f"  ⚠️ Chrome 미설치 — {png_path.name} 생성 스킵 (Mac에서 별도 변환 필요)")
+    return "skipped-no-chrome"
 
 
 # ── 메인 생성 ─────────────────────────────────────────────────
