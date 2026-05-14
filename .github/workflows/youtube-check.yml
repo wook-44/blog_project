@@ -2,8 +2,11 @@ name: YouTube Playlist Check
 
 on:
   schedule:
-    # 매일 17:00 KST = 08:00 UTC
-    - cron: "0 8 * * *"
+    # GitHub Free 계정 cron은 1~3시간 지연이 흔함.
+    # Mac launchd가 17:30 KST에 실행되므로, 그 전에 영상 push가 완료되도록 일찍 잡는다.
+    # 영상은 보통 KST 12~13시 사이 업로드 → 14:00 KST부터 가능.
+    - cron: "0 5 * * *"   # KST 14:00 (UTC 05:00) — 1차 (영상 업로드 직후)
+    - cron: "0 7 * * *"   # KST 16:00 (UTC 07:00) — 2차 백업 (launchd 30분 전)
   workflow_dispatch:
 
 permissions:

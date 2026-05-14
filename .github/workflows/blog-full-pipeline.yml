@@ -1,11 +1,6 @@
 name: ð ì£¼ì ë¸ë¡ê·¸ ìë í¬ì¤í íì´íë¼ì¸
 
 on:
-  # ê¸°ì¡´ youtube-check.yml ìí¬íë¡ì° ìë£ í ìë ì¤í
-  workflow_run:
-    workflows: ["YouTube íë ì´ë¦¬ì¤í¸ ì²´í¬"]
-    types:
-      - completed
 
   # ìë ì¤í (í¹ì  íë«í¼ë§ ì í ê°ë¥)
   workflow_dispatch:
@@ -18,10 +13,6 @@ on:
         description: 'ìì ì ë³´ JSON ê²½ë¡ (ê¸°ë³¸: output/latest_video.json)'
         required: false
         default: 'output/latest_video.json'
-
-  # ë§¤ì¼ 09:00 KST (00:00 UTC) â youtube-check.ymlì´ 08:00ì ì¤íëë¯ë¡ 1ìê° í
-  schedule:
-    - cron: '0 0 * * *'
 
 env:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

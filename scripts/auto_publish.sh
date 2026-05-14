@@ -101,14 +101,18 @@ if [ "${SKIP_GDRIVE:-0}" != "1" ]; then
     mkdir -p "$TARGET"
     echo "  📂 대상: $TARGET"
 
-    # 본문 .md (해당 날짜)
+    # 본문 .md (해당 날짜) — set -u 환경에서 안전하게 처리
     COUNT_MD=0
+    shopt -s nullglob
     for f in "$BLOG"/${DATE}*.md; do
-      [ -f "$f" ] && [[ "$f" != *.bak ]] && {
-        cp "$f" "$TARGET/" && COUNT_MD=$((COUNT_MD+1))
-      }
+      if [ -f "$f" ] && [[ "$f" != *.bak ]]; then
+        cp "$f" "$TARGET/" && COUNT_MD=$((COUNT_MD + 1))
+      fi
     done
-    [ "$COUNT_MD" -gt 0 ] && echo "  · 본문 .md $COUNT_MD개"
+    shopt -u nullglob
+    if [ "${COUNT_MD:-0}" -gt 0 ]; then
+      echo "  · 본문 .md ${COUNT_MD}개"
+    fi
 
     # 인포그래픽 PNG
     if [ -d "$BLOG/images/$DATE" ]; then
