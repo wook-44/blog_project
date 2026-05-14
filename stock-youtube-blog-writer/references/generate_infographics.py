@@ -135,6 +135,18 @@ def build_market_html(data: dict, date: str) -> str:
     hero_label = hero.get("label", "")
     hero_value = hero.get("value", "—")
 
+    # 방향 자동 판정: 하락 키워드/부호 없으면 ▲ 상승
+    _dir_str = f"{hero_delta} {hero_value} {hero_label}"
+    is_down = any(k in _dir_str for k in ['▼', '↓', '하락', '폭락', '급락']) or _dir_str.lstrip().startswith('-')
+    # delta 텍스트에서 ▲/▼ 글리프 제거 (폴리곤이 이미 표시)
+    hero_delta_clean = hero_delta.replace('▲', '').replace('▼', '').strip()
+    if is_down:
+        _poly_pts = f"{SIZE-180},220 {SIZE-120},220 {SIZE-150},275"
+        _poly_color = "#EF4444"
+    else:
+        _poly_pts = f"{SIZE-180},275 {SIZE-120},275 {SIZE-150},220"
+        _poly_color = a['from']
+
     # 카드 3개 (가로 배치, 카드 사이 간격 16px)
     card_w = (SIZE - 96 - 32) / 3  # 외곽 padding 48*2 = 96, 카드 사이 16*2 = 32
     cards_y = 380
@@ -191,9 +203,9 @@ def build_market_html(data: dict, date: str) -> str:
   <text x="48" y="270" fill="url(#hero)" font-size="118" font-weight="900" filter="url(#glow)">{hero_value}</text>
   <text x="48" y="318" fill="{COLORS['text_sec']}" font-size="24" font-weight="700">{hero_label}</text>
 
-  <!-- 우측 변동 표시 -->
-  <polygon points="{SIZE-180},220 {SIZE-150},270 {SIZE-120},220" fill="{a['from']}" opacity="0.95"/>
-  <text x="{SIZE-150}" y="312" text-anchor="middle" fill="{a['from']}" font-size="22" font-weight="800">{hero_delta}</text>
+  <!-- 우측 변동 표시 (방향 자동 분기) -->
+  <polygon points="{_poly_pts}" fill="{_poly_color}" opacity="0.95"/>
+  <text x="{SIZE-150}" y="312" text-anchor="middle" fill="{_poly_color}" font-size="22" font-weight="800">{hero_delta_clean}</text>
 
   {cards_svg}
   {chips_svg}
