@@ -31,24 +31,34 @@ if [ "${SKIP_GIT:-0}" != "1" ]; then
 
   rm -f .git/index.lock .git/HEAD.lock 2>/dev/null
 
-  # 변경 상태 분석
-  CHANGED=$(git status --short | wc -l | tr -d ' ')
-  if [ "$CHANGED" -eq 0 ]; then
+  # 변경 상태 분석 — 워킹트리 변경 + 미푸시 commit 둘 다 체크
+  UNCOMMITTED=$(git status --short | wc -l | tr -d ' ')
+  UNPUSHED=$(git rev-list '@{u}..HEAD' 2>/dev/null | wc -l | tr -d ' ')
+  UNPUSHED="${UNPUSHED:-0}"
+
+  if [ "$UNCOMMITTED" -eq 0 ] && [ "$UNPUSHED" -eq 0 ]; then
     echo "  ℹ️  변경 없음 — 푸시 스킵"
   else
-    git add -A
+    if [ "$UNCOMMITTED" -gt 0 ]; then
+      git add -A
 
-    # 변경 파일 요약
-    NEW_MD=$(git diff --cached --name-only --diff-filter=A | grep -E "^${DATE}.*\.md$" | head -1)
-    NEW_PNG=$(git diff --cached --name-only | grep -E "images/${DATE}/.*\.png$" | wc -l | tr -d ' ')
-    NEW_HTML=$(git diff --cached --name-only | grep -E "output/${DATE}.*\.html$" | wc -l | tr -d ' ')
+      # 변경 파일 요약
+      NEW_MD=$(git diff --cached --name-only --diff-filter=A | grep -E "^${DATE}.*\.md$" | head -1)
+      NEW_PNG=$(git diff --cached --name-only | grep -E "images/${DATE}/.*\.png$" | wc -l | tr -d ' ')
+      NEW_HTML=$(git diff --cached --name-only | grep -E "output/${DATE}.*\.html$" | wc -l | tr -d ' ')
+      NEW_MD="${NEW_MD:-}"
+      NEW_PNG="${NEW_PNG:-0}"
+      NEW_HTML="${NEW_HTML:-0}"
 
-    MSG="${PREFIX}: ${DATE}"
-    [ -n "$NEW_MD" ] && MSG="${MSG} 본문"
-    [ "$NEW_PNG" -gt 0 ] && MSG="${MSG} +PNG ${NEW_PNG}장"
-    [ "$NEW_HTML" -gt 0 ] && MSG="${MSG} +copy_tool"
+      MSG="${PREFIX}: ${DATE}"
+      [ -n "$NEW_MD" ] && MSG="${MSG} 본문"
+      [ "$NEW_PNG" -gt 0 ] && MSG="${MSG} +PNG ${NEW_PNG}장"
+      [ "$NEW_HTML" -gt 0 ] && MSG="${MSG} +copy_tool"
 
-    git commit -m "$MSG" 2>&1 | tail -1
+      git commit -m "$MSG" 2>&1 | tail -1
+    else
+      echo "  ℹ️  워킹트리 깨끗 — 미푸시 commit ${UNPUSHED}개만 푸시"
+    fi
 
     echo "  🚀 push 중..."
     if git push origin main 2>&1 | tail -3; then
@@ -115,19 +125,20 @@ if [ "${SKIP_GDRIVE:-0}" != "1" ]; then
     fi
 
     # 인포그래픽 PNG
+    COUNT_PNG=0
     if [ -d "$BLOG/images/$DATE" ]; then
       PNG_DIR="$TARGET/images"
       mkdir -p "$PNG_DIR"
-      cp "$BLOG/images/$DATE"/*.png "$PNG_DIR/" 2>/dev/null
+      cp "$BLOG/images/$DATE"/*.png "$PNG_DIR/" 2>/dev/null || true
       COUNT_PNG=$(ls "$PNG_DIR"/*.png 2>/dev/null | wc -l | tr -d ' ')
-      echo "  · PNG $COUNT_PNG장"
+      COUNT_PNG="${COUNT_PNG:-0}"
+      [ "$COUNT_PNG" -gt 0 ] && echo "  · PNG ${COUNT_PNG}장"
     fi
 
     # copy_tool.html
     COPY_TOOL="$BLOG/output/${DATE}_copy_tool.html"
     if [ -f "$COPY_TOOL" ]; then
-      cp "$COPY_TOOL" "$TARGET/"
-      echo "  · copy_tool.html"
+      cp "$COPY_TOOL" "$TARGET/" && echo "  · copy_tool.html"
     fi
 
     echo "  ✅ 미러링 완료 (구글 드라이브 앱이 자동 업로드)"
