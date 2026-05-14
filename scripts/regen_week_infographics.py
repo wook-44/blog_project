@@ -26,8 +26,10 @@ def extract_data(md_path: Path) -> dict:
 def find_post(date_str: str) -> Path:
     candidates = list(BLOG_DIR.glob(f"{date_str}-*.md"))
     candidates = [p for p in candidates if not p.name.endswith(".bak")]
+    # INFOGRAPHIC_DATA 주석을 가진 파일만 후보
+    candidates = [p for p in candidates if "INFOGRAPHIC_DATA:" in p.read_text(encoding="utf-8", errors="ignore")]
     if not candidates:
-        raise SystemExit(f"{date_str} .md 없음")
+        raise SystemExit(f"{date_str} INFOGRAPHIC_DATA .md 없음")
     return candidates[0]
 
 
