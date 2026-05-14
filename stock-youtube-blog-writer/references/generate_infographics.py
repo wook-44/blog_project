@@ -244,7 +244,7 @@ def build_psychology_html(data: dict, date: str) -> str:
   <text x="{x+card_w/2}" y="{cards_y+82}" text-anchor="middle" font-size="53">{['😱','🤯','😩'][i] if i<3 else '⚠️'}</text>
   <text x="{x+card_w/2}" y="{cards_y+158}" text-anchor="middle" fill="{a['from']}" font-size="29" font-weight="800">{t.get('name','함정')}</text>
   <foreignObject x="{x+16}" y="{cards_y+182}" width="{card_w-32}" height="96">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:{COLORS['text_sec']};font-size:20px;line-height:1.45;text-align:center;font-family:NanumGothic,sans-serif">{t.get('desc','')}</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:{COLORS['text_sec']};font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{t.get('desc','')}</div>
   </foreignObject>"""
 
     # 교정 카드 (큰 카드, 함정 아래)
@@ -253,7 +253,7 @@ def build_psychology_html(data: dict, date: str) -> str:
   <rect x="48" y="{cor_y}" width="{SIZE-96}" height="160" fill="{a['to']}1A" rx="16" stroke="{a['to']}66" stroke-width="2"/>
   <text x="80" y="{cor_y+48}" fill="{a['to']}" font-size="20" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
   <foreignObject x="80" y="{cor_y+62}" width="{SIZE-160}" height="92">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:31px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif">{correction}</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:31px;font-weight:700;line-height:1.45;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{correction}</div>
   </foreignObject>"""
 
     # Hero 메시지 (헤더 아래, 함정 위)
@@ -290,7 +290,7 @@ def build_summary_html(data: dict, date: str) -> str:
   <rect x="48" y="200" width="{SIZE-96}" height="160" fill="{a['from']}1A" rx="18" stroke="{a['from']}66" stroke-width="2"/>
   <text x="80" y="244" fill="{a['from']}" font-size="20" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
   <foreignObject x="80" y="260" width="{SIZE-160}" height="94">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:36px;font-weight:800;line-height:1.35;font-family:NanumGothic,sans-serif">{hero_takeaway}</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:36px;font-weight:800;line-height:1.4;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{hero_takeaway}</div>
   </foreignObject>"""
 
     # 5 포인트 (큰 번호 + 텍스트, 컴팩트 리스트)
@@ -303,7 +303,7 @@ def build_summary_html(data: dict, date: str) -> str:
   <circle cx="92" cy="{y+46}" r="30" fill="url(#accent)"/>
   <text x="92" y="{y+57}" text-anchor="middle" fill="{COLORS['bg_start']}" font-size="31" font-weight="900">{i+1}</text>
   <foreignObject x="142" y="{y+18}" width="{SIZE-204}" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px">{p}</div>
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">{p}</div>
   </foreignObject>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
