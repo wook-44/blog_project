@@ -186,7 +186,7 @@
 - [ ] 태그 30개 이상, 롱테일 10개 이상
 - [ ] 본문 공백포함 2,200자 이상
 - [ ] 투자 주의 문구 존재
-- [ ] 인포그래픽 3종(market/psychology/summary) 존재, insight PNG 없음
+- [ ] 인포그래픽 필수 3종(market/psychology/summary) 존재, 선택 0~2종(outlook/sector/risk/checklist) 영상 내용에 부합할 때 추가, insight PNG 없음
 
 **70점 미만 = 발행 차단**.
 

@@ -30,13 +30,55 @@ def find_md_file(date_str: str) -> Path:
     return candidates[0]
 
 
-def find_png_files(date_str: str) -> list[Path]:
-    """images/YYYY-MM-DD/ 에서 PNG 파일 목록 (정렬, insight 제외)"""
+# 인포그래픽 키 → 본문 헤더 정규식 매핑.
+# 본문 작성 가이드(SKILL.md)의 헤더 표기를 그대로 따른다.
+KEY_HEADER_PATTERNS = [
+    ("market",     r"^##\s+.*시장 분석.*$"),
+    ("psychology", r"^##\s+.*투자 심리.*$"),
+    ("summary",    r"^##\s+.*핵심 포인트.*$"),
+    # 선택 섹션 (영상 비중에 따라 들어옴)
+    ("outlook",    r"^##\s+.*(?:전망|관전 포인트|시나리오).*$"),
+    ("sector",     r"^##\s+.*(?:섹터|업종).*$"),
+    ("risk",       r"^##\s+.*(?:리스크|위험|회피).*$"),
+    ("checklist",  r"^##\s+.*(?:체크리스트|적용할 점|실행 체크).*$"),
+]
+
+
+def png_key(p: Path) -> str:
+    """파일명에서 키 추출. 2026-05-14-outlook.png → 'outlook'."""
+    m = re.search(r"-([a-z_]+)\.png$", p.name)
+    return m.group(1) if m else p.stem
+
+
+def find_png_files(date_str: str, md_text: str = "") -> list[Path]:
+    """images/YYYY-MM-DD/ PNG 목록.
+    md_text가 주어지면 본문 헤더 등장 순서대로 정렬, 매칭 안 되는 키는 뒤에 alphabetical.
+    md_text 없으면 단순 alphabetical (기존 동작).
+    """
     img_dir = BASE / "images" / date_str
     if not img_dir.exists():
         return []
-    pngs = sorted(p for p in img_dir.glob("*.png") if "insight" not in p.name)
-    return pngs
+    pngs = [p for p in img_dir.glob("*.png") if "insight" not in p.name]
+    if not md_text:
+        return sorted(pngs)
+
+    # 본문에서 각 키 헤더의 라인 인덱스 찾기
+    lines = md_text.split("\n")
+    key_pos = {}
+    pat_map = dict(KEY_HEADER_PATTERNS)
+    for key, pat in KEY_HEADER_PATTERNS:
+        for i, ln in enumerate(lines):
+            if re.match(pat, ln):
+                key_pos[key] = i
+                break
+
+    def sort_key(p: Path):
+        k = png_key(p)
+        if k in key_pos:
+            return (0, key_pos[k], p.name)
+        return (1, 0, p.name)
+
+    return sorted(pngs, key=sort_key)
 
 
 def extract_insight(md_text: str) -> str:
@@ -210,23 +252,52 @@ def strip_appendix_sections(md_text: str) -> str:
     return text
 
 
-def inject_image_markers(md_text: str) -> str:
-    """본문 안에 이미지 삽입 마커 추가. ## 시장 분석 등 키워드 헤더 직후."""
-    markers = [
-        (r"^(##\s+.*시장 분석.*)$", "이미지 1 여기에 붙여넣기"),
-        (r"^(##\s+.*투자 심리.*)$", "이미지 2 여기에 붙여넣기"),
-        (r"^(##\s+.*핵심 포인트.*)$", "이미지 3 여기에 붙여넣기"),
-    ]
+def inject_image_markers(md_text: str, pngs: list[Path]) -> str:
+    """본문에 이미지 삽입 마커 추가 (3~5장 가변).
+    - pngs는 본문 헤더 순서대로 정렬돼 있다고 가정 (find_png_files 결과).
+    - 각 PNG 키 → KEY_HEADER_PATTERNS의 헤더 정규식 매칭 → 헤더 직후에 placeholder.
+    - 헤더 매칭이 안 되는 키는 본문 끝(태그 직전)에 묶어서 추가.
+    - 마커 번호는 pngs 순서대로 1, 2, 3, ... (copy_tool 이미지 버튼과 동일 순서).
+    """
+    if not pngs:
+        return md_text
+
+    pat_map = dict(KEY_HEADER_PATTERNS)
+
+    matched = []   # (num, key, pattern)
+    unmatched = [] # (num, key)
+    for num, p in enumerate(pngs, 1):
+        k = png_key(p)
+        if k in pat_map:
+            matched.append((num, k, pat_map[k]))
+        else:
+            unmatched.append((num, k))
+
     lines = md_text.split("\n")
     out = []
+    inserted = set()
     for line in lines:
         out.append(line)
-        for pat, label in markers:
+        for num, key, pat in matched:
+            if key in inserted:
+                continue
             if re.match(pat, line):
                 out.append("")
-                out.append(f"> 🖼️ {label}")
+                out.append(f"> 🖼️ 이미지 {num} 여기에 붙여넣기")
                 out.append("")
+                inserted.add(key)
                 break
+
+    # 본문에서 헤더를 못 찾은 키 (선택 섹션이지만 별도 헤더 없는 경우 + unmatched)
+    leftover = [(num, key) for num, key, _ in matched if key not in inserted]
+    leftover.extend(unmatched)
+    if leftover:
+        # 묶음 블록 — 어느 위치인지 명시
+        block = "\n\n> 🖼️ 아래는 본문 헤더에 직접 매칭되지 않은 추가 이미지(영상 보조 시각화 — 본문 어느 위치에 넣어도 OK):\n"
+        for num, key in leftover:
+            block += f"> · 이미지 {num} ({key}) 여기에 붙여넣기\n"
+        out.append(block)
+
     return "\n".join(out)
 
 
@@ -600,9 +671,17 @@ def main():
         pass
     print(f"📝 제목: {title}")
 
-    # 본문 HTML 변환 (부록 영상정보 + 태그 섹션 제거 + 이미지 삽입 마커 추가)
+    # 본문 정리 (부록 영상정보 + 태그 섹션 제거)
     body_md = strip_appendix_sections(md_text)
-    body_md = inject_image_markers(body_md)
+
+    # PNG 파일 찾기 — 본문 헤더 등장 순서대로 정렬
+    png_files = find_png_files(date_str, body_md)
+    print(f"🖼️  이미지: {len(png_files)}개 (본문 헤더 순서)")
+    for p in png_files:
+        print(f"   {p.name}")
+
+    # 이미지 삽입 마커 — pngs 순서대로 1, 2, 3, ... 번호
+    body_md = inject_image_markers(body_md, png_files)
     body_html = md_to_html_body(body_md)
 
     # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가
@@ -615,12 +694,6 @@ def main():
             '</p>'
         )
         print(f"💡 인사이트: {insight_text[:60]}...")
-
-    # PNG 파일 찾기
-    png_files = find_png_files(date_str)
-    print(f"🖼️  이미지: {len(png_files)}개")
-    for p in png_files:
-        print(f"   {p.name}")
 
     # 태그 추출
     tags = extract_tags(md_text)
@@ -636,6 +709,24 @@ def main():
     out_path.write_text(html, encoding="utf-8")
     print(f"\n✅ 저장 완료: output/{out_path.name}")
     print(f"   파일 크기: {out_path.stat().st_size / 1024:.0f} KB")
+
+    # 텔레그램 보고 (.telegram_config + notify.py 존재 시)
+    try:
+        notify_script = BASE / "notify.py"
+        config = BASE / ".telegram_config"
+        if notify_script.exists() and config.exists():
+            import subprocess
+            msg = (
+                f"📋 <b>copy_tool 생성 완료</b>\n"
+                f"{date_str} · 이미지 {len(png_files)}장 · 태그 {len(tags)}개\n"
+                f"<code>output/{out_path.name}</code>"
+            )
+            subprocess.run(
+                ["python3", str(notify_script), msg],
+                check=False, capture_output=True, timeout=20,
+            )
+    except Exception:
+        pass  # 알림 실패해도 본 작업은 정상 종료
 
 
 if __name__ == "__main__":

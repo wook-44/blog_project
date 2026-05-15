@@ -20,14 +20,23 @@ set -u
 MSG="${1:-알림 없음}"
 BLOG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# .env 로드
+# .env 로드 (우선순위 1)
 if [ -f "$BLOG_DIR/.env" ]; then
   set -a; source "$BLOG_DIR/.env"; set +a
 fi
 
+# .telegram_config 폴백 (우선순위 2) — BOT_TOKEN/CHAT_ID → TELEGRAM_* 매핑
 if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
-  echo "  ℹ️  텔레그램 알림 스킵 — TELEGRAM_BOT_TOKEN/CHAT_ID 미설정"
-  echo "      셋업 가이드: bash $0 (인자 없이 실행)"
+  if [ -f "$BLOG_DIR/.telegram_config" ]; then
+    _BT=$(grep '^BOT_TOKEN=' "$BLOG_DIR/.telegram_config" | cut -d= -f2-)
+    _CI=$(grep '^CHAT_ID=' "$BLOG_DIR/.telegram_config" | cut -d= -f2-)
+    TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-$_BT}"
+    TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID:-$_CI}"
+  fi
+fi
+
+if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
+  echo "  ℹ️  텔레그램 알림 스킵 — TELEGRAM_BOT_TOKEN/CHAT_ID 미설정 (.env 또는 .telegram_config)"
   exit 0
 fi
 

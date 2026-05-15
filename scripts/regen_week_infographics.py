@@ -42,22 +42,50 @@ def daterange(start: str, end: str):
         cur += timedelta(days=1)
 
 
+def notify_telegram(msg: str):
+    """텔레그램 보고 (있을 때만, 실패 무시)."""
+    try:
+        notify_script = BLOG_DIR / "notify.py"
+        config = BLOG_DIR / ".telegram_config"
+        if not (notify_script.exists() and config.exists()):
+            return
+        import subprocess
+        subprocess.run(
+            ["python3", str(notify_script), msg],
+            check=False, capture_output=True, timeout=20,
+        )
+    except Exception:
+        pass
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("start", help="시작일 YYYY-MM-DD")
     ap.add_argument("end", help="종료일 YYYY-MM-DD")
     args = ap.parse_args()
 
+    processed = []
+    skipped = []
     for d in daterange(args.start, args.end):
         try:
             md = find_post(d)
         except SystemExit:
             print(f"  ⚠️  {d} 건너뜀 (md 없음)")
+            skipped.append(d)
             continue
         data = extract_data(md)
         out_dir = BLOG_DIR / "images" / d
         print(f"\n📅 {d}  ← {md.name}")
-        generate_all(d, data, out_dir)
+        results = generate_all(d, data, out_dir)
+        processed.append((d, len(results)))
+
+    # 텔레그램 보고
+    if processed:
+        body = "\n".join(f"· {d} → {n}장" for d, n in processed)
+        msg = f"🎨 <b>인포그래픽 HTML 생성 완료</b>\n{body}"
+        if skipped:
+            msg += f"\n건너뜀: {len(skipped)}일"
+        notify_telegram(msg)
 
 
 if __name__ == "__main__":
