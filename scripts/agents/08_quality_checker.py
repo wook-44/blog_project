@@ -38,10 +38,10 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-# 플랫폼별 최소 글자 수
+# 플랫폼별 최소 글자 수 (v2: 네이버/티스토리 2500으로 상향)
 PLATFORM_MIN_LENGTH = {
-    "naver": 2200,      # 톤북 v1: 본문 공백포함 2,200자+
-    "tistory": 2200,
+    "naver": 2500,      # v2: 목차·관련 종목표 추가분 반영
+    "tistory": 2500,
     "wordpress": 2000,
     "brunch": 1500,
     "medium": 1500,
@@ -50,19 +50,31 @@ PLATFORM_MIN_LENGTH = {
 # 통과 기준 점수 (100점 만점)
 PASS_THRESHOLD = 70
 
-# ── 톤북 v1 임계값 ─────────────────────────────────────
+# ── 톤북 v2 임계값 ─────────────────────────────────────
 TITLE_MIN, TITLE_MAX = 28, 32
 TITLE_KW_HEAD_LIMIT = 12
 TAG_MIN_COUNT = 30
 HOOK_MIN_CHARS = 100
+
+# v2 신설
+TAG_HEAD_KW_MIN = 3            # 태그 앞 5개에 종목/지수 키워드 3개 이상
+TAG_HEAD_WINDOW = 5
+RELATED_TABLE_MIN_ROWS = 3     # 관련 종목표 최소 3행
+
+BRAND_KEYWORDS_FORBIDDEN_IN_TITLE = ["12시에 만나요", "12시에만나요"]
+TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것"]
+RELATED_SECTION_PATTERNS = ["🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
+
 VIDEO_META_PHRASES = [
     "📺 영상 정보", "## 영상 정보", "채널 |", "출연자 |",
     "광수 생각", "오후장 한 마디", "방과후 경제교실",
 ]
 MAIN_KW_POOL = [
     "코스피", "코스닥", "삼성전자", "SK하이닉스", "현대차", "기아",
+    "LG에너지솔루션", "포스코홀딩스", "셀트리온", "한화에어로스페이스",
+    "한미반도체", "HD현대중공업", "KB금융", "신한지주",
     "엔비디아", "테슬라", "구글", "메타", "애플",
-    "반도체", "AI", "로봇", "이차전지", "방산",
+    "반도체", "AI", "로봇", "이차전지", "방산", "조선", "원자력",
     "금리", "환율", "유가", "호르무즈", "FOMC", "트럼프",
 ]
 
@@ -198,6 +210,46 @@ class QualityChecker:
                 issues.append(f"영상 메타가 첫 영역에 노출: {leaked} — 부록으로 이동 (검색 미리보기 손실)")
             else:
                 suggestions.append("✓ 영상 메타 누수 없음")
+
+        # 9) v2 — 브랜드 키워드 제목 노출 금지
+        brand_leaked = [b for b in BRAND_KEYWORDS_FORBIDDEN_IN_TITLE if b in title]
+        if brand_leaked:
+            score -= 15
+            issues.append(f"[v2] 제목에 브랜드 키워드 {brand_leaked} 노출 — 검색 트래픽 0, 종목/지수 키워드로 교체")
+        else:
+            suggestions.append("✓ [v2] 제목 브랜드 키워드 없음")
+
+        # 10) v2 — 본문에 📍 목차 섹션
+        if not any(p in content for p in TOC_SECTION_PATTERNS):
+            score -= 10
+            issues.append("[v2] '📍 이 글에서 다루는 것' 목차 섹션 없음 — 톤북 v2 §3 신설 필수")
+        else:
+            suggestions.append("✓ [v2] 목차 섹션 존재")
+
+        # 11) v2 — 🔗 관련 종목 한눈에 + 표 행 3개 이상
+        if not any(p in content for p in RELATED_SECTION_PATTERNS):
+            score -= 12
+            issues.append("[v2] '🔗 관련 종목 한눈에' 섹션 없음 — 톤북 v2 §3 신설 필수 (체류시간 핵심)")
+        else:
+            m = re.search(r"🔗\s*관련 종목 한눈에.*?\n([\s\S]+?)(?=\n##\s|\n---|$)", content)
+            if m:
+                table_rows = [ln for ln in m.group(1).splitlines() if ln.strip().startswith("|") and "---" not in ln]
+                data_rows = max(0, len(table_rows) - 1)
+                if data_rows < RELATED_TABLE_MIN_ROWS:
+                    score -= 6
+                    issues.append(f"[v2] 관련 종목 표 데이터 행 {data_rows}개 — 최소 {RELATED_TABLE_MIN_ROWS}개")
+                else:
+                    suggestions.append(f"✓ [v2] 관련 종목 표 행 OK ({data_rows}개)")
+
+        # 12) v2 — 태그 앞 5개에 종목/지수 키워드 3개 이상
+        if tags:
+            head_tags = list(tags)[:TAG_HEAD_WINDOW]
+            head_kw_count = sum(1 for t in head_tags if any(kw in t for kw in MAIN_KW_POOL))
+            if head_kw_count < TAG_HEAD_KW_MIN:
+                score -= 8
+                issues.append(f"[v2] 태그 앞 {TAG_HEAD_WINDOW}개 중 종목/지수 키워드 {head_kw_count}개 — 최소 {TAG_HEAD_KW_MIN}개")
+            else:
+                suggestions.append(f"✓ [v2] 태그 앞 종목 키워드 OK ({head_kw_count}개)")
 
         return {
             "seo_score": max(0, score),

@@ -1,7 +1,7 @@
 """
-제목·태그·후킹 린터 (Agent 00)
+제목·태그·후킹 린터 (Agent 00) — v2 (2026-05-18~)
 =================================
-역할: 발행 직전, 톤북 룰 강제 검사 — fail 시 종료 코드 1
+역할: 발행 직전, 톤북 v2 룰 강제 검사 — fail 시 종료 코드 1
 검사 항목:
   1) 제목 길이 28~32자
   2) 메인 키워드가 앞 12자 이내
@@ -9,7 +9,11 @@
   4) 첫 100자 후킹 문단 존재
   5) 영상 정보 테이블이 첫 200자 안에 없음
   6) 태그 30개 이상, 롱테일 비중 50% 이상
-  7) 시리즈 내부 링크 1개 이상 (14일 내 매칭 키워드 있을 시)
+  7) [v2] 브랜드 키워드 "12시에 만나요" 제목 노출 금지
+  8) [v2] 본문에 📍 목차 섹션 존재
+  9) [v2] 🔗 관련 종목 한눈에 섹션 + 표 행 3개 이상
+ 10) [v2] 태그 앞 5개에 종목/지수 키워드 3개 이상
+ 11) [v2] 본문 분량 2,500자 이상 (기존 2,200자 → 상향)
 사용: python scripts/agents/00_title_tag_linter.py path/to/post.md
 """
 import re
@@ -21,22 +25,41 @@ from datetime import datetime, timedelta
 
 BLOG_DIR = Path(__file__).resolve().parents[2]
 
-# ── 톤북 임계값 ────────────────────────────────────────
+# ── 톤북 v2 임계값 ────────────────────────────────────────
 TITLE_MIN, TITLE_MAX = 28, 32
 TITLE_KW_HEAD_LIMIT = 12          # 메인 키워드는 앞 12자 안에
 HOOK_MIN, HOOK_MAX = 100, 200     # 첫 후킹 문단 길이
 TAGS_MIN = 30
 LONGTAIL_MIN_RATIO = 0.5          # 롱테일(7자 이상 한글) 비중
-BODY_MIN_CHARS = 2200             # 공백포함 본문
+BODY_MIN_CHARS = 2500             # v2: 2200 → 2500 (목차·관련 종목표 추가분)
+TAG_HEAD_KW_MIN = 3               # v2: 태그 앞 5개에 종목/지수 키워드 3개 이상
+TAG_HEAD_WINDOW = 5
+RELATED_TABLE_MIN_ROWS = 3        # v2: 관련 종목표 최소 3행
+
+# v2: 제목·첫 100자에 등장 금지하는 브랜드 키워드
+BRAND_KEYWORDS_FORBIDDEN_IN_TITLE = ["12시에 만나요", "12시에만나요"]
+
+# v2: 본문 신설 섹션 패턴
+TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것"]
+RELATED_SECTION_PATTERNS = ["🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
 
 MAIN_KEYWORDS = [
-    # 주식
+    # 주식 — 지수/대형주
     "코스피", "코스닥", "삼성전자", "SK하이닉스", "현대차", "기아",
+    "LG에너지솔루션", "포스코홀딩스", "셀트리온", "한화에어로스페이스",
+    "한미반도체", "HD현대중공업", "KB금융", "신한지주",
     "엔비디아", "테슬라", "애플", "구글", "마이크로소프트", "메타",
-    "반도체", "AI", "로봇", "이차전지", "방산",
+    # 섹터/매크로
+    "반도체", "AI", "로봇", "이차전지", "방산", "조선", "원자력",
     "금리", "환율", "유가", "호르무즈", "FOMC", "트럼프",
     # 부동산 (5/5 전세사기 특집부터 확장)
     "전세", "부동산", "아파트", "전세사기", "임대",
+]
+
+# v2: 액션 키워드 (제목 후킹 검사용 — 향후 강화 예정)
+ACTION_KEYWORDS = [
+    "매수 타이밍", "목표가", "매도 신호", "반등", "조정", "전망",
+    "차트 분석", "수급", "매수", "매도", "주가", "시황",
 ]
 
 VIDEO_META_PHRASES = [
@@ -238,6 +261,46 @@ def lint(post_path: Path) -> dict:
     # ── 검사 11: 시리즈 내부 링크 — 비활성화됨
     # 네이버 에디터가 마크다운 링크 `[제목](경로)`를 렌더링 못해서 깨져 보임.
     # 사용자 요청으로 자동 추가 룰 제거 (2026-05-13).
+
+    # ── 검사 V1 (v2): 브랜드 키워드 제목 노출 금지
+    brand_in_title = [b for b in BRAND_KEYWORDS_FORBIDDEN_IN_TITLE if b in title]
+    if brand_in_title:
+        issues.append(f"[V1] 제목에 브랜드 키워드 {brand_in_title} 노출 — 검색 트래픽 0, 종목/지수 키워드로 교체")
+    else:
+        passed.append(f"[V1] 제목 브랜드 키워드 없음")
+
+    # ── 검사 V2 (v2): 본문에 📍 목차 섹션
+    has_toc = any(p in body for p in TOC_SECTION_PATTERNS)
+    if not has_toc:
+        issues.append(f"[V2] '📍 이 글에서 다루는 것' 목차 섹션 없음 — 톤북 v2 §3 신설 항목")
+    else:
+        passed.append(f"[V2] 목차 섹션 존재")
+
+    # ── 검사 V3 (v2): 🔗 관련 종목 한눈에 섹션 + 표 행 3개 이상
+    has_related = any(p in body for p in RELATED_SECTION_PATTERNS)
+    if not has_related:
+        issues.append(f"[V3] '🔗 관련 종목 한눈에' 섹션 없음 — 톤북 v2 §3 신설 항목")
+    else:
+        # 섹션 이후 표 추출 (다음 ## 또는 --- 까지)
+        m = re.search(r"🔗\s*관련 종목 한눈에.*?\n([\s\S]+?)(?=\n##\s|\n---|$)", body)
+        if m:
+            table_rows = [ln for ln in m.group(1).splitlines() if ln.strip().startswith("|") and "---" not in ln]
+            # 헤더 한 줄 제외하고 데이터 행만
+            data_rows = max(0, len(table_rows) - 1)
+            if data_rows < RELATED_TABLE_MIN_ROWS:
+                issues.append(f"[V3] 관련 종목 표 데이터 행 {data_rows}개 — 최소 {RELATED_TABLE_MIN_ROWS}개")
+            else:
+                passed.append(f"[V3] 관련 종목 표 행 OK ({data_rows}개)")
+        else:
+            issues.append(f"[V3] 관련 종목 표 파싱 실패")
+
+    # ── 검사 V4 (v2): 태그 앞 5개에 종목/지수 키워드 3개 이상
+    head_tags = tags[:TAG_HEAD_WINDOW]
+    head_kw_count = sum(1 for t in head_tags if any(kw in t for kw in MAIN_KEYWORDS))
+    if head_kw_count < TAG_HEAD_KW_MIN:
+        issues.append(f"[V4] 태그 앞 {TAG_HEAD_WINDOW}개 중 종목/지수 키워드 {head_kw_count}개 — 최소 {TAG_HEAD_KW_MIN}개 (현재 head={head_tags})")
+    else:
+        passed.append(f"[V4] 태그 앞 종목 키워드 OK ({head_kw_count}개)")
 
     return {
         "post": str(post_path),

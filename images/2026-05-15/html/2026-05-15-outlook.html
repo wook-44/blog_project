@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  /* 로컬 NanumGothic Bold/ExtraBold만 사용 — Regular(400)는 제거해서 항상 굵은 글자 보장 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'), local('나눔고딕 Bold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'), local('나눔고딕 ExtraBold'); font-weight: 800 900; }
+  /* 400 weight 요청 시에도 700으로 폴백 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 1 400; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#0EA5E9"/>
+    <stop offset="100%" style="stop-color:#22D3EE"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#22D3EE"/>
+    <stop offset="100%" style="stop-color:#A78BFA"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">MARKET OUTLOOK</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">다음 주 관전 포인트 3가지</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="320" fill="url(#hero)" font-size="120" font-weight="900" filter="url(#glow)">3</text>
+  <text x="48" y="358" fill="#94A3B8" font-size="22" font-weight="700">월요일 갭 결정 변수</text>
+  
+  <rect x="48.0" y="400" width="317.3333333333333" height="150" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="206.66666666666666" y="436" text-anchor="middle" fill="#64748B" font-size="17" font-weight="700" letter-spacing="2">주말 SNS</text>
+  <text x="206.66666666666666" y="496" text-anchor="middle" fill="#0EA5E9" font-size="48" font-weight="900">트럼프</text>
+  <text x="206.66666666666666" y="530" text-anchor="middle" fill="#94A3B8" font-size="17">회담 톤 노출</text>
+  <rect x="381.3333333333333" y="400" width="317.3333333333333" height="150" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="540.0" y="436" text-anchor="middle" fill="#64748B" font-size="17" font-weight="700" letter-spacing="2">SK수준 수용</text>
+  <text x="540.0" y="496" text-anchor="middle" fill="#0EA5E9" font-size="48" font-weight="900">삼성노조</text>
+  <text x="540.0" y="530" text-anchor="middle" fill="#94A3B8" font-size="17">5/21 파업 약화</text>
+  <rect x="714.6666666666666" y="400" width="317.3333333333333" height="150" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="873.3333333333333" y="436" text-anchor="middle" fill="#64748B" font-size="17" font-weight="700" letter-spacing="2">美 10년 금리</text>
+  <text x="873.3333333333333" y="496" text-anchor="middle" fill="#0EA5E9" font-size="48" font-weight="900">4.5%</text>
+  <text x="873.3333333333333" y="530" text-anchor="middle" fill="#94A3B8" font-size="17">추가 상승 여부</text>
+  
+  <rect x="48" y="574" width="160" height="42" fill="#0EA5E91A" rx="21" stroke="#0EA5E955" stroke-width="1"/>
+  <text x="128.0" y="601" text-anchor="middle" fill="#0EA5E9" font-size="18" font-weight="700">미중 회담 후속</text>
+  <rect x="218" y="574" width="160" height="42" fill="#0EA5E91A" rx="21" stroke="#0EA5E955" stroke-width="1"/>
+  <text x="298.0" y="601" text-anchor="middle" fill="#0EA5E9" font-size="18" font-weight="700">노조 협상 진전</text>
+  <rect x="388" y="574" width="192" height="42" fill="#0EA5E91A" rx="21" stroke="#0EA5E955" stroke-width="1"/>
+  <text x="484.0" y="601" text-anchor="middle" fill="#0EA5E9" font-size="18" font-weight="700">금리 4.5% 돌파</text>
+  <rect x="590" y="574" width="160" height="42" fill="#0EA5E91A" rx="21" stroke="#0EA5E955" stroke-width="1"/>
+  <text x="670.0" y="601" text-anchor="middle" fill="#0EA5E9" font-size="18" font-weight="700">월요일 갭 대응</text>
+  
+  <text x="48" y="652" fill="#64748B" font-size="17" font-weight="700" letter-spacing="2">주요 포인트</text>
+  <circle cx="60" cy="683" r="13" fill="#0EA5E9"/>
+  <text x="60" y="688" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">1</text>
+  <text x="84" y="690" fill="#FFFFFF" font-size="21" font-weight="700">주말 트럼프 SNS — 전면/부분/결렬 시나리오 사전 작성</text>
+  <circle cx="60" cy="723" r="13" fill="#0EA5E9"/>
+  <text x="60" y="728" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">2</text>
+  <text x="84" y="730" fill="#FFFFFF" font-size="21" font-weight="700">삼성 노조 협상 진전 → 5/13 -5% 회복 패턴 트리거</text>
+  <circle cx="60" cy="763" r="13" fill="#0EA5E9"/>
+  <text x="60" y="768" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">3</text>
+  <text x="84" y="770" fill="#FFFFFF" font-size="21" font-weight="700">미국 10년물 금리 추가 상승 시 변동성 확대</text>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#0EA5E9" rx="3"/>
+  <text x="76" y="954" fill="#0EA5E9" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">시나리오 3개를 책상 위에 두기</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 12시에 만나요</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>
