@@ -1,0 +1,86 @@
+<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#3B82F6"/>
+    <stop offset="100%" style="stop-color:#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#F59E0B"/>
+    <stop offset="100%" style="stop-color:#EF4444"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">MARKET STATUS</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">시장 분석 & 투자 전략</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+
+  <!-- HERO 영역 -->
+  <text x="48" y="270" fill="url(#hero)" font-size="118" font-weight="900" filter="url(#glow)">+12.12%</text>
+  <text x="48" y="318" fill="#94A3B8" font-size="24" font-weight="700">OCI홀딩스 314,500원</text>
+
+  <!-- 우측 변동 표시 (방향 자동 분기) -->
+  <polygon points="900,275 960,275 930,220" fill="#EF4444" opacity="0.95"/>
+  <text x="930" y="312" text-anchor="middle" fill="#EF4444" font-size="22" font-weight="800"></text>
+
+  
+  <rect x="48.0" y="380" width="317.3333333333333" height="180" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="206.66666666666666" y="420" text-anchor="middle" fill="#64748B" font-size="19" font-weight="700" letter-spacing="2">코스닥 +4.72%</text>
+  <text x="206.66666666666666" y="492" text-anchor="middle" fill="#3B82F6" font-size="58" font-weight="900">1,158.21</text>
+  <text x="206.66666666666666" y="534" text-anchor="middle" fill="#94A3B8" font-size="18"></text>
+  <rect x="381.3333333333333" y="380" width="317.3333333333333" height="180" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="540.0" y="420" text-anchor="middle" fill="#64748B" font-size="19" font-weight="700" letter-spacing="2">외국인 코스닥 6일 누적</text>
+  <text x="540.0" y="492" text-anchor="middle" fill="#3B82F6" font-size="58" font-weight="900">+1.6조</text>
+  <text x="540.0" y="534" text-anchor="middle" fill="#94A3B8" font-size="18"></text>
+  <rect x="714.6666666666666" y="380" width="317.3333333333333" height="180" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+  <text x="873.3333333333333" y="420" text-anchor="middle" fill="#64748B" font-size="19" font-weight="700" letter-spacing="2">데이터</text>
+  <text x="873.3333333333333" y="492" text-anchor="middle" fill="#3B82F6" font-size="58" font-weight="900">—</text>
+  <text x="873.3333333333333" y="534" text-anchor="middle" fill="#94A3B8" font-size="18"></text>
+  
+  <rect x="48" y="584" width="176" height="42" fill="#3B82F61A" rx="21" stroke="#3B82F655" stroke-width="1"/>
+  <text x="136.0" y="611" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="700">국민성장펀드 마감</text>
+  <rect x="234" y="584" width="192" height="42" fill="#3B82F61A" rx="21" stroke="#3B82F655" stroke-width="1"/>
+  <text x="330.0" y="611" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="700">외국인 6일 순매수</text>
+  <rect x="436" y="584" width="160" height="42" fill="#3B82F61A" rx="21" stroke="#3B82F655" stroke-width="1"/>
+  <text x="516.0" y="611" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="700">OCI +12%</text>
+  <rect x="606" y="584" width="192" height="42" fill="#3B82F61A" rx="21" stroke="#3B82F655" stroke-width="1"/>
+  <text x="702.0" y="611" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="700">코스닥 +4.72%</text>
+  <rect x="808" y="584" width="128" height="42" fill="#3B82F61A" rx="21" stroke="#3B82F655" stroke-width="1"/>
+  <text x="872.0" y="611" text-anchor="middle" fill="#3B82F6" font-size="18" font-weight="700">주도주 교체</text>
+  
+  <text x="48" y="662" fill="#64748B" font-size="19" font-weight="700" letter-spacing="2">주요 포인트</text>
+  <circle cx="60" cy="697" r="14" fill="#3B82F6"/>
+  <text x="60" y="702" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="800">1</text>
+  <text x="86" y="704" fill="#FFFFFF" font-size="23" font-weight="700">코스피 7,833.45 +0.23% 보합, 코스닥 1,158.21 +4.72% 폭등 — 갭 메우기 시작</text>
+  <circle cx="60" cy="739" r="14" fill="#3B82F6"/>
+  <text x="60" y="744" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="800">2</text>
+  <text x="86" y="746" fill="#FFFFFF" font-size="23" font-weight="700">외국인 코스닥 6거래일 연속 순매수, 5월 누적 +1.6조 vs 코스피 -44조</text>
+  <circle cx="60" cy="781" r="14" fill="#3B82F6"/>
+  <text x="60" y="786" text-anchor="middle" fill="#0F172A" font-size="18" font-weight="800">3</text>
+  <text x="86" y="788" fill="#FFFFFF" font-size="23" font-weight="700">국민성장펀드 1차 공모 즉시 마감 — 가계 자산 자본시장 회전 신호</text>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#3B82F6" rx="3"/>
+  <text x="76" y="954" fill="#3B82F6" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">스타벅스 한 잔 가격으로 코스닥 한 주</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 12시에 만나요</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg>
