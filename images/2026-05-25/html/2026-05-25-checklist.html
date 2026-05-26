@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  /* 로컬 NanumGothic Bold/ExtraBold만 사용 — Regular(400)는 제거해서 항상 굵은 글자 보장 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'), local('나눔고딕 Bold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'), local('나눔고딕 ExtraBold'); font-weight: 800 900; }
+  /* 400 weight 요청 시에도 700으로 폴백 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 1 400; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#F97316"/>
+    <stop offset="100%" style="stop-color:#EF4444"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#F97316"/>
+    <stop offset="100%" style="stop-color:#FBBF24"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">ACTION CHECKLIST</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">투자 적용 체크리스트</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="230" fill="url(#hero)" font-size="56" font-weight="900" filter="url(#glow)"><tspan x="48" dy="0">이번 주</tspan><tspan x="48" dy="64">자동화 1줄을 만들어라</tspan></text>
+  
+  
+  
+  <text x="48" y="410" fill="#64748B" font-size="17" font-weight="700" letter-spacing="2">주요 포인트</text>
+  <circle cx="60" cy="441" r="13" fill="#F97316"/>
+  <text x="60" y="446" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">1</text>
+  <text x="84" y="448" fill="#FFFFFF" font-size="21" font-weight="700">월급일 다음 영업일 자동이체 1줄 등록 (자산 1%부터)</text>
+  <circle cx="60" cy="481" r="13" fill="#F97316"/>
+  <text x="60" y="486" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">2</text>
+  <text x="84" y="488" fill="#FFFFFF" font-size="21" font-weight="700">분기 자산 점검 시 임팩트 비중 5% 룰 확인</text>
+  <circle cx="60" cy="521" r="13" fill="#F97316"/>
+  <text x="60" y="526" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">3</text>
+  <text x="84" y="528" fill="#FFFFFF" font-size="21" font-weight="700">연말 보너스 5%를 ESG ETF 또는 정기 후원 전환</text>
+  <circle cx="60" cy="561" r="13" fill="#F97316"/>
+  <text x="60" y="566" text-anchor="middle" fill="#0F172A" font-size="17" font-weight="800">4</text>
+  <text x="84" y="568" fill="#FFFFFF" font-size="21" font-weight="700">단발성 거액 기부 → 정기 소액 모델로 룰 변경</text>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#F97316" rx="3"/>
+  <text x="76" y="954" fill="#F97316" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">오를 때 분배 룰을 안 만들면, 떨어질 때 분배 여유는 절대 없습니다</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 주인님 인사이트</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>

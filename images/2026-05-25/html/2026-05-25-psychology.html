@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<style>
+  /* 로컬 NanumGothic Bold/ExtraBold만 사용 — Regular(400)는 제거해서 항상 굵은 글자 보장 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'), local('나눔고딕 Bold'); font-weight: 700; }
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothicExtraBold'), local('NanumGothic ExtraBold'), local('나눔고딕 ExtraBold'); font-weight: 800 900; }
+  /* 400 weight 요청 시에도 700으로 폴백 */
+  @font-face { font-family: 'NanumGothic'; src: local('NanumGothic Bold'), local('NanumGothicBold'); font-weight: 1 400; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; background: transparent; }
+  svg { width: 1080px; height: 1080px; display: block; }
+</style></head>
+<body><svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#A78BFA"/>
+    <stop offset="100%" style="stop-color:#EC4899"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#FBBF24"/>
+    <stop offset="100%" style="stop-color:#F472B6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">INVESTMENT PSYCHOLOGY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">투자 심리 & 행동 교정</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="230" fill="url(#hero)" font-size="62" font-weight="900" filter="url(#glow)"><tspan x="48" dy="0">코스피 8천 시대</tspan><tspan x="48" dy="71">분배의 두려움을 풀어라</tspan></text>
+  
+  <rect x="48.0" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="206.66666666666666" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="206.66666666666666" y="402" text-anchor="middle" font-size="53">😱</text>
+  <text x="206.66666666666666" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">조금만 더 모으면 함정</text>
+  <foreignObject x="64.0" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">호황기일수록 외부 유출 거부 심리가 강해진다</div>
+  </foreignObject>
+  <rect x="381.3333333333333" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="540.0" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="540.0" y="402" text-anchor="middle" font-size="53">🤯</text>
+  <text x="540.0" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">거액 일시 기부 환상</text>
+  <foreignObject x="397.3333333333333" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">한 번의 큰 액수보다 매월 자동이체가 사회적 자본을 더 키운다</div>
+  </foreignObject>
+  <rect x="714.6666666666666" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="873.3333333333333" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="873.3333333333333" y="402" text-anchor="middle" font-size="53">😩</text>
+  <text x="873.3333333333333" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">분배는 하락기에 함정</text>
+  <foreignObject x="730.6666666666666" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">떨어질 때는 분배할 여유가 절대 생기지 않는다</div>
+  </foreignObject>
+  
+  <rect x="48" y="630" width="984" height="160" fill="#EC48991A" rx="16" stroke="#EC489966" stroke-width="2"/>
+  <text x="80" y="678" fill="#EC4899" font-size="20" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
+  <foreignObject x="80" y="692" width="920" height="92">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:31px;font-weight:700;line-height:1.45;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">자산 5% 룰을 코스피 8천 시대에 미리 자동화하라. 자동이체 1줄이 평생을 간다.</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#A78BFA" rx="3"/>
+  <text x="76" y="954" fill="#A78BFA" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">매수 타이밍에 쏟는 에너지의 5%만이라도 분배 설계에 쓰자</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 이광수</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg></body></html>
