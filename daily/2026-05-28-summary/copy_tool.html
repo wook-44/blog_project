@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-05-28 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 8167 — 외국인 2.9조 매도 14거래일째</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 8167 — 외국인 2.9조 매도 14거래일째</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 어제 사상 최고 8,228.70에서 단 하루 만에 8,167.72로 후퇴했습니다. 코스피 -0.74% 조정과 외국인 -2.9조 순매도가 14거래일째 이어진 가운데, 호르무즈 긴장이 다시 켜진 오늘 코스피는 어디로 향할까요?</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 8,167 -0.74%, 코스닥 1,099 -2.99% 동반 후퇴</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 외국인 -2.9조 14거래일째 매도, 개인 +1.4조 받침</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — 2차전지·자동차·로봇주로 순환매, LG엔솔 +12.65%</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">8,167.72</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 60.98</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-0.74%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">1,099.23</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 33.90</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-2.99%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">장 초반 코스피는 8,165대까지 밀렸다가 오전 한때 8,226선까지 회복했지만, 오후 미군의 호르무즈해협 인근 대이란 군사 행동 보도가 알려지며 매물이 다시 쏟아져 8,167.72에 마감했습니다. 어제(8,228.70) 종가 기준 사상 최고치 직후 하루 만의 차익실현이라는 점, 그리고 KOSPI 거래대금이 다시 50조 원대로 유지됐다는 점이 핵심입니다. 코스닥은 -2.99%로 이틀 연속 큰 폭의 조정을 받았습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-2.9조 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+0.36조 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+1.4조 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">외국인은 -2.9조 매도로 KOSPI 14거래일 연속 순매도를 이어갔고, 5월 7일 이후 누적 매도 규모는 40조 원대를 훌쩍 넘었습니다. 기관 +0.36조와 개인 +1.4조가 매도를 받아주며 지수 하단을 방어한 구조이고, 외국인 매도가 멈추지 않는 한 단기 변동성은 계속 열려 있다고 봐야 합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>LG에너지솔루션</b> (373220) +12.65% — 2차전지 순환매 1순위 수혜</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>현대모비스</b> (012330) +4.36% — 현대차그룹 SDV·로봇 모멘텀</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>삼성SDI</b> (006400) +3.97% — 배터리 가격 반등 기대감</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>기아</b> (000270) +2.61% — 자동차 대형주 동반 강세</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>현대차</b> (005380) +2.35% — 외국인 매도 와중 순환매 수혜</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">반도체 대형주(삼성전자·SK하이닉스)는 차익실현에 눌렸고, 자금은 2차전지·자동차·로봇·방산 등 비반도체 섹터로 빠르게 이동했습니다. 순환매가 살아 있다는 신호입니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">시가총액</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LG에너지솔루션**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 100조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">373,000원 +12.65% 급반등, 2차전지 섹터 대표주 회복 신호</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**현대차**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 75조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">270,000원 +2.35%, 외국인 매도 속에서도 순환매 수혜</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼성SDI**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 35조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">460,000원 +3.97%, 배터리주 동반 반등 흐름</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">8,228 신고가 직후의 -0.74% 후퇴는 지정학 리스크와 차익실현이 겹친 단기 조정으로 보입니다. 외국인 -2.9조 매도가 14거래일째 이어진다는 점은 분명히 부담이지만, 반도체에서 2차전지·자동차·로봇으로 빠르게 자금이 이동한 점은 지수 하단을 받치는 근거입니다. 17:30 본편에서 호르무즈 리스크의 실제 영향과 LG엔솔 +12% 반등의 지속 가능성을 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 8167 — 외국인 2.9조 매도 14거래일째
+
+코스피가 어제 사상 최고 8,228.70에서 단 하루 만에 8,167.72로 후퇴했습니다. 코스피 -0.74% 조정과 외국인 -2.9조 순매도가 14거래일째 이어진 가운데, 호르무즈 긴장이 다시 켜진 오늘 코스피는 어디로 향할까요?
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 8,167 -0.74%, 코스닥 1,099 -2.99% 동반 후퇴
+- 외국인/기관 수급 — 외국인 -2.9조 14거래일째 매도, 개인 +1.4조 받침
+- 상승률 상위 종목 — 2차전지·자동차·로봇주로 순환매, LG엔솔 +12.65%
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 8,167.72 | ▼ 60.98 | -0.74% |
+| 코스닥 | 1,099.23 | ▼ 33.90 | -2.99% |
+
+장 초반 코스피는 8,165대까지 밀렸다가 오전 한때 8,226선까지 회복했지만, 오후 미군의 호르무즈해협 인근 대이란 군사 행동 보도가 알려지며 매물이 다시 쏟아져 8,167.72에 마감했습니다. 어제(8,228.70) 종가 기준 사상 최고치 직후 하루 만의 차익실현이라는 점, 그리고 KOSPI 거래대금이 다시 50조 원대로 유지됐다는 점이 핵심입니다. 코스닥은 -2.99%로 이틀 연속 큰 폭의 조정을 받았습니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -2.9조 원 |
+| 기관 | +0.36조 원 |
+| 개인 | +1.4조 원 |
+
+외국인은 -2.9조 매도로 KOSPI 14거래일 연속 순매도를 이어갔고, 5월 7일 이후 누적 매도 규모는 40조 원대를 훌쩍 넘었습니다. 기관 +0.36조와 개인 +1.4조가 매도를 받아주며 지수 하단을 방어한 구조이고, 외국인 매도가 멈추지 않는 한 단기 변동성은 계속 열려 있다고 봐야 합니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. LG에너지솔루션 (373220) +12.65% — 2차전지 순환매 1순위 수혜
+2. 현대모비스 (012330) +4.36% — 현대차그룹 SDV·로봇 모멘텀
+3. 삼성SDI (006400) +3.97% — 배터리 가격 반등 기대감
+4. 기아 (000270) +2.61% — 자동차 대형주 동반 강세
+5. 현대차 (005380) +2.35% — 외국인 매도 와중 순환매 수혜
+
+반도체 대형주(삼성전자·SK하이닉스)는 차익실현에 눌렸고, 자금은 2차전지·자동차·로봇·방산 등 비반도체 섹터로 빠르게 이동했습니다. 순환매가 살아 있다는 신호입니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 시가총액 | 한 줄 코멘트 |
+|---|---|---|
+| LG에너지솔루션 | 약 100조 | 373,000원 +12.65% 급반등, 2차전지 섹터 대표주 회복 신호 |
+| 현대차 | 약 75조 | 270,000원 +2.35%, 외국인 매도 속에서도 순환매 수혜 |
+| 삼성SDI | 약 35조 | 460,000원 +3.97%, 배터리주 동반 반등 흐름 |
+
+💡 내 생각
+
+8,228 신고가 직후의 -0.74% 후퇴는 지정학 리스크와 차익실현이 겹친 단기 조정으로 보입니다. 외국인 -2.9조 매도가 14거래일째 이어진다는 점은 분명히 부담이지만, 반도체에서 2차전지·자동차·로봇으로 빠르게 자금이 이동한 점은 지수 하단을 받치는 근거입니다. 17:30 본편에서 호르무즈 리스크의 실제 영향과 LG엔솔 +12% 반등의 지속 가능성을 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <p style="font-size:13px;color:#dc2626;">⚠️ 인포그래픽 이미지 없음</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피8167</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥1099</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인수급동향</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#5월28일코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG에너지솔루션급등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#현대모비스강세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성SDI반등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기아상승</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#현대차</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#2차전지순환매</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#자동차주강세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#로봇주모멘텀</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체차익실현</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#호르무즈리스크</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#이란긴장재점화</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인14거래일매도</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피사상최고후조정</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥동반조정</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#섹터로테이션장세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#개인매수받침</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관매수전환</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#국내증시일일시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장마감직후시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG엔솔12프로반등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성SDI배터리반등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#현대모비스SDV수혜</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#한국주식시장분석</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피목표가전망</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#이천이십육년오월시황</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스피8167 #코스닥1099 #외국인수급동향 #5월28일코스피시황 #LG에너지솔루션급등 #현대모비스강세 #삼성SDI반등 #기아상승 #현대차 #2차전지순환매 #자동차주강세 #로봇주모멘텀 #반도체차익실현 #호르무즈리스크 #이란긴장재점화 #외국인14거래일매도 #코스피사상최고후조정 #코스닥동반조정 #섹터로테이션장세 #개인매수받침 #기관매수전환 #국내증시일일시황 #장마감직후시황 #LG엔솔12프로반등 #삼성SDI배터리반등 #현대모비스SDV수혜 #한국주식시장분석 #코스피목표가전망 #이천이십육년오월시황</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
