@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-05-29 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 8,476 최고 — 5월 29일 기관 2.4조 매수</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 8,476 최고 — 5월 29일 기관 2.4조 매수</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 오늘 8,476.15로 사상 최고 종가를 다시 썼습니다. 코스피 +3.55% 급등을 기관 2.4조 순매수가 끌어올린 가운데, 외국인은 1조 넘게 팔고 코스닥은 홀로 -2.68% 밀렸습니다. 지수는 신고가인데 왜 오른 종목보다 내린 종목이 더 많았을까요?</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 8,476 +3.55% 사상 최고, 코스닥 1,074 -2.68% 역행</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 기관 +2.4조 매수 견인, 외국인 -1.0조·개인 -1.4조 동반 매도</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — LG·삼성 전기전자 대형주 무더기 급등, LG전자·LG씨엔에스 상한가</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">8,476.15</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▲ 290.86</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+3.55%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">1,074.80</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 29.56</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-2.68%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피는 전일 8,185.29에서 290포인트 넘게 뛰며 종가 기준 사상 최고치(직전 52주 최고 = 오늘 종가)를 경신했습니다. 시가 8,384에서 출발해 장중 저가 8,273까지 밀렸다가, 고가는 종가와 같은 8,476으로 오후 들어 상승폭을 끝까지 키운 흐름이었습니다. 거래대금은 73조 원대로 다시 부풀어, 거래가 위축된 약세장이 아니라 자금이 활발히 들어온 강세장임을 확인시켰습니다. 미국·이란 종전 협상 기대감으로 위험자산 선호가 살아났고, 여기에 AI 하드웨어 수요 기대가 맞물리며 대형 전기전자주에 매수가 집중된 하루였습니다. 다만 코스닥은 -2.68%로 정반대 방향으로 역행했고, 코스피 안에서도 상승 종목 206개 대 하락 종목 688개로 시장 폭(breadth)은 오히려 좁았습니다. 지수를 끌어올린 힘이 사실상 소수 대형주에 쏠렸다는 의미이며, 코스피라는 숫자 하나만으로 오늘 장 전체를 강세로 읽기는 어렵다는 신호이기도 합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-1.04조 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+2.37조 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-1.40조 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 지수를 밀어 올린 주체는 명확히 기관이었습니다. 기관이 +2.37조 원을 대량 순매수하며 사상 최고치 경신을 주도했고, 프로그램 매매도 +9,529억 원 순매수로 힘을 보탰습니다. 반면 외국인은 -1.04조 원, 개인은 -1.40조 원으로 동반 순매도에 나섰습니다. 외국인 매도가 이어지는 와중에도 기관 자금이 전기전자 대형주에 집중되며 지수를 사상 최고로 끌어올린 구조입니다. 수급의 방향이 한쪽(기관)에 쏠려 있다는 점은, 이 상승이 폭넓은 매수세보다는 특정 주체·특정 섹터의 힘에 기대고 있음을 보여줍니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>LG전자</b> +29.93% — 293,000원 상한가, 전기전자 대형주 급등 선봉</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>LG씨엔에스</b> +29.91% — 113,800원 상한가, AI·SI 모멘텀 동반</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>삼성전기우</b> +29.88% — 765,000원, 전장·MLCC 기대감</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>LG이노텍</b> +28.57% — 1,458,000원, 부품주 동반 강세</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>LG</b> +26.60% — 146,600원, 지주사까지 그룹 전반 재평가</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">상승률 상위가 LG그룹과 삼성 전기전자 라인으로 도배됐다는 점이 오늘 장의 핵심입니다. 반도체·부품·전장으로 이어지는 AI 하드웨어 수요 기대가 특정 그룹주로 응집된 모습이고, LG전자·LG씨엔에스가 나란히 상한가를 기록하며 그룹 전체로 매수가 번지는 전형적인 그룹주 동반 강세 패턴이 나타났습니다. 여기에 솔루스첨단소재(+25.7%)·현대오토에버(+24.8%)·NHN(+22.5%)까지 IT·소재 전반으로 온기가 번지며, 자금이 반도체 단일 테마를 넘어 AI 하드웨어 밸류체인 전반으로 확산되는 흐름을 보였습니다. 다만 하루에 등락률 상위가 +25%를 넘는 종목으로 채워진 것은 단기 과열 신호도 함께 품고 있어, 추격 매수에 나서기 전에는 한 번쯤 호흡을 조절하며 거래량과 차익 매물 출회 여부를 확인하는 편이 안전합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">시가총액</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LG전자**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 48조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">293,000원 상한가, AI 가전·전장 기대에 대형주 급등 주도</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LG이노텍**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 35조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">1,458,000원 +28.57%, 카메라·기판 등 AI 부품 수혜 부각</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LG**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 23조</td><td style="padding:6px 10px;border:1px solid #d1d5db;">146,600원 +26.60%, 그룹 전반 재평가에 지주사도 동반 강세</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">사상 최고치라는 숫자는 화려하지만, 속을 보면 상승 206개 대 하락 688개로 시장의 체력이 골고루 좋았던 것은 아닙니다. 기관 +2.4조가 전기전자 대형주에 집중되며 지수만 끌어올린, 폭이 좁은 상승이라는 점을 기억해 둘 필요가 있습니다. 외국인이 여전히 1조 넘게 파는 가운데 나온 신고가라 변동성도 함께 커진 상태이고, 한쪽 주체에만 기댄 상승은 그 주체가 발을 빼는 순간 빠르게 되돌려질 수 있다는 약점도 안고 있습니다. 또 코스닥이 -2.68%로 정반대로 움직였다는 점은, 시장 전반의 위험 선호가 살아났다기보다 특정 대형주로 자금이 쏠리는 차별화 장세에 가깝다는 해석을 뒷받침합니다. 오늘 같은 무더기 상한가 뒤에는 차익 매물이 나오기 쉬우니 추격 매수보다 한 박자 쉬어 가는 호흡이 안전합니다. 종전 협상과 AI 수요라는 두 축이 실제로 이어지는지, 17:30 본편에서 LG·삼성 전기전자 랠리의 지속 가능성과 외국인 수급 흐름을 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 8,476 최고 — 5월 29일 기관 2.4조 매수
+
+코스피가 오늘 8,476.15로 사상 최고 종가를 다시 썼습니다. 코스피 +3.55% 급등을 기관 2.4조 순매수가 끌어올린 가운데, 외국인은 1조 넘게 팔고 코스닥은 홀로 -2.68% 밀렸습니다. 지수는 신고가인데 왜 오른 종목보다 내린 종목이 더 많았을까요?
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 8,476 +3.55% 사상 최고, 코스닥 1,074 -2.68% 역행
+- 외국인/기관 수급 — 기관 +2.4조 매수 견인, 외국인 -1.0조·개인 -1.4조 동반 매도
+- 상승률 상위 종목 — LG·삼성 전기전자 대형주 무더기 급등, LG전자·LG씨엔에스 상한가
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 8,476.15 | ▲ 290.86 | +3.55% |
+| 코스닥 | 1,074.80 | ▼ 29.56 | -2.68% |
+
+코스피는 전일 8,185.29에서 290포인트 넘게 뛰며 종가 기준 사상 최고치(직전 52주 최고 = 오늘 종가)를 경신했습니다. 시가 8,384에서 출발해 장중 저가 8,273까지 밀렸다가, 고가는 종가와 같은 8,476으로 오후 들어 상승폭을 끝까지 키운 흐름이었습니다. 거래대금은 73조 원대로 다시 부풀어, 거래가 위축된 약세장이 아니라 자금이 활발히 들어온 강세장임을 확인시켰습니다. 미국·이란 종전 협상 기대감으로 위험자산 선호가 살아났고, 여기에 AI 하드웨어 수요 기대가 맞물리며 대형 전기전자주에 매수가 집중된 하루였습니다. 다만 코스닥은 -2.68%로 정반대 방향으로 역행했고, 코스피 안에서도 상승 종목 206개 대 하락 종목 688개로 시장 폭(breadth)은 오히려 좁았습니다. 지수를 끌어올린 힘이 사실상 소수 대형주에 쏠렸다는 의미이며, 코스피라는 숫자 하나만으로 오늘 장 전체를 강세로 읽기는 어렵다는 신호이기도 합니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -1.04조 원 |
+| 기관 | +2.37조 원 |
+| 개인 | -1.40조 원 |
+
+오늘 지수를 밀어 올린 주체는 명확히 기관이었습니다. 기관이 +2.37조 원을 대량 순매수하며 사상 최고치 경신을 주도했고, 프로그램 매매도 +9,529억 원 순매수로 힘을 보탰습니다. 반면 외국인은 -1.04조 원, 개인은 -1.40조 원으로 동반 순매도에 나섰습니다. 외국인 매도가 이어지는 와중에도 기관 자금이 전기전자 대형주에 집중되며 지수를 사상 최고로 끌어올린 구조입니다. 수급의 방향이 한쪽(기관)에 쏠려 있다는 점은, 이 상승이 폭넓은 매수세보다는 특정 주체·특정 섹터의 힘에 기대고 있음을 보여줍니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. LG전자 +29.93% — 293,000원 상한가, 전기전자 대형주 급등 선봉
+2. LG씨엔에스 +29.91% — 113,800원 상한가, AI·SI 모멘텀 동반
+3. 삼성전기우 +29.88% — 765,000원, 전장·MLCC 기대감
+4. LG이노텍 +28.57% — 1,458,000원, 부품주 동반 강세
+5. LG +26.60% — 146,600원, 지주사까지 그룹 전반 재평가
+
+상승률 상위가 LG그룹과 삼성 전기전자 라인으로 도배됐다는 점이 오늘 장의 핵심입니다. 반도체·부품·전장으로 이어지는 AI 하드웨어 수요 기대가 특정 그룹주로 응집된 모습이고, LG전자·LG씨엔에스가 나란히 상한가를 기록하며 그룹 전체로 매수가 번지는 전형적인 그룹주 동반 강세 패턴이 나타났습니다. 여기에 솔루스첨단소재(+25.7%)·현대오토에버(+24.8%)·NHN(+22.5%)까지 IT·소재 전반으로 온기가 번지며, 자금이 반도체 단일 테마를 넘어 AI 하드웨어 밸류체인 전반으로 확산되는 흐름을 보였습니다. 다만 하루에 등락률 상위가 +25%를 넘는 종목으로 채워진 것은 단기 과열 신호도 함께 품고 있어, 추격 매수에 나서기 전에는 한 번쯤 호흡을 조절하며 거래량과 차익 매물 출회 여부를 확인하는 편이 안전합니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 시가총액 | 한 줄 코멘트 |
+|---|---|---|
+| LG전자 | 약 48조 | 293,000원 상한가, AI 가전·전장 기대에 대형주 급등 주도 |
+| LG이노텍 | 약 35조 | 1,458,000원 +28.57%, 카메라·기판 등 AI 부품 수혜 부각 |
+| LG | 약 23조 | 146,600원 +26.60%, 그룹 전반 재평가에 지주사도 동반 강세 |
+
+💡 내 생각
+
+사상 최고치라는 숫자는 화려하지만, 속을 보면 상승 206개 대 하락 688개로 시장의 체력이 골고루 좋았던 것은 아닙니다. 기관 +2.4조가 전기전자 대형주에 집중되며 지수만 끌어올린, 폭이 좁은 상승이라는 점을 기억해 둘 필요가 있습니다. 외국인이 여전히 1조 넘게 파는 가운데 나온 신고가라 변동성도 함께 커진 상태이고, 한쪽 주체에만 기댄 상승은 그 주체가 발을 빼는 순간 빠르게 되돌려질 수 있다는 약점도 안고 있습니다. 또 코스닥이 -2.68%로 정반대로 움직였다는 점은, 시장 전반의 위험 선호가 살아났다기보다 특정 대형주로 자금이 쏠리는 차별화 장세에 가깝다는 해석을 뒷받침합니다. 오늘 같은 무더기 상한가 뒤에는 차익 매물이 나오기 쉬우니 추격 매수보다 한 박자 쉬어 가는 호흡이 안전합니다. 종전 협상과 AI 수요라는 두 축이 실제로 이어지는지, 17:30 본편에서 LG·삼성 전기전자 랠리의 지속 가능성과 외국인 수급 흐름을 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <img class="preview" id="imgMarket" src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTA4MCAxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZvbnQtZmFtaWx5PSInTmFudW1Hb3RoaWMnLCdBcHBsZSBTRCBHb3RoaWMgTmVvJywnTm90byBTYW5zIEtSJyxzYW5zLXNlcmlmIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMEYxNzJBIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxRTI5M0IiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxsaW5lYXJHcmFkaWVudCBpZD0iYWNjZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM0I4MkY2Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwNkI2RDQiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxsaW5lYXJHcmFkaWVudCBpZD0iaGVybyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0Y1OUUwQiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRUY0NDQ0Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8ZmlsdGVyIGlkPSJnbG93Ij48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI0IiByZXN1bHQ9ImIiLz48ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+PC9maWx0ZXI+CjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSJ1cmwoI2JnKSIvPgoKICA8IS0tIOyDgeuLqCBhY2NlbnQgYmFyIC0tPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjgiIGZpbGw9InVybCgjYWNjZW50KSIvPgoKICA8IS0tIOyEueyFmCDrnbzrsqggLS0+CiAgPHRleHQgeD0iNDgiIHk9IjgwIiBmaWxsPSIjNjQ3NDhCIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iNiI+TUFSS0VUIFNUQVRVUzwvdGV4dD4KCiAgPCEtLSDrqZTsnbgg7YOA7J207YuAIC0tPgogIDx0ZXh0IHg9IjQ4IiB5PSIxNDgiIGZpbGw9IiNGRkZGRkYiIGZvbnQtc2l6ZT0iNTgiIGZvbnQtd2VpZ2h0PSI4MDAiPuy9lOyKpO2UvCA4LDQ3NiDsgqzsg4Eg7LWc6rOg7LmYIOqyveyLoDwvdGV4dD4KCiAgPCEtLSDrlJTrsJTsnbTrjZQgLS0+CiAgPHJlY3QgeD0iNDgiIHk9IjE2MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1IiBmaWxsPSJ1cmwoI2FjY2VudCkiIHJ4PSIyIi8+CgoKICA8IS0tIEhFUk8g7JiB7JetIC0tPgogIDx0ZXh0IHg9IjQ4IiB5PSIyNzAiIGZpbGw9InVybCgjaGVybykiIGZvbnQtc2l6ZT0iMTE4IiBmb250LXdlaWdodD0iOTAwIiBmaWx0ZXI9InVybCgjZ2xvdykiPjgsNDc2LjE1PC90ZXh0PgogIDx0ZXh0IHg9IjQ4IiB5PSIzMTgiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiPktPU1BJIOyiheqwgDwvdGV4dD4KCiAgPCEtLSDsmrDsuKEg67OA64+ZIO2RnOyLnCAo67Cp7ZalIOyekOuPmSDrtoTquLApIC0tPgogIDxwb2x5Z29uIHBvaW50cz0iOTAwLDI3NSA5NjAsMjc1IDkzMCwyMjAiIGZpbGw9IiNFRjQ0NDQiIG9wYWNpdHk9IjAuOTUiLz4KICA8dGV4dCB4PSI5MzAiIHk9IjMxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI0VGNDQ0NCIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjgwMCI+MjkwLjg2ICgrMy41NSUpPC90ZXh0PgoKICAKICA8cmVjdCB4PSI0OC4wIiB5PSIzODAiIHdpZHRoPSIzMTcuMzMzMzMzMzMzMzMzMyIgaGVpZ2h0PSIxODAiIGZpbGw9IiMxRTI5M0IiIHJ4PSIxNCIgc3Ryb2tlPSIjMzM0MTU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIyMDYuNjY2NjY2NjY2NjY2NjYiIHk9IjQyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY0NzQ4QiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9IjIiPuy9lOyKpOuLpTwvdGV4dD4KICA8dGV4dCB4PSIyMDYuNjY2NjY2NjY2NjY2NjYiIHk9IjQ5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSI1OCIgZm9udC13ZWlnaHQ9IjkwMCI+MSwwNzQuODA8L3RleHQ+CiAgPHRleHQgeD0iMjA2LjY2NjY2NjY2NjY2NjY2IiB5PSI1MzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMTgiPuKWvCAyOS41NiAoLTIuNjglKTwvdGV4dD4KICA8cmVjdCB4PSIzODEuMzMzMzMzMzMzMzMzMyIgeT0iMzgwIiB3aWR0aD0iMzE3LjMzMzMzMzMzMzMzMzMiIGhlaWdodD0iMTgwIiBmaWxsPSIjMUUyOTNCIiByeD0iMTQiIHN0cm9rZT0iIzMzNDE1NSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNTQwLjAiIHk9IjQyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY0NzQ4QiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9IjIiPuq4sOq0gCDsiJzrp6TsiJg8L3RleHQ+CiAgPHRleHQgeD0iNTQwLjAiIHk9IjQ5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSI1OCIgZm9udC13ZWlnaHQ9IjkwMCI+KzIuMzfsobA8L3RleHQ+CiAgPHRleHQgeD0iNTQwLjAiIHk9IjUzNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk0QTNCOCIgZm9udC1zaXplPSIxOCI+7KeA7IiYIOqyrOyduCDso7zssrQ8L3RleHQ+CiAgPHJlY3QgeD0iNzE0LjY2NjY2NjY2NjY2NjYiIHk9IjM4MCIgd2lkdGg9IjMxNy4zMzMzMzMzMzMzMzMzIiBoZWlnaHQ9IjE4MCIgZmlsbD0iIzFFMjkzQiIgcng9IjE0IiBzdHJva2U9IiMzMzQxNTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9Ijg3My4zMzMzMzMzMzMzMzMzIiB5PSI0MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OEIiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSI3MDAiIGxldHRlci1zcGFjaW5nPSIyIj7smbjqta3snbg8L3RleHQ+CiAgPHRleHQgeD0iODczLjMzMzMzMzMzMzMzMzMiIHk9IjQ5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSI1OCIgZm9udC13ZWlnaHQ9IjkwMCI+LTEuMDTsobA8L3RleHQ+CiAgPHRleHQgeD0iODczLjMzMzMzMzMzMzMzMzMiIHk9IjUzNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk0QTNCOCIgZm9udC1zaXplPSIxOCI+7Iic66ek64+EIOyngOyGjTwvdGV4dD4KICAKICA8cmVjdCB4PSI0OCIgeT0iNTg0IiB3aWR0aD0iMjI0IiBoZWlnaHQ9IjQyIiBmaWxsPSIjM0I4MkY2MUEiIHJ4PSIyMSIgc3Ryb2tlPSIjM0I4MkY2NTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjE2MC4wIiB5PSI2MTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPkxH7KCE7J6QICsyOS45MyU8L3RleHQ+CiAgPHJlY3QgeD0iMjgyIiB5PSI1ODQiIHdpZHRoPSIyNTYiIGhlaWdodD0iNDIiIGZpbGw9IiMzQjgyRjYxQSIgcng9IjIxIiBzdHJva2U9IiMzQjgyRjY1NSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iNDEwLjAiIHk9IjYxMSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCI+TEfslKjsl5Tsl5DsiqQgKzI5LjkxJTwvdGV4dD4KICA8cmVjdCB4PSI1NDgiIHk9IjU4NCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSI0MiIgZmlsbD0iIzNCODJGNjFBIiByeD0iMjEiIHN0cm9rZT0iIzNCODJGNjU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSI2NjguMCIgeT0iNjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjM0I4MkY2IiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIj7sgrzshLHsoITquLDsmrAgKzI5Ljg4JTwvdGV4dD4KICA8cmVjdCB4PSI0OCIgeT0iNjM2IiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjQyIiBmaWxsPSIjM0I4MkY2MUEiIHJ4PSIyMSIgc3Ryb2tlPSIjM0I4MkY2NTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjE2OC4wIiB5PSI2NjMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPkxH7J2064W47YWNICsyOC41NyU8L3RleHQ+CiAgPHJlY3QgeD0iMjk4IiB5PSI2MzYiIHdpZHRoPSIxOTIiIGhlaWdodD0iNDIiIGZpbGw9IiMzQjgyRjYxQSIgcng9IjIxIiBzdHJva2U9IiMzQjgyRjY1NSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgPHRleHQgeD0iMzk0LjAiIHk9IjY2MyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCI+TEcgKzI2LjYwJTwvdGV4dD4KICAKCiAgPCEtLSDsnbjsmqnqtawg67CV7IqkIC0tPgogIDxyZWN0IHg9IjQ4IiB5PSI5MTAiIHdpZHRoPSI5ODQiIGhlaWdodD0iMTIwIiBmaWxsPSIjMUUzQTVGIiByeD0iMTYiIG9wYWNpdHk9IjAuNzUiLz4KICA8cmVjdCB4PSI0OCIgeT0iOTEwIiB3aWR0aD0iNiIgaGVpZ2h0PSIxMjAiIGZpbGw9IiMzQjgyRjYiIHJ4PSIzIi8+CiAgPHRleHQgeD0iNzYiIHk9Ijk1NCIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSIzOCIgZm9udC13ZWlnaHQ9IjkwMCI+IjwvdGV4dD4KICA8dGV4dCB4PSIxMDQiIHk9Ijk2MCIgZmlsbD0iI0ZGRkZGRiIgZm9udC1zaXplPSIzMiIgZm9udC13ZWlnaHQ9IjgwMCI+7IKs7IOBIOy1nOqzoOy5mCwg6re465+s64KYIOyYpOuluCDsooXrqqnrs7Tri6Qg64K066awIOyiheuqqeydtCDrp47slZjri6Q8L3RleHQ+CiAgPHRleHQgeD0iNzYiIHk9IjEwMDIiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiPuKAlCA8L3RleHQ+CgogIDwhLS0g7Jqw7LihIO2VmOuLqCDruIzrnpzrlKkgLS0+CiAgPHRleHQgeD0iMTAzMiIgeT0iMTA1OCIgdGV4dC1hbmNob3I9ImVuZCIgZmlsbD0iIzY0NzQ4QiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9IjEiPjEy7Iuc7JeQIOunjOuCmOyalCDCtyDso7zsi50g67aE7ISdIOu4lOuhnOq3uDwvdGV4dD4KCjwvc3ZnPg==">
+<p style="font-size:12px;color:#dc2626;margin-top:8px;">⚠️ PNG 미생성 (Mac에서 <code>_render_2026-05-29-summary.command</code> 실행 후 재생성 필요)</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피8476</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥1074</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피사상최고치</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관대량순매수</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피8476사상최고종가</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인순매도지속흐름</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관이끌어올린지수상승</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#전기전자대형주무더기급등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG전자상한가기록</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG씨엔에스상한가</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG이노텍부품주강세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LG그룹주재평가랠리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성전기우전장기대감</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#미국이란종전협상기대감</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#AI하드웨어수요모멘텀</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥나홀로역행조정</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#상승종목보다하락종목많은장</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#시장폭좁은지수상승경계</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#프로그램매수동반유입</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#개인투자자순매도전환</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인일조원순매도</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피거래대금칠십조</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#사상최고치직후과열경계</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#추격매수전호흡조절필요</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#솔루스첨단소재급등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#현대오토에버강세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#국내증시일일시황정리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장마감직후코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#이천이십육년오월시황</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스피8476 #코스닥1074 #코스피사상최고치 #기관대량순매수 #코스피8476사상최고종가 #외국인순매도지속흐름 #기관이끌어올린지수상승 #전기전자대형주무더기급등 #LG전자상한가기록 #LG씨엔에스상한가 #LG이노텍부품주강세 #LG그룹주재평가랠리 #삼성전기우전장기대감 #미국이란종전협상기대감 #AI하드웨어수요모멘텀 #코스닥나홀로역행조정 #상승종목보다하락종목많은장 #시장폭좁은지수상승경계 #프로그램매수동반유입 #개인투자자순매도전환 #외국인일조원순매도 #코스피거래대금칠십조 #사상최고치직후과열경계 #추격매수전호흡조절필요 #솔루스첨단소재급등 #현대오토에버강세 #국내증시일일시황정리 #장마감직후코스피시황 #이천이십육년오월시황</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
