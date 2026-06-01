@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 이미지 복사 도구 — 2026-05-28</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .tag-chip:hover { background: #fde68a; }
+  .tag-chip:active { background: #f59e0b; color: #fff; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .kw-chip { display: inline-block; padding: 5px 12px; margin: 3px; background: #e0f2fe; color: #075985; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .kw-chip:hover { background: #bae6fd; }
+  .kw-chip.copied { background: #10b981; color: #fff; }
+  .kw-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 14px; line-height: 1.9; }
+  .tag-box  { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .body-preview h1 { font-size: 20px; margin: 8px 0 12px; color: #0f172a; }
+  .body-preview h2 { font-size: 17px; margin: 18px 0 8px; color: #1e293b; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+  .body-preview p { margin: 8px 0; }
+  .body-preview ul { margin: 8px 0 8px 12px; }
+  .body-preview li { margin: 4px 0; }
+  .body-preview hr { border: none; border-top: 1px dashed #cbd5e1; margin: 16px 0; }
+  .body-preview blockquote { margin: 8px 0; padding: 8px 14px; background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 4px; font-size: 14px; }
+  .body-preview table { border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+  .body-preview th, .body-preview td { border: 1px solid #cbd5e1; padding: 6px 10px; }
+  .body-preview th { background: #f1f5f9; }
+  .btn:active { opacity: 0.8; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  #copyStatus { display: none; background: #d1fae5; border: 1px solid #6ee7b7; border-radius: 8px; padding: 10px 16px; font-size: 14px; color: #065f46; margin-top: 10px; }
+  .hidden-body { display: none; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구</h1>
+<p class="desc">
+  아래 순서대로 진행하세요:<br>
+  <b>① 텍스트 복사 → 네이버 블로그 본문에 붙여넣기</b><br>
+  <b>② 이미지1~0 순서대로 복사 → 네이버 블로그 본문의 해당 위치에 붙여넣기</b>
+</p>
+
+<!-- STEP 0: 제목 -->
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목 (에디터 제목칸에 입력)</div>
+  <div class="text-box" id="titleBox">[12시에 만나요] 사그라들지 않는 미-이란 전쟁의 불씨! 중동발 쇼크에 출렁이는 국내&글로벌 증시.. 어떻게 해야 할까요?ㅣ2026년 5월 28일 목요일 ㅣ 2026년 5월 1화</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<!-- STEP 1: 텍스트 복사 -->
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:8px;">아래 본문 미리보기 확인 후 복사 버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div id="copyStatus">텍스트가 복사되었습니다. 네이버 블로그 에디터에 Cmd+V 로 붙여넣으세요.</div>
+
+  <!-- 본문 미리보기 (화면에 보임 + 복사 대상) -->
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">[12시에 만나요] 사그라들지 않는 미-이란 전쟁의 불씨! 중동발 쇼크에 출렁이는 국내&글로벌 증시.. 어떻게 해야 할까요?ㅣ2026년 5월 28일 목요일</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">미-이란 전쟁의 불씨가 사그라들지 않는 가운데, 한국 증시는 UBS 마이크론 목표가 530 → 1600 상향이라는 강력한 훈풍과 호르무즈 리스크라는 단기 노이즈를 동시에 흡수했습니다. 오늘 12시에 만나요는 미-이란 충돌의 진짜 강도, UBS 마이크론 리포트가 의미하는 한국 반도체 동조 강세, 한국은행 금리 인상 시그널이 코스닥에 미칠 영향, 그리고 현대차 + 보스턴 다이나믹스 상장 시나리오까지 깊게 짚었습니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<p>&nbsp;</p>
+<ul style="margin:8px 0;padding-left:20px;">
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">UBS 마이크론 목표가 530 → 1600</span> — 한국 반도체 동조 강세 논리 (이광수·박시동)</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">미-이란 호르무즈 노이즈의 강도</span> — 마지막 여론전 vs 실제 충돌</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">한국은행 금리 인상 시그널</span> — 코스피 영향 미미, 코스닥에는 부담</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">현대차 목표가 90만~120만 원</span> — 보스턴 다이나믹스 상장 밸류에이션 핵심 변수</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">국민연금 한국 비중 확대 논쟁</span> — MSCI 1% 비중 논리 비판</li>
+</ul>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">한 줄 요약</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">UBS가 마이크론 목표가를 530에서 1600으로 세 배 상향한 강력한 훈풍과 호르무즈 노이즈가 동시에 들이친 오늘 장에서, 이광수 대표는 "이란발 액션은 협상용 마지막 여론전"으로 진단했고, 한국 금리 인상 시그널은 코스닥에 부담으로 작용한다는 점, 그리고 보스턴 다이나믹스 상장이 현대차 목표 90만~120만 원의 핵심 변수라는 점이 정리됐습니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">📊 시장 분석 & 투자 전략</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 오프닝에서 이광수 대표는 "방송에서 반도체 얘기를 계속한다고 지겹다는 댓글이 있었지만, 시장이 움직이는 본질이 거기 있으니 계속 짚는다"라고 밝혔습니다. 그 근거가 곧바로 UBS 마이크론 리포트입니다. UBS가 마이크론 목표가를 기존 530달러대에서 <span style="font-weight:bold;">1600달러로 상향</span>했는데, 현재 주가가 800달러대인 점을 감안하면 약 2배의 추가 상승 여력을 본 셈입니다. 이광수 대표 표현으로 "당초 자기들이 갖고 있던 목표가의 세 배". 이 정도 상향은 전 세계가 보는 IB 리포트로서 한국 반도체 밸류에이션 논리에 직접 영향을 줍니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">이광수 대표는 "마이크론 같은 메모리 핵심 회사의 주가가 크게 오른다는 건 당연히 한국 반도체에 영향이 있다"고 정리했고, 박시동 대표는 "어 정도 되면 이제 한국 반도체 컨센서스가 어디까지 갈 수 있나의 기준선이 다시 그려진다"고 받았습니다. 어제 사상 최고 8,228 직후 오늘 8,167(-0.74%)로 후퇴했지만, 외국인 -2.9조 매도가 14거래일 이어진 와중에도 지수가 1% 미만 하락에 멈춘 배경에는 이런 IB 리포트 훈풍이 있습니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">수급 한 줄: 외국인은 14거래일 연속 매도로 누적 40조 원대를 넘긴 상태고, 기관 +0.36조와 개인 +1.4조가 받았습니다. 자금은 반도체 차익실현에서 빠져 <span style="font-weight:bold;">LG에너지솔루션 +12.65%, 현대모비스 +4.36%, 삼성SDI +3.97%, 기아 +2.61%, 현대차 +2.35%</span>의 2차전지·자동차·로봇 라인으로 빠르게 이동했습니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">🧠 투자 심리 & 행동 교정</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">이번 회차의 광수생각은 단순했습니다. <span style="font-weight:bold;">"반도체 얘기 그만하라"는 댓글이 늘었다는 사실 자체가 이미 시장 심리의 신호</span>라는 진단입니다. 이광수 대표는 "유튜브 썸네일이 '삼전닉스 말고 다음 종목'으로 도배되기 시작했다는 건, 사람들 생각이 거기 있고 콘텐츠는 그쪽으로 쏟아진다는 뜻"이라며, <span style="font-weight:bold;">남들이 다 떠난 곳을 다시 짚는 게 본질 점검의 시작</span>이라고 짚었습니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">호르무즈·이란 헤드라인에 대한 심리 교정 메시지도 명확합니다. 이광수 대표는 "이란이 만약 판을 엎으려고 했다면 가만히 갈 길 갔을 텐데, 노이즈를 만들고 소음을 일으키는 모습"이라며 <span style="font-weight:bold;">마지막 국제 여론전·자국 내부 여론전</span>으로 해석했습니다. 박시동 대표는 보강해서 "고지전을 더 우위에서 점한 다음에 협상을 마무리하려는 마지막 노이즈"라고 정리했습니다. 결정적인 단서는 두 가지였습니다. ① 보도된 드론이 가장 성능 낮은 것으로 파악됐고 ② 이란 정부가 오늘 자국 증시를 정상 개장했다는 점입니다. 이광수 대표 표현으로 "돈은 투명하다. 정부가 정상 개장을 결정했다는 건 본인들도 판을 엎을 생각이 없다는 신호".</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">심리 함정 정리는 이렇습니다. 첫째, <span style="font-weight:bold;">헤드라인 한 줄에 비중을 바꾸는 충동</span>. 둘째, <span style="font-weight:bold;">'반도체 지겹다'는 다수 심리에 휩쓸려 본질이 바뀌지 않은 종목을 포기하는 충동</span>. 셋째, <span style="font-weight:bold;">신고가 직후 -0.74% 조정에 과도하게 공포감을 더하는 가격 중심 사고</span>. 대응 지침은 단순합니다. 호르무즈 헤드라인이 새로 뜰 때마다 본인 종목의 본질(What)이 바뀌었는지를 먼저 확인하고, 본질이 그대로면 비중 대신 현금 5~10%를 추가로 확보해 추가 매수 여력으로 두라는 것입니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">📉 한국은행 금리 인상 시그널 — 코스닥에 더 큰 부담</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 권다영 앵커 머니뉴스에서 핵심으로 다룬 또 다른 변수는 한국은행의 금리 인상 시그널입니다. 박시동 대표는 "한국은행이 시장에 무조건 금리를 올린다는 확실한 멘트를 줬다"며 가이드라인이 명확한 점은 긍정적이라고 짚었습니다. 다만 영향 진단은 코스피와 코스닥이 다릅니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">이광수 대표 정리: "금리는 경제에서 제일 중요한 팩터고 영향은 방사형으로 다 미치지만, 증시 큰 틀에서는 충격이 제한적이다. 시장이 이미 다 예상하고 있고, 이 정도 금리 충격은 큰 충격으로 안 본다." 다만 <span style="font-weight:bold;">코스닥은 다릅니다</span>. "금리에 민감한 섹터가 코스닥에 많고, 오늘도 3% 가까이 빠지면서 힘을 못 내는 상황. 국민성장펀드와 연기금 추가 투자로 살려야 하는 시점에 금리 인상이 추가 부담으로 작용할 수 있다." 실제 오늘 코스닥은 -2.99%로 이틀 연속 큰 폭의 조정을 받았습니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">연결되는 논점이 국민연금 한국 비중 확대 논쟁입니다. 일부 경계론자들이 "MSCI 지수 안에서 한국 비중이 1~2%밖에 안 되는데 연금이 30%씩 한국에 둘 수는 없다"는 논리를 펴는데, 이광수 대표는 <span style="font-weight:bold;">"세계 증시 시총 기준으로 한국은 1%가 아니라 그보다 훨씬 크고, 올해 코스피는 연초 대비 100%가 올라 매력적인 시장이 된 만큼 비중 상향 근거가 더 강해졌다"</span>고 반박했습니다. 위(상한)가 닫혀 있으면 운용 역량을 발휘할 공간이 없다는 점, 일본처럼 연기금 비중 확대가 기폭제가 된 사례가 한국에서도 반복될 수 있다는 점이 핵심 논리였습니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">🚗 현대차 목표가 90만~120만 원 — 보스턴 다이나믹스 상장이 변수</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">자동차 섹터 코너에서는 <span style="font-weight:bold;">현대차 목표가 컨센서스가 75만~120만 원, 평균 90만 원 수준</span>으로 정리됐습니다. KB가 120만 원으로 상위권을 제시했고, 박시동 대표는 "KB가 최근 뭘 내놓으면 업계 수준보다 한참 위로 가서 그냥 막 질러 버리는 흐름"이라며 KB 센터장의 최근 노출 빈도까지 언급했습니다.</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">핵심 변수는 보스턴 다이나믹스 상장 시점입니다. 이광수 대표 정리: "현대차 주가에 보스턴 다이나믹스 가치가 이미 반영됐다고 보는 진영, 아직 멀었고 상장 프로세스가 본격 가동되면 달라질 거라고 보는 진영, 그리고 상장은 부차적이고 아틀라스 본격 상용화 매출이 잡힐 때 진짜로 반영될 거라고 보는 진영까지 의견이 갈린다." 즉 <span style="font-weight:bold;">현대차 90~120만 원 목표는 보스턴 다이나믹스 상장 + 아틀라스 상용화 시나리오에 의존하는 구조</span>입니다. 오늘 현대모비스 +4.36%, 현대차 +2.35%의 동반 강세도 이 흐름과 연결됩니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">✅ 오늘의 핵심 포인트</h2>
+<p>&nbsp;</p>
+<ul style="margin:8px 0;padding-left:20px;">
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">UBS 마이크론 목표가 530 → 1600</span> — 3배 상향, 한국 반도체 컨센서스 재조정 트리거</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">코스피 8,167 -0.74% / 코스닥 1,099 -2.99%</span> — 외국인 14거래일째 -2.9조 매도 누적 40조 돌파</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">호르무즈 노이즈 = 마지막 협상용 여론전</span> — 이란 증시 정상 개장, 드론 성능 최하위</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">한국은행 금리 인상 시그널</span> — 코스피 영향 미미, 코스닥에는 추가 부담</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">현대차 90만~120만 원</span> — KB 120만 제시, 보스턴 다이나믹스 상장이 핵심 변수</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">국민연금 한국 비중 확대 논쟁</span> — MSCI 1% 논리 비판, 코스피 연초 대비 100% 상승</li>
+</ul>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<p>&nbsp;</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">구분</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">코멘트</th></tr>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">|---|---|---|</p>
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">**SK하이닉스** (000660)</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">반도체 / HBM 1등</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">UBS 마이크론 1600 적용 시 한국 반도체 동조 강세 후보 1위</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼성전자** (005930)</td><td style="padding:6px 10px;border:1px solid #d1d5db;">반도체 / 종합</td><td style="padding:6px 10px;border:1px solid #d1d5db;">마이크론 목표가 3배 상향이 직접 적용 가능한 메모리 사이클</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**현대차** (005380)</td><td style="padding:6px 10px;border:1px solid #d1d5db;">자동차 / 로봇</td><td style="padding:6px 10px;border:1px solid #d1d5db;">목표가 90만~120만 원, 보스턴 다이나믹스 상장이 변수, +2.35%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**현대모비스** (012330)</td><td style="padding:6px 10px;border:1px solid #d1d5db;">자동차 부품 / SDV·로봇</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+4.36%, 현대차그룹 로봇 모멘텀 동조</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LG에너지솔루션** (373220)</td><td style="padding:6px 10px;border:1px solid #d1d5db;">2차전지 / 순환매 1순위</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+12.65% 급반등, 반도체 차익실현 자금 1차 도착지</td></tr>
+</table>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">☐ 투자에 적용할 점</h2>
+<p>&nbsp;</p>
+<ul style="margin:8px 0;padding-left:20px;">
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] UBS 마이크론 1600 시나리오가 한국 반도체에 어떻게 적용되는지 본인 종목 기준으로 5분 점검</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] 호르무즈 헤드라인이 추가로 나올 때 <span style="font-weight:bold;">이란 증시 개장 여부와 미국 강경파 발언 톤</span>을 신호로 사용</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] 코스닥 보유 종목은 한국은행 금리 인상 가이드 영향을 한 번 점검 — 금리 민감 섹터 비중 조정</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] 현대차·현대모비스 보유 시 <span style="font-weight:bold;">보스턴 다이나믹스 상장 일정</span>을 IR/리포트로 추적</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] 외국인 -2.9조 매도 14거래일째인 만큼 <span style="font-weight:bold;">신규 매수보다 본인 포지션 정리</span>가 먼저</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;">[ ] <span style="font-weight:bold;">현금 비중 5~10% 추가 확보</span> — 호르무즈 헤드라인 격화 시 추가 매수 여력으로 사용</li>
+</ul>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">💡 내 생각</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 회차의 진짜 메시지는 "반도체 지겹다"는 댓글이 늘었다는 사실 자체가 신호라는 점이었습니다. 시장이 한 방향으로 쏠릴 때마다 본질을 점검하는 게 결국 답인데, UBS 마이크론 1600 상향이라는 강력한 IB 신호가 그 본질 점검의 기준선을 다시 그렸습니다. 호르무즈는 노이즈로 끝날 가능성이 큰 만큼, 코스닥 금리 영향과 현대차 보스턴 다이나믹스 상장 시점이 다음 단기 변수입니다.</p>
+<p>&nbsp;</p>
+<hr style="border:none;border-top:1px solid #d1d5db;margin:16px 0;">
+<p>&nbsp;</p>
+<p style="font-size:18px;font-weight:bold;margin:14px 0 6px;line-height:1.4;color:#1e293b;">[부록] 영상 정보</p>
+<p>&nbsp;</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">채널</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">출연자</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">업로드일</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">URL</th></tr>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">|---|---|---|---|</p>
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">김어준의 겸손은힘들다 뉴스공장</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">이광수·박시동·권다영</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">2026-05-28</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">https://www.youtube.com/watch?v=LCw889TSRRY</th></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;"><span style="font-weight:bold;">[부록]</span> 본 글은 영상 자막을 기반으로 한 개인 분석입니다. 투자 판단과 그 책임은 본인에게 있습니다.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+  </div>
+</div>
+
+
+
+
+<!-- STEP 2: 태그 -->
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#f59e0b;">2</span> 해시태그 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:6px;">총 30개 — 네이버 권장 30개</p>
+  <p style="font-size:12px;color:#dc2626;margin-bottom:10px;">⚠️ 네이버는 태그 한 개씩 입력 → Enter 필요. 각 태그(노란 칩)를 클릭하면 그 태그만 복사됩니다. 빠른 방법은 칩을 차례로 클릭→네이버 태그칸 붙여넣기→Enter 반복.</p>
+  <div class="tag-box" id="tagBox"><span class="tag-chip" onclick="copyOneTag(this, '#코스피8167')" title="클릭하면 이 태그만 복사">#코스피8167</span> <span class="tag-chip" onclick="copyOneTag(this, '#SK하이닉스')" title="클릭하면 이 태그만 복사">#SK하이닉스</span> <span class="tag-chip" onclick="copyOneTag(this, '#삼성전자')" title="클릭하면 이 태그만 복사">#삼성전자</span> <span class="tag-chip" onclick="copyOneTag(this, '#현대차')" title="클릭하면 이 태그만 복사">#현대차</span> <span class="tag-chip" onclick="copyOneTag(this, '#LG에너지솔루션')" title="클릭하면 이 태그만 복사">#LG에너지솔루션</span> <span class="tag-chip" onclick="copyOneTag(this, '#UBS마이크론1600')" title="클릭하면 이 태그만 복사">#UBS마이크론1600</span> <span class="tag-chip" onclick="copyOneTag(this, '#마이크론목표가상향')" title="클릭하면 이 태그만 복사">#마이크론목표가상향</span> <span class="tag-chip" onclick="copyOneTag(this, '#한국반도체동조강세')" title="클릭하면 이 태그만 복사">#한국반도체동조강세</span> <span class="tag-chip" onclick="copyOneTag(this, '#호르무즈리스크')" title="클릭하면 이 태그만 복사">#호르무즈리스크</span> <span class="tag-chip" onclick="copyOneTag(this, '#미이란전쟁우려')" title="클릭하면 이 태그만 복사">#미이란전쟁우려</span> <span class="tag-chip" onclick="copyOneTag(this, '#이란증시정상개장')" title="클릭하면 이 태그만 복사">#이란증시정상개장</span> <span class="tag-chip" onclick="copyOneTag(this, '#한국은행금리인상')" title="클릭하면 이 태그만 복사">#한국은행금리인상</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥1099')" title="클릭하면 이 태그만 복사">#코스닥1099</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥금리민감')" title="클릭하면 이 태그만 복사">#코스닥금리민감</span> <span class="tag-chip" onclick="copyOneTag(this, '#국민연금한국비중')" title="클릭하면 이 태그만 복사">#국민연금한국비중</span> <span class="tag-chip" onclick="copyOneTag(this, '#MSCI한국비중1프로')" title="클릭하면 이 태그만 복사">#MSCI한국비중1프로</span> <span class="tag-chip" onclick="copyOneTag(this, '#현대차목표가120만')" title="클릭하면 이 태그만 복사">#현대차목표가120만</span> <span class="tag-chip" onclick="copyOneTag(this, '#보스턴다이나믹스상장')" title="클릭하면 이 태그만 복사">#보스턴다이나믹스상장</span> <span class="tag-chip" onclick="copyOneTag(this, '#아틀라스상용화')" title="클릭하면 이 태그만 복사">#아틀라스상용화</span> <span class="tag-chip" onclick="copyOneTag(this, '#현대모비스로봇')" title="클릭하면 이 태그만 복사">#현대모비스로봇</span> <span class="tag-chip" onclick="copyOneTag(this, '#2차전지순환매')" title="클릭하면 이 태그만 복사">#2차전지순환매</span> <span class="tag-chip" onclick="copyOneTag(this, '#외국인14거래일매도')" title="클릭하면 이 태그만 복사">#외국인14거래일매도</span> <span class="tag-chip" onclick="copyOneTag(this, '#이광수반도체')" title="클릭하면 이 태그만 복사">#이광수반도체</span> <span class="tag-chip" onclick="copyOneTag(this, '#박시동시장분석')" title="클릭하면 이 태그만 복사">#박시동시장분석</span> <span class="tag-chip" onclick="copyOneTag(this, '#권다영앵커')" title="클릭하면 이 태그만 복사">#권다영앵커</span> <span class="tag-chip" onclick="copyOneTag(this, '#5월28일코스피시황')" title="클릭하면 이 태그만 복사">#5월28일코스피시황</span> <span class="tag-chip" onclick="copyOneTag(this, '#광수생각심리')" title="클릭하면 이 태그만 복사">#광수생각심리</span> <span class="tag-chip" onclick="copyOneTag(this, '#섹터로테이션장세')" title="클릭하면 이 태그만 복사">#섹터로테이션장세</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피사상최고후조정')" title="클릭하면 이 태그만 복사">#코스피사상최고후조정</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피목표가전망')" title="클릭하면 이 태그만 복사">#코스피목표가전망</span></div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 (줄바꿈 구분) 복사</button>
+  <span class="toast" id="toastTag">✅ 복사됨!</span>
+  <div class="hidden-body" id="tagsRaw">#코스피8167
+#SK하이닉스
+#삼성전자
+#현대차
+#LG에너지솔루션
+#UBS마이크론1600
+#마이크론목표가상향
+#한국반도체동조강세
+#호르무즈리스크
+#미이란전쟁우려
+#이란증시정상개장
+#한국은행금리인상
+#코스닥1099
+#코스닥금리민감
+#국민연금한국비중
+#MSCI한국비중1프로
+#현대차목표가120만
+#보스턴다이나믹스상장
+#아틀라스상용화
+#현대모비스로봇
+#2차전지순환매
+#외국인14거래일매도
+#이광수반도체
+#박시동시장분석
+#권다영앵커
+#5월28일코스피시황
+#광수생각심리
+#섹터로테이션장세
+#코스피사상최고후조정
+#코스피목표가전망</div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px dashed #cbd5e1;">
+    <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">🔑 핵심 키워드 10개 (# 없음)</div>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드 클릭 = 개별 복사. 전체 한 번에 복사하려면 아래 버튼.</p>
+    <div class="kw-box">
+<span class="kw-chip" onclick="copyOneTag(this, '코스닥1099')" title="클릭하면 복사">코스닥1099</span><span class="kw-chip" onclick="copyOneTag(this, '코스피8167')" title="클릭하면 복사">코스피8167</span><span class="kw-chip" onclick="copyOneTag(this, '현대차')" title="클릭하면 복사">현대차</span><span class="kw-chip" onclick="copyOneTag(this, 'SK하이닉스')" title="클릭하면 복사">SK하이닉스</span><span class="kw-chip" onclick="copyOneTag(this, 'UBS마이크론1600')" title="클릭하면 복사">UBS마이크론1600</span><span class="kw-chip" onclick="copyOneTag(this, '삼성전자')" title="클릭하면 복사">삼성전자</span><span class="kw-chip" onclick="copyOneTag(this, '권다영앵커')" title="클릭하면 복사">권다영앵커</span><span class="kw-chip" onclick="copyOneTag(this, '2차전지순환매')" title="클릭하면 복사">2차전지순환매</span><span class="kw-chip" onclick="copyOneTag(this, 'LG에너지솔루션')" title="클릭하면 복사">LG에너지솔루션</span><span class="kw-chip" onclick="copyOneTag(this, 'MSCI한국비중1프로')" title="클릭하면 복사">MSCI한국비중1프로</span>
+    </div>
+    <button class="btn" style="background:#0ea5e9;color:#fff;margin-top:10px;" onclick="copyAllKeywords()">🔑 키워드 10개 전체 복사 (쉼표 구분)</button>
+    <span class="toast" id="toastKw">✅ 복사됨!</span>
+    <div class="hidden-body" id="kwAll">코스닥1099, 코스피8167, 현대차, SK하이닉스, UBS마이크론1600, 삼성전자, 권다영앵커, 2차전지순환매, LG에너지솔루션, MSCI한국비중1프로</div>
+  </div>
+</div>
+
+
+<script>
+async function copyAllKeywords() {
+  const raw = document.getElementById('kwAll').innerText;
+  try {
+    await navigator.clipboard.writeText(raw);
+    showToast('toastKw');
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('toastKw'); }
+    catch(e2) { alert('키워드 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyOneTag(el, tag) {
+  try {
+    await navigator.clipboard.writeText(tag);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1200);
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = tag;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1200); }
+    catch(e2) { alert('태그 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyTags() {
+  const raw = document.getElementById('tagsRaw').innerText;
+  try {
+    await navigator.clipboard.writeText(raw);
+    showToast('toastTag');
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('toastTag'); }
+    catch(e2) { alert('태그 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+function showToast(id) {
+  const el = document.getElementById(id);
+  el.style.display = 'inline';
+  setTimeout(() => el.style.display = 'none', 2000);
+}
+
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(toastId);
+  } catch(e) {
+    // Fallback — 임시 textarea + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast(toastId); }
+    catch(e2) { alert('복사 실패 — 직접 선택하여 복사하세요'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyText() {
+  const body = document.getElementById('blogBodyHtml');
+  const html = body.innerHTML;
+  const text = body.innerText;
+  let ok = false;
+
+  // 1) 최신 Clipboard API — HTML + plain 같이 (네이버 에디터가 HTML 인식)
+  try {
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      const item = new ClipboardItem({
+        'text/html': new Blob([html], {type: 'text/html'}),
+        'text/plain': new Blob([text], {type: 'text/plain'})
+      });
+      await navigator.clipboard.write([item]);
+      ok = true;
+    }
+  } catch(e) { console.warn('ClipboardItem 실패:', e); }
+
+  // 2) Fallback — Selection + execCommand
+  if (!ok) {
+    try {
+      const range = document.createRange();
+      range.selectNodeContents(body);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      ok = document.execCommand('copy');
+      sel.removeAllRanges();
+    } catch(e) { console.warn('execCommand 실패:', e); }
+  }
+
+  // 3) 최후 fallback — 일반 텍스트만
+  if (!ok) {
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch(e) { console.error('clipboard.writeText 실패:', e); }
+  }
+
+  if (ok) {
+    document.getElementById('copyStatus').style.display = 'block';
+    showToast('toastText');
+    setTimeout(() => document.getElementById('copyStatus').style.display = 'none', 3000);
+  } else {
+    alert('복사 실패 — 본문을 마우스로 드래그하여 직접 복사해주세요');
+  }
+}
+
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+  };
+  img.src = src;
+}
+
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(blob => {
+    const item = new ClipboardItem({'image/png': blob});
+    navigator.clipboard.write([item]).then(() => showToast(toastId));
+  });
+}
+
+// 이미지 캔버스 로드
+window.onload = function() {
+};
+</script>
+</body>
+</html>

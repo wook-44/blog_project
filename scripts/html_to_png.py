@@ -34,7 +34,7 @@ NANUM_FONT_CSS = """
 """
 
 
-async def html_to_png(html_path: Path, out_path: Path, width: int = 900, height: int = 900):
+async def html_to_png(html_path: Path, out_path: Path, width: int = 1080, height: int = 1080):
     async with async_playwright() as p:
         context = await p.chromium.launch_persistent_context(
             user_data_dir=str(USER_DATA_DIR),
@@ -50,7 +50,7 @@ async def html_to_png(html_path: Path, out_path: Path, width: int = 900, height:
         # 폰트 다운로드 및 렌더링 완료 대기
         await page.wait_for_load_state("networkidle")
         await page.wait_for_timeout(1500)
-        await page.screenshot(path=str(out_path), full_page=False, clip={"x": 0, "y": 0, "width": width, "height": height})  # width/height now 900×900 by default
+        await page.screenshot(path=str(out_path), full_page=False, clip={"x": 0, "y": 0, "width": width, "height": height})  # width/height 1080×1080 (SVG 네이티브 사이즈)
         await context.close()
         print(f"  ✅ {out_path.name}")
 

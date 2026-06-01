@@ -1,0 +1,88 @@
+(async()=>{
+const svgText=`<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#A78BFA"/>
+    <stop offset="100%" style="stop-color:#EC4899"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#FBBF24"/>
+    <stop offset="100%" style="stop-color:#F472B6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">INVESTMENT PSYCHOLOGY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">반도체 지겹다는 댓글 = 신호</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <text x="48" y="250" fill="url(#hero)" font-size="62" font-weight="900" filter="url(#glow)">남들이 다 떠난 곳을 다시 짚는 게 본질 점검의 시작</text>
+  
+  <rect x="48.0" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="206.66666666666666" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="206.66666666666666" y="402" text-anchor="middle" font-size="53">😱</text>
+  <text x="206.66666666666666" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">헤드라인 매매</text>
+  <foreignObject x="64.0" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">호르무즈 한 줄에 비중 단숨에 변경</div>
+  </foreignObject>
+  <rect x="381.3333333333333" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="540.0" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="540.0" y="402" text-anchor="middle" font-size="53">🤯</text>
+  <text x="540.0" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">다수 심리 동조</text>
+  <foreignObject x="397.3333333333333" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">반도체 지겹다 댓글에 본질 그대로인 종목 포기</div>
+  </foreignObject>
+  <rect x="714.6666666666666" y="320" width="317.3333333333333" height="290" fill="#1E293B" rx="16" stroke="#A78BFA44" stroke-width="2"/>
+  <circle cx="873.3333333333333" cy="386" r="44" fill="#A78BFA22"/>
+  <text x="873.3333333333333" y="402" text-anchor="middle" font-size="53">😩</text>
+  <text x="873.3333333333333" y="478" text-anchor="middle" fill="#A78BFA" font-size="29" font-weight="800">신고가 후 공포</text>
+  <foreignObject x="730.6666666666666" y="502" width="285.3333333333333" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#94A3B8;font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">8,228→8,167 -0.74%에 과도한 매도 충동</div>
+  </foreignObject>
+  
+  <rect x="48" y="630" width="984" height="160" fill="#EC48991A" rx="16" stroke="#EC489966" stroke-width="2"/>
+  <text x="80" y="678" fill="#EC4899" font-size="20" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
+  <foreignObject x="80" y="692" width="920" height="92">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:31px;font-weight:700;line-height:1.45;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">본질(What) 점검 먼저, 그래도 불안하면 비중 대신 현금 5~10% 추가 확보</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#A78BFA" rx="3"/>
+  <text x="76" y="954" fill="#A78BFA" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">유튜브 썸네일이 삼전닉스 다음 종목으로 도배되면, 이미 다수가 그 생각</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 이광수 (광수생각)</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg>`;
+document.body.innerHTML=svgText;
+const svgEl=document.querySelector('svg');
+const xml=new XMLSerializer().serializeToString(svgEl);
+const blob=new Blob([xml],{type:'image/svg+xml;charset=utf-8'});
+const url=URL.createObjectURL(blob);
+const img=new Image();img.width=1080;img.height=1080;
+try{await new Promise((r,j)=>{img.onload=r;img.onerror=()=>j('e');img.src=url;});}catch(e){return 'imgERR';}
+const c=document.createElement('canvas');c.width=1080;c.height=1080;
+const cx=c.getContext('2d');cx.fillStyle='#0F172A';cx.fillRect(0,0,1080,1080);cx.drawImage(img,0,0,1080,1080);
+try{
+  const d=c.toDataURL('image/png');
+  window._png_psychology=d;
+  return 'OK:psychology:len='+d.length;
+}catch(e){return 'TAINT:'+e.message;}
+})()

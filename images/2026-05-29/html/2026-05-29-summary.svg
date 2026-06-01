@@ -1,0 +1,47 @@
+<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+ <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0F172A"/><stop offset="100%" stop-color="#1E293B"/></linearGradient>
+ <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#06B6D4"/></linearGradient>
+ <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+</defs>
+<rect width="1080" height="1080" fill="url(#bg)"/>
+<rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+<text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">KEY POINTS TODAY</text>
+<text x="48" y="148" fill="#FFFFFF" font-size="54" font-weight="800">오늘의 핵심 포인트</text>
+<rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+<rect x="48" y="200" width="984" height="120" fill="#10B9811A" rx="18" stroke="#10B98166" stroke-width="2"/>
+<text x="80" y="244" fill="#10B981" font-size="20" font-weight="800" letter-spacing="3">&#11088; TODAY'S TAKEAWAY</text>
+<text x="80" y="296" fill="#FFFFFF" font-size="34" font-weight="800">수급 개선 + 깐부 기대가 만든 동반 급등</text>
+<rect x="48" y="350" width="984" height="72" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+<circle cx="92" cy="386" r="26" fill="url(#accent)"/>
+<text x="92" y="396" text-anchor="middle" fill="#0F172A" font-size="28" font-weight="900">1</text>
+<text x="140" y="396" fill="#FFFFFF" font-size="25" font-weight="700">국민연금 국내주식 14.9% → 20.8% 확대</text>
+<rect x="48" y="434" width="984" height="72" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+<circle cx="92" cy="470" r="26" fill="url(#accent)"/>
+<text x="92" y="480" text-anchor="middle" fill="#0F172A" font-size="28" font-weight="900">2</text>
+<text x="140" y="480" fill="#FFFFFF" font-size="25" font-weight="700">젠슨황 방한, 최태원·정의선·구광모 회동 기대</text>
+<rect x="48" y="518" width="984" height="72" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+<circle cx="92" cy="554" r="26" fill="url(#accent)"/>
+<text x="92" y="564" text-anchor="middle" fill="#0F172A" font-size="28" font-weight="900">3</text>
+<text x="140" y="564" fill="#FFFFFF" font-size="25" font-weight="700">LG 로봇 밸류체인·현대차그룹 동반 급등</text>
+<rect x="48" y="602" width="984" height="72" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+<circle cx="92" cy="638" r="26" fill="url(#accent)"/>
+<text x="92" y="648" text-anchor="middle" fill="#0F172A" font-size="28" font-weight="900">4</text>
+<text x="140" y="648" fill="#FFFFFF" font-size="25" font-weight="700">현대차 71만원 터치·현대오토에버 +20%</text>
+<rect x="48" y="686" width="984" height="72" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+<circle cx="92" cy="722" r="26" fill="url(#accent)"/>
+<text x="92" y="732" text-anchor="middle" fill="#0F172A" font-size="28" font-weight="900">5</text>
+<text x="140" y="732" fill="#FFFFFF" font-size="25" font-weight="700">테마주는 매수와 동시에 매도 계획 필수</text><text x="48" y="800" fill="#64748B" font-size="18" font-weight="700" letter-spacing="2">&#128279; 관련 종목</text>
+<rect x="48" y="818" width="144" height="48" fill="#10B9811A" rx="24" stroke="#10B98166" stroke-width="1"/>
+<text x="120" y="848" text-anchor="middle" fill="#10B981" font-size="22" font-weight="800">LG전자</text>
+<rect x="208" y="818" width="118" height="48" fill="#10B9811A" rx="24" stroke="#10B98166" stroke-width="1"/>
+<text x="267" y="848" text-anchor="middle" fill="#10B981" font-size="22" font-weight="800">현대차</text>
+<rect x="342" y="818" width="118" height="48" fill="#10B9811A" rx="24" stroke="#10B98166" stroke-width="1"/>
+<text x="401" y="848" text-anchor="middle" fill="#10B981" font-size="22" font-weight="800">네이버</text>
+<rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+<rect x="48" y="910" width="6" height="120" fill="#10B981" rx="3"/>
+<text x="76" y="954" fill="#10B981" font-size="38" font-weight="900">&#8220;</text>
+<text x="104" y="960" fill="#FFFFFF" font-size="30" font-weight="800">추격보다 계획이 먼저다</text>
+<text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">&#8212; 12시에 만나요</text>
+<text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+</svg>

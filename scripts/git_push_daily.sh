@@ -66,6 +66,7 @@ fi
 echo ""
 echo "📤 GitHub 푸시 중..."
 git add "daily/$DATE"
+git add "daily/${DATE}-summary" 2>/dev/null || true   # 15:30 시황 요약 폴더도 함께 푸시
 git add "output/" 2>/dev/null || true
 git add "data/" 2>/dev/null || true
 

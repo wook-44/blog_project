@@ -104,36 +104,75 @@ if ! "$PYTHON" "$BLOG/scripts/regen_week_infographics.py" "$DATE" "$DATE" 2>&1; 
   report_error "[3/6] 인포그래픽 HTML 생성" "regen_week_infographics.py 실패 — PNG 일부 누락 가능"
 fi
 
+# PNG가 깨졌다고 판단하는 최소 크기(byte). 정상 인포그래픽은 280~550KB.
+# 100KB 미만이면 한글 글리프 누락/Chrome 렌더 실패로 간주.
+MIN_PNG_BYTES=100000
+
 PNG_FAIL=0
-if [ -x "$CHROME" ]; then
-  HTML_DIR="$BLOG/images/$DATE/html"
-  if [ -d "$HTML_DIR" ]; then
-    for H in "$HTML_DIR"/${DATE}-*.html; do
-      [ -f "$H" ] || continue
-      name=$(basename "$H" .html)
-      P="$BLOG/images/$DATE/${name}.png"
-      if ! "$CHROME" --headless=new --disable-gpu --hide-scrollbars \
-        --window-size=1080,1080 --screenshot="$P" "file://$H" 2>&1; then
-        echo "  ❌ Chrome screenshot 실패: ${name}"
-        PNG_FAIL=$((PNG_FAIL + 1))
-      else
-        echo "  · ${name}.png"
-      fi
-    done
-  fi
-else
-  echo "  ⚠️ Chrome 없음 — PNG fallback 사용"
+HTML_DIR="$BLOG/images/$DATE/html"
+
+if [ ! -x "$CHROME" ]; then
+  echo "  ❌ Chrome 실행 파일 없음: $CHROME — PNG 변환 불가"
   report_error "[3/6] PNG 변환" "Chrome 실행 파일 없음: $CHROME"
+  EXIT_REPORTED=1
+  exit 1
 fi
-PNG_COUNT=$(ls "$BLOG/images/$DATE/"*.png 2>/dev/null | wc -l | tr -d ' ')
+
+if [ ! -d "$HTML_DIR" ]; then
+  echo "  ❌ HTML 디렉터리 없음: $HTML_DIR — 인포그래픽 HTML 미생성"
+  report_error "[3/6] PNG 변환" "HTML 디렉터리 없음 ($HTML_DIR). regen_week_infographics.py 산출물 확인 필요"
+  EXIT_REPORTED=1
+  exit 1
+fi
+
+# ③-a 폰트 강제(fortify): Chrome headless 폰트 상속 실패로 인한 한글 깨짐 방지.
+#   모든 <text>에 font-family 직접 명시. 렌더 직전 필수 단계.
+echo "  🔤 폰트 강제(fortify) 적용..."
+if ! "$PYTHON" "$BLOG/scripts/fortify_html_fonts.py" "$HTML_DIR"/${DATE}-*.html 2>&1; then
+  echo "  ⚠️ fortify 실패 — 한글 깨짐 위험 있으나 렌더는 시도"
+  report_error "[3/6] fortify" "fortify_html_fonts.py 실패 — 한글 깨짐 가능"
+fi
+
+# ③-b Chrome headless 렌더 + 크기 검증
+for H in "$HTML_DIR"/${DATE}-*.html; do
+  [ -f "$H" ] || continue
+  name=$(basename "$H" .html)
+  P="$BLOG/images/$DATE/${name}.png"
+  rm -f "$P"
+  if ! "$CHROME" --headless=new --disable-gpu --hide-scrollbars \
+    --window-size=1080,1080 --screenshot="$P" "file://$H" 2>&1; then
+    echo "  ❌ Chrome screenshot 실패: ${name}"
+    PNG_FAIL=$((PNG_FAIL + 1))
+    continue
+  fi
+  # 크기 검증 — 100KB 미만이면 깨짐 의심
+  sz=$(stat -f%z "$P" 2>/dev/null || stat -c%s "$P" 2>/dev/null || echo 0)
+  if [ ! -f "$P" ] || [ "$sz" -lt "$MIN_PNG_BYTES" ]; then
+    echo "  ❌ ${name}.png 비정상 크기 ${sz}B (<${MIN_PNG_BYTES}B) — 깨짐 의심"
+    PNG_FAIL=$((PNG_FAIL + 1))
+  else
+    echo "  · ${name}.png (${sz}B)"
+  fi
+done
+
+PNG_COUNT=$(ls "$BLOG/images/$DATE/"${DATE}-*.png 2>/dev/null | wc -l | tr -d ' ')
+
+# ③-c 배포 차단 게이트: 깨졌거나 0장이면 copy_tool·push로 넘어가지 않고 중단.
+#   silent failure로 망가진 PNG가 GitHub 푸시까지 흘러가던 문제 차단.
+if [ "$PNG_COUNT" -eq 0 ]; then
+  echo "  🛑 PNG 0장 — 배포 중단"
+  report_error "[3/6] PNG 게이트" "PNG 0장 생성됨. fortify/HTML/Chrome 환경 점검 필요. 배포 중단."
+  EXIT_REPORTED=1
+  exit 1
+fi
 if [ "$PNG_FAIL" -gt 0 ]; then
-  tg "⚠️ [3/6] PNG 생성 ${PNG_COUNT}개 (${PNG_FAIL}개 실패)"
-elif [ "$PNG_COUNT" -eq 0 ]; then
-  tg "❌ [3/6] PNG 0개 생성됨 — 본문 확인 필요"
-else
-  tg "✅ [3/6] 인포그래픽 PNG 생성
-${PNG_COUNT}개"
+  echo "  🛑 깨진/누락 PNG ${PNG_FAIL}개 — 배포 중단"
+  report_error "[3/6] PNG 게이트" "깨지거나 누락된 PNG ${PNG_FAIL}개 (정상 ${PNG_COUNT}개). 망가진 결과물 푸시 방지 위해 배포 중단. 수동 점검 후 재실행 필요."
+  EXIT_REPORTED=1
+  exit 1
 fi
+tg "✅ [3/6] 인포그래픽 PNG 생성
+${PNG_COUNT}개 (크기 검증 통과)"
 
 # ── ④ 린터 + 시리즈 링커 ─────────────────────────────
 echo ""

@@ -1,0 +1,32 @@
+<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+ <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0F172A"/><stop offset="100%" stop-color="#1E293B"/></linearGradient>
+ <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
+ <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F472B6"/></linearGradient>
+</defs>
+<rect width="1080" height="1080" fill="url(#bg)"/>
+<rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+<text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">INVESTMENT PSYCHOLOGY</text>
+<text x="48" y="148" fill="#FFFFFF" font-size="54" font-weight="800">테마주, 사기 전에 팔 계획부터</text>
+<rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+<rect x="48" y="200" width="984" height="120" fill="#A78BFA1A" rx="18" stroke="#A78BFA66" stroke-width="2"/>
+<text x="540" y="278" text-anchor="middle" fill="url(#hero)" font-size="46" font-weight="900">뉴스주는 매도 기준이 먼저다</text>
+<rect x="48.0" y="360" width="312.0" height="250" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+<text x="204.0" y="430" text-anchor="middle" font-size="40">&#9888;&#65039;</text>
+<text x="204.0" y="492" text-anchor="middle" fill="#FFFFFF" font-size="26" font-weight="800">계획 없는 추격</text><text x="204.0" y="540" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700">사는 이유만 있고 팔</text><text x="204.0" y="572" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700"> 기준이 없음</text>
+<rect x="384.0" y="360" width="312.0" height="250" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+<text x="540.0" y="430" text-anchor="middle" font-size="40">&#9888;&#65039;</text>
+<text x="540.0" y="492" text-anchor="middle" fill="#FFFFFF" font-size="26" font-weight="800">자책 매매</text><text x="540.0" y="540" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700">내가 파니까 오른다는</text><text x="540.0" y="572" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700"> 해석</text>
+<rect x="720.0" y="360" width="312.0" height="250" fill="#1E293B" rx="14" stroke="#334155" stroke-width="1"/>
+<text x="876.0" y="430" text-anchor="middle" font-size="40">&#9888;&#65039;</text>
+<text x="876.0" y="492" text-anchor="middle" fill="#FFFFFF" font-size="26" font-weight="800">뉴스 과잉 반영</text><text x="876.0" y="540" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700">이미 반영된 호재를 </text><text x="876.0" y="572" text-anchor="middle" fill="#94A3B8" font-size="21" font-weight="700">계속 보유</text>
+<text x="48" y="678" fill="#64748B" font-size="19" font-weight="700" letter-spacing="2">&#10003; 교정 방법</text>
+<rect x="48" y="700" width="984" height="150" fill="#10B98115" rx="16" stroke="#10B98155" stroke-width="2"/>
+<text x="540" y="790" text-anchor="middle" fill="#FFFFFF" font-size="34" font-weight="800">오르면 어디서 팔지 매수와 동시에 정하라</text>
+<rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+<rect x="48" y="910" width="6" height="120" fill="#A78BFA" rx="3"/>
+<text x="76" y="954" fill="#A78BFA" font-size="38" font-weight="900">&#8220;</text>
+<text x="104" y="960" fill="#FFFFFF" font-size="30" font-weight="800">지나간 매매는 해석 대상이 아니다</text>
+<text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">&#8212; 이광수</text>
+<text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+</svg>

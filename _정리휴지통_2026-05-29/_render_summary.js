@@ -1,0 +1,95 @@
+(async()=>{
+const svgText=`<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#0F172A"/>
+    <stop offset="100%" style="stop-color:#1E293B"/>
+  </linearGradient>
+  <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#10B981"/>
+    <stop offset="100%" style="stop-color:#06B6D4"/>
+  </linearGradient>
+  <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" style="stop-color:#10B981"/>
+    <stop offset="100%" style="stop-color:#3B82F6"/>
+  </linearGradient>
+  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- 상단 accent bar -->
+  <rect x="0" y="0" width="1080" height="8" fill="url(#accent)"/>
+
+  <!-- 섹션 라벨 -->
+  <text x="48" y="80" fill="#64748B" font-size="24" font-weight="700" letter-spacing="6">KEY POINTS TODAY</text>
+
+  <!-- 메인 타이틀 -->
+  <text x="48" y="148" fill="#FFFFFF" font-size="58" font-weight="800">오늘의 핵심 6포인트</text>
+
+  <!-- 디바이더 -->
+  <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
+
+  
+  <rect x="48" y="200" width="984" height="160" fill="#10B9811A" rx="18" stroke="#10B98166" stroke-width="2"/>
+  <text x="80" y="244" fill="#10B981" font-size="20" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
+  <foreignObject x="80" y="260" width="920" height="94">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:36px;font-weight:800;line-height:1.4;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">UBS 마이크론 1600 훈풍 + 호르무즈 협상용 노이즈 = -0.74% 제한 후퇴</div>
+  </foreignObject>
+  
+  <rect x="48" y="380" width="984" height="92" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="426" r="30" fill="url(#accent)"/>
+  <text x="92" y="437" text-anchor="middle" fill="#0F172A" font-size="31" font-weight="900">1</text>
+  <foreignObject x="142" y="398" width="876" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">UBS 마이크론 목표가 530→1600 3배 상향, 한국 반도체 동조 강세 논리</div>
+  </foreignObject>
+  <rect x="48" y="472" width="984" height="92" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="518" r="30" fill="url(#accent)"/>
+  <text x="92" y="529" text-anchor="middle" fill="#0F172A" font-size="31" font-weight="900">2</text>
+  <foreignObject x="142" y="490" width="876" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">호르무즈 노이즈 = 마지막 협상용 여론전 (이란 증시 정상 개장 신호)</div>
+  </foreignObject>
+  <rect x="48" y="564" width="984" height="92" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="610" r="30" fill="url(#accent)"/>
+  <text x="92" y="621" text-anchor="middle" fill="#0F172A" font-size="31" font-weight="900">3</text>
+  <foreignObject x="142" y="582" width="876" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">코스피 8,167 -0.74% / 코스닥 1,099 -2.99% 동반 후퇴</div>
+  </foreignObject>
+  <rect x="48" y="656" width="984" height="92" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="702" r="30" fill="url(#accent)"/>
+  <text x="92" y="713" text-anchor="middle" fill="#0F172A" font-size="31" font-weight="900">4</text>
+  <foreignObject x="142" y="674" width="876" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">한국은행 금리 인상 시그널 — 코스피 영향 미미, 코스닥에는 부담</div>
+  </foreignObject>
+  <rect x="48" y="748" width="984" height="92" fill="#1E293B" rx="12" stroke="#334155" stroke-width="1"/>
+  <circle cx="92" cy="794" r="30" fill="url(#accent)"/>
+  <text x="92" y="805" text-anchor="middle" fill="#0F172A" font-size="31" font-weight="900">5</text>
+  <foreignObject x="142" y="766" width="876" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:25px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;display:flex;align-items:center;height:56px;word-break:keep-all;overflow-wrap:break-word">현대차 목표가 90만~120만 원, 보스턴 다이나믹스 상장이 핵심 변수</div>
+  </foreignObject>
+
+  <!-- 인용구 박스 -->
+  <rect x="48" y="910" width="984" height="120" fill="#1E3A5F" rx="16" opacity="0.75"/>
+  <rect x="48" y="910" width="6" height="120" fill="#10B981" rx="3"/>
+  <text x="76" y="954" fill="#10B981" font-size="38" font-weight="900">"</text>
+  <text x="104" y="960" fill="#FFFFFF" font-size="32" font-weight="800">본인 포지션의 본질을 5분 안에 설명할 수 있어야 한다</text>
+  <text x="76" y="1002" fill="#94A3B8" font-size="20" font-weight="700">— 12시에 만나요</text>
+
+  <!-- 우측 하단 브랜딩 -->
+  <text x="1032" y="1058" text-anchor="end" fill="#64748B" font-size="17" font-weight="700" letter-spacing="1">12시에 만나요 · 주식 분석 블로그</text>
+
+</svg>`;
+document.body.innerHTML=svgText;
+const svgEl=document.querySelector('svg');
+const xml=new XMLSerializer().serializeToString(svgEl);
+const blob=new Blob([xml],{type:'image/svg+xml;charset=utf-8'});
+const url=URL.createObjectURL(blob);
+const img=new Image();img.width=1080;img.height=1080;
+try{await new Promise((r,j)=>{img.onload=r;img.onerror=()=>j('e');img.src=url;});}catch(e){return 'imgERR';}
+const c=document.createElement('canvas');c.width=1080;c.height=1080;
+const cx=c.getContext('2d');cx.fillStyle='#0F172A';cx.fillRect(0,0,1080,1080);cx.drawImage(img,0,0,1080,1080);
+try{
+  const d=c.toDataURL('image/png');
+  window._png_summary=d;
+  return 'OK:summary:len='+d.length;
+}catch(e){return 'TAINT:'+e.message;}
+})()
