@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-06-08 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 7,484 8% 폭락 — 검은 월요일 서킷브레이커</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 7,484 8% 폭락 — 검은 월요일 서킷브레이커</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 6월 8일 하루 만에 676포인트, 8.29% 폭락한 7,484.41로 마감하며 '검은 월요일'을 맞았습니다. 코스피·코스닥이 나란히 8% 넘게 빠져 동반 서킷브레이커까지 발동된 초유의 패닉 장세였는데, 외국인은 정말 다 던졌고 개인은 이 급락을 어떻게 받아냈을까요?</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 7,484 -8.29%, 코스닥 911 -9.08% 동반 폭락</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 코스피는 기관이 1.4조 순매도, 개인이 1.7조 매수로 방어</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — 전 종목 패닉 속 SK네트웍스·화신 등 소수 종목만 강세</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">7,484.41</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 676.18</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-8.29%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">911.39</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 91.05</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-9.08%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피는 개장 직후 8% 넘게 빠지며 1단계 서킷브레이커가 발동됐고, 매도 사이드카까지 이어졌습니다. 장중 저가는 7,442.73으로 8,000선을 단숨에 내줬고, 코스닥도 911선까지 밀리며 동반 서킷브레이커가 걸렸습니다. 지난 5일(현지) 미국 브로드컴의 AI 반도체 매출 전망이 기대에 못 미치면서 필라델피아 반도체지수가 10.3% 폭락한 여파가 그대로 국내 반도체 대형주를 덮친 하루였습니다. 원·달러 환율이 장중 1,555원까지 치솟아 17년 3개월 만의 최고치를 찍은 점도 투자심리를 얼어붙게 만들었습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-3,562억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-14,061억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+17,628억 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 지수를 끌어내린 주체는 기관이었습니다. 기관이 코스피에서 1조 4천억 원 넘게 순매도하며 낙폭을 키웠고, 외국인도 3,562억 원을 팔았습니다. 반면 개인은 1조 7천억 원이 넘는 순매수로 급락분을 홀로 받아냈습니다. 흥미로운 점은 코스닥에서는 정반대로 외국인이 2,976억 원을 순매수했다는 것입니다. 시장 전반의 투매 속에서도 주체별로 방향이 엇갈렸다는 건, 이번 급락을 '추세 전환'으로 볼지 '단기 과열 해소'로 볼지 아직 합의가 서지 않았다는 신호로 읽힙니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>SK네트웍스</b> +30.00% — 14,170원 상한가, 패닉 장세 속 독자 모멘텀 부각</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>화신</b> +25.85% — 11,780원, 자동차 부품주 가운데 나 홀로 급등</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>JK리버스톤리츠</b> +20.24% — 998원, 리츠 저가 매수세 유입</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>태양금속</b> +18.46% — 2,855원, 소형 경기민감주 반등</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>대원제약</b> +11.30% — 12,510원, 방어주 성격 제약주로 자금 일부 회피</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">880개 종목이 하락한 전면 폭락장이라 상승 종목 자체가 33개에 불과했습니다. SK네트웍스가 상한가로 직행했고 화신·태양금속 같은 중소형주, 그리고 리츠와 제약 등 경기·시장 변동성에서 비켜선 종목으로 소수의 매수세가 몰렸습니다. 대형주 중에서는 NAVER가 +9.49%로 유일하게 강세를 보이며 반도체 급락의 무풍지대로 부각된 점이 눈에 띕니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">시가총액(추정)</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**NAVER**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 45조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">279,750원 +9.49%, 반도체 급락 속 대형주 중 유일한 강세</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**SK네트웍스**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 3조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">14,170원 상한가, 폭락장 속 독자 테마로 매수 집중</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**대원제약**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 4천억 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">12,510원 +11.30%, 변동성 회피처로 제약 방어주 부각</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">하루 만에 코스피 8%대, 코스닥 9%대가 동시에 무너진 건 흔치 않은 충격입니다. 다만 수급을 뜯어보면 기관이 던진 물량을 개인이 1.7조 원이나 받아냈고, 코스닥에선 외국인이 오히려 순매수에 나섰다는 점에서 일방적인 투매라고만 보기는 어렵습니다. 트리거는 명확합니다. 브로드컴발 'AI 고점론'과 반도체 급락, 그리고 1,555원까지 뛴 환율 쇼크가 한꺼번에 겹쳤습니다. 결국 핵심은 이번 낙폭이 AI·반도체 이익 펀더멘털의 훼손인지, 아니면 단기 과열을 식히는 조정인지입니다. 추격 매도든 저가 매수든, 변동성이 이렇게 커진 구간에서는 한 박자 쉬며 반도체 대형주의 수급과 환율 흐름을 함께 확인하는 편이 안전합니다. 오늘 시황 요약과 별개로, 오후 본편에서는 삼성전자·SK하이닉스 등 반도체 대형주의 낙폭과 외국인 수급이 앞으로의 반등에 어떤 신호를 주는지 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 7,484 8% 폭락 — 검은 월요일 서킷브레이커
+
+코스피가 6월 8일 하루 만에 676포인트, 8.29% 폭락한 7,484.41로 마감하며 &#x27;검은 월요일&#x27;을 맞았습니다. 코스피·코스닥이 나란히 8% 넘게 빠져 동반 서킷브레이커까지 발동된 초유의 패닉 장세였는데, 외국인은 정말 다 던졌고 개인은 이 급락을 어떻게 받아냈을까요?
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 7,484 -8.29%, 코스닥 911 -9.08% 동반 폭락
+- 외국인/기관 수급 — 코스피는 기관이 1.4조 순매도, 개인이 1.7조 매수로 방어
+- 상승률 상위 종목 — 전 종목 패닉 속 SK네트웍스·화신 등 소수 종목만 강세
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 7,484.41 | ▼ 676.18 | -8.29% |
+| 코스닥 | 911.39 | ▼ 91.05 | -9.08% |
+
+코스피는 개장 직후 8% 넘게 빠지며 1단계 서킷브레이커가 발동됐고, 매도 사이드카까지 이어졌습니다. 장중 저가는 7,442.73으로 8,000선을 단숨에 내줬고, 코스닥도 911선까지 밀리며 동반 서킷브레이커가 걸렸습니다. 지난 5일(현지) 미국 브로드컴의 AI 반도체 매출 전망이 기대에 못 미치면서 필라델피아 반도체지수가 10.3% 폭락한 여파가 그대로 국내 반도체 대형주를 덮친 하루였습니다. 원·달러 환율이 장중 1,555원까지 치솟아 17년 3개월 만의 최고치를 찍은 점도 투자심리를 얼어붙게 만들었습니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -3,562억 원 |
+| 기관 | -14,061억 원 |
+| 개인 | +17,628억 원 |
+
+오늘 지수를 끌어내린 주체는 기관이었습니다. 기관이 코스피에서 1조 4천억 원 넘게 순매도하며 낙폭을 키웠고, 외국인도 3,562억 원을 팔았습니다. 반면 개인은 1조 7천억 원이 넘는 순매수로 급락분을 홀로 받아냈습니다. 흥미로운 점은 코스닥에서는 정반대로 외국인이 2,976억 원을 순매수했다는 것입니다. 시장 전반의 투매 속에서도 주체별로 방향이 엇갈렸다는 건, 이번 급락을 &#x27;추세 전환&#x27;으로 볼지 &#x27;단기 과열 해소&#x27;로 볼지 아직 합의가 서지 않았다는 신호로 읽힙니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. SK네트웍스 +30.00% — 14,170원 상한가, 패닉 장세 속 독자 모멘텀 부각
+2. 화신 +25.85% — 11,780원, 자동차 부품주 가운데 나 홀로 급등
+3. JK리버스톤리츠 +20.24% — 998원, 리츠 저가 매수세 유입
+4. 태양금속 +18.46% — 2,855원, 소형 경기민감주 반등
+5. 대원제약 +11.30% — 12,510원, 방어주 성격 제약주로 자금 일부 회피
+
+880개 종목이 하락한 전면 폭락장이라 상승 종목 자체가 33개에 불과했습니다. SK네트웍스가 상한가로 직행했고 화신·태양금속 같은 중소형주, 그리고 리츠와 제약 등 경기·시장 변동성에서 비켜선 종목으로 소수의 매수세가 몰렸습니다. 대형주 중에서는 NAVER가 +9.49%로 유일하게 강세를 보이며 반도체 급락의 무풍지대로 부각된 점이 눈에 띕니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 시가총액(추정) | 한 줄 코멘트 |
+|---|---|---|
+| NAVER | 약 45조 원 | 279,750원 +9.49%, 반도체 급락 속 대형주 중 유일한 강세 |
+| SK네트웍스 | 약 3조 원 | 14,170원 상한가, 폭락장 속 독자 테마로 매수 집중 |
+| 대원제약 | 약 4천억 원 | 12,510원 +11.30%, 변동성 회피처로 제약 방어주 부각 |
+
+💡 내 생각
+
+하루 만에 코스피 8%대, 코스닥 9%대가 동시에 무너진 건 흔치 않은 충격입니다. 다만 수급을 뜯어보면 기관이 던진 물량을 개인이 1.7조 원이나 받아냈고, 코스닥에선 외국인이 오히려 순매수에 나섰다는 점에서 일방적인 투매라고만 보기는 어렵습니다. 트리거는 명확합니다. 브로드컴발 &#x27;AI 고점론&#x27;과 반도체 급락, 그리고 1,555원까지 뛴 환율 쇼크가 한꺼번에 겹쳤습니다. 결국 핵심은 이번 낙폭이 AI·반도체 이익 펀더멘털의 훼손인지, 아니면 단기 과열을 식히는 조정인지입니다. 추격 매도든 저가 매수든, 변동성이 이렇게 커진 구간에서는 한 박자 쉬며 반도체 대형주의 수급과 환율 흐름을 함께 확인하는 편이 안전합니다. 오늘 시황 요약과 별개로, 오후 본편에서는 삼성전자·SK하이닉스 등 반도체 대형주의 낙폭과 외국인 수급이 앞으로의 반등에 어떤 신호를 주는지 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <img class="preview" id="imgMarket" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDAgMTA4MCAxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZvbnQtZmFtaWx5PSInTmFudW1Hb3RoaWMnLCdBcHBsZSBTRCBHb3RoaWMgTmVvJywnTm90byBTYW5zIEtSJyxzYW5zLXNlcmlmIj4KPGRlZnM+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMEYxNzJBIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxRTI5M0IiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxsaW5lYXJHcmFkaWVudCBpZD0iYWNjZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIwJSI+CiAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM0I4MkY2Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwNkI2RDQiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxsaW5lYXJHcmFkaWVudCBpZD0iaGVybyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0Y1OUUwQiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRUY0NDQ0Ii8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8ZmlsdGVyIGlkPSJnbG93Ij48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSI0IiByZXN1bHQ9ImIiLz48ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+PC9maWx0ZXI+CjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTA4MCIgaGVpZ2h0PSIxMDgwIiBmaWxsPSJ1cmwoI2JnKSIvPgoKICA8IS0tIOyDgeuLqCBhY2NlbnQgYmFyIC0tPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDgwIiBoZWlnaHQ9IjgiIGZpbGw9InVybCgjYWNjZW50KSIvPgoKICA8IS0tIOyEueyFmCDrnbzrsqggLS0+CiAgPHRleHQgeD0iNDgiIHk9IjgwIiBmaWxsPSIjNjQ3NDhCIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iNiI+TUFSS0VUIFNUQVRVUzwvdGV4dD4KCiAgPCEtLSDrqZTsnbgg7YOA7J207YuAIC0tPgogIDx0ZXh0IHg9IjQ4IiB5PSIxNDgiIGZpbGw9IiNGRkZGRkYiIGZvbnQtc2l6ZT0iNTgiIGZvbnQtd2VpZ2h0PSI4MDAiPuy9lOyKpO2UvCA3LDQ4NCA4JSDtj63rnb0gwrcg64+Z67CYIOyEnO2Ct+u4jOugiOydtOy7pDwvdGV4dD4KCiAgPCEtLSDrlJTrsJTsnbTrjZQgLS0+CiAgPHJlY3QgeD0iNDgiIHk9IjE2MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1IiBmaWxsPSJ1cmwoI2FjY2VudCkiIHJ4PSIyIi8+CgoKICA8IS0tIEhFUk8g7JiB7JetIC0tPgogIDx0ZXh0IHg9IjQ4IiB5PSIyNzAiIGZpbGw9InVybCgjaGVybykiIGZvbnQtc2l6ZT0iMTE4IiBmb250LXdlaWdodD0iOTAwIiBmaWx0ZXI9InVybCgjZ2xvdykiPjcsNDg0LjQxPC90ZXh0PgogIDx0ZXh0IHg9IjQ4IiB5PSIzMTgiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSI3MDAiPktPU1BJIOyiheqwgDwvdGV4dD4KCiAgPCEtLSDsmrDsuKEg67OA64+ZIO2RnOyLnCAo67Cp7ZalIOyekOuPmSDrtoTquLApIC0tPgogIDxwb2x5Z29uIHBvaW50cz0iOTAwLDIyMCA5NjAsMjIwIDkzMCwyNzUiIGZpbGw9IiMzQjgyRjYiIG9wYWNpdHk9IjAuOTUiLz4KICA8dGV4dCB4PSI5MzAiIHk9IjMxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjgwMCI+Njc2LjE4ICgtOC4yOSUpPC90ZXh0PgoKICAKICA8cmVjdCB4PSI0OC4wIiB5PSIzODAiIHdpZHRoPSIzMTcuMzMzMzMzMzMzMzMzMyIgaGVpZ2h0PSIxODAiIGZpbGw9IiMxRTI5M0IiIHJ4PSIxNCIgc3Ryb2tlPSIjMzM0MTU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIyMDYuNjY2NjY2NjY2NjY2NjYiIHk9IjQyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY0NzQ4QiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgbGV0dGVyLXNwYWNpbmc9IjIiPuy9lOyKpOuLpTwvdGV4dD4KICA8dGV4dCB4PSIyMDYuNjY2NjY2NjY2NjY2NjYiIHk9IjQ5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSI1OCIgZm9udC13ZWlnaHQ9IjkwMCI+OTExLjM5PC90ZXh0PgogIDx0ZXh0IHg9IjIwNi42NjY2NjY2NjY2NjY2NiIgeT0iNTM0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTRBM0I4IiBmb250LXNpemU9IjE4Ij7ilrwgOTEuMDUgKC05LjA4JSk8L3RleHQ+CiAgPHJlY3QgeD0iMzgxLjMzMzMzMzMzMzMzMzMiIHk9IjM4MCIgd2lkdGg9IjMxNy4zMzMzMzMzMzMzMzMzIiBoZWlnaHQ9IjE4MCIgZmlsbD0iIzFFMjkzQiIgcng9IjE0IiBzdHJva2U9IiMzMzQxNTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjU0MC4wIiB5PSI0MjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM2NDc0OEIiIGZvbnQtc2l6ZT0iMTkiIGZvbnQtd2VpZ2h0PSI3MDAiIGxldHRlci1zcGFjaW5nPSIyIj7smbjqta3snbggKOy9lOyKpO2UvCk8L3RleHQ+CiAgPHRleHQgeD0iNTQwLjAiIHk9IjQ5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzNCODJGNiIgZm9udC1zaXplPSI1OCIgZm9udC13ZWlnaHQ9IjkwMCI+LTMsNTYy7Ja1PC90ZXh0PgogIDx0ZXh0IHg9IjU0MC4wIiB5PSI1MzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMTgiPuy9lOyKpOuLpeydgCArMiw5NzbslrUg7Iic66ek7IiYPC90ZXh0PgogIDxyZWN0IHg9IjcxNC42NjY2NjY2NjY2NjY2IiB5PSIzODAiIHdpZHRoPSIzMTcuMzMzMzMzMzMzMzMzMyIgaGVpZ2h0PSIxODAiIGZpbGw9IiMxRTI5M0IiIHJ4PSIxNCIgc3Ryb2tlPSIjMzM0MTU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSI4NzMuMzMzMzMzMzMzMzMzMyIgeT0iNDIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjQ3NDhCIiBmb250LXNpemU9IjE5IiBmb250LXdlaWdodD0iNzAwIiBsZXR0ZXItc3BhY2luZz0iMiI+6rCc7J24ICjsvZTsiqTtlLwpPC90ZXh0PgogIDx0ZXh0IHg9Ijg3My4zMzMzMzMzMzMzMzMzIiB5PSI0OTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iNTgiIGZvbnQtd2VpZ2h0PSI5MDAiPisxLjc27KGwPC90ZXh0PgogIDx0ZXh0IHg9Ijg3My4zMzMzMzMzMzMzMzMzIiB5PSI1MzQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5NEEzQjgiIGZvbnQtc2l6ZT0iMTgiPuq4sOq0gCAtMS40MeyhsCDrsJvslYTrg4Q8L3RleHQ+CiAgCiAgPHJlY3QgeD0iNDgiIHk9IjU4NCIgd2lkdGg9IjI1NiIgaGVpZ2h0PSI0MiIgZmlsbD0iIzNCODJGNjFBIiByeD0iMjEiIHN0cm9rZT0iIzNCODJGNjU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIxNzYuMCIgeT0iNjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjM0I4MkY2IiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIj5TS+uEpO2KuOybjeyKpCArMzAuMDAlPC90ZXh0PgogIDxyZWN0IHg9IjMxNCIgeT0iNTg0IiB3aWR0aD0iMTkyIiBoZWlnaHQ9IjQyIiBmaWxsPSIjM0I4MkY2MUEiIHJ4PSIyMSIgc3Ryb2tlPSIjM0I4MkY2NTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjQxMC4wIiB5PSI2MTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPu2ZlOyLoCArMjUuODUlPC90ZXh0PgogIDxyZWN0IHg9IjUxNiIgeT0iNTg0IiB3aWR0aD0iMjg4IiBoZWlnaHQ9IjQyIiBmaWxsPSIjM0I4MkY2MUEiIHJ4PSIyMSIgc3Ryb2tlPSIjM0I4MkY2NTUiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjY2MC4wIiB5PSI2MTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPkpL66as67KE7Iqk7Yak66as7LigICsyMC4yNCU8L3RleHQ+CiAgPHJlY3QgeD0iNDgiIHk9IjYzNiIgd2lkdGg9IjIyNCIgaGVpZ2h0PSI0MiIgZmlsbD0iIzNCODJGNjFBIiByeD0iMjEiIHN0cm9rZT0iIzNCODJGNjU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIxNjAuMCIgeT0iNjYzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjM0I4MkY2IiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIj7tg5zslpHquIjsho0gKzE4LjQ2JTwvdGV4dD4KICA8cmVjdCB4PSIyODIiIHk9IjYzNiIgd2lkdGg9IjIyNCIgaGVpZ2h0PSI0MiIgZmlsbD0iIzNCODJGNjFBIiByeD0iMjEiIHN0cm9rZT0iIzNCODJGNjU1IiBzdHJva2Utd2lkdGg9IjEiLz4KICA8dGV4dCB4PSIzOTQuMCIgeT0iNjYzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjM0I4MkY2IiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIj5OQVZFUiArOS40OSU8L3RleHQ+CiAgCgogIDwhLS0g7J247Jqp6rWsIOuwleyKpCAtLT4KICA8cmVjdCB4PSI0OCIgeT0iOTEwIiB3aWR0aD0iOTg0IiBoZWlnaHQ9IjEyMCIgZmlsbD0iIzFFM0E1RiIgcng9IjE2IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPHJlY3QgeD0iNDgiIHk9IjkxMCIgd2lkdGg9IjYiIGhlaWdodD0iMTIwIiBmaWxsPSIjM0I4MkY2IiByeD0iMyIvPgogIDx0ZXh0IHg9Ijc2IiB5PSI5NTQiIGZpbGw9IiMzQjgyRjYiIGZvbnQtc2l6ZT0iMzgiIGZvbnQtd2VpZ2h0PSI5MDAiPiI8L3RleHQ+CiAgPHRleHQgeD0iMTA0IiB5PSI5NjAiIGZpbGw9IiNGRkZGRkYiIGZvbnQtc2l6ZT0iMzIiIGZvbnQtd2VpZ2h0PSI4MDAiPuqygOydgCDsm5TsmpTsnbwsIOqwnOyduOydtCAxLjfsobDrpbwg67Cb7JWE64OI64ukPC90ZXh0PgogIDx0ZXh0IHg9Ijc2IiB5PSIxMDAyIiBmaWxsPSIjOTRBM0I4IiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNzAwIj7igJQgPC90ZXh0PgoKICA8IS0tIOyasOy4oSDtlZjri6gg67iM656c65SpIC0tPgogIDx0ZXh0IHg9IjEwMzIiIHk9IjEwNTgiIHRleHQtYW5jaG9yPSJlbmQiIGZpbGw9IiM2NDc0OEIiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGxldHRlci1zcGFjaW5nPSIxIj4xMuyLnOyXkCDrp4zrgpjsmpQgwrcg7KO87IudIOu2hOyEnSDruJTroZzqt7g8L3RleHQ+Cgo8L3N2Zz4=">
+<p style="font-size:12px;color:#dc2626;margin-top:8px;">⚠️ PNG 미생성 (Mac에서 <code>_render_2026-06-08-summary.command</code> 실행 후 재생성 필요)</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성전자</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK하이닉스</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피7484폭락마감</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#검은월요일서킷브레이커발동</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥구백십일폭락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피팔퍼센트급락패닉</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체대형주동반급락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#브로드컴AI고점론충격</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#필라델피아반도체지수폭락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#원달러환율천오백오십오원쇼크</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관일조사천억순매도</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#개인일조칠천억저가매수</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인코스닥순매수전환</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK네트웍스상한가직행</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#NAVER나홀로강세대형주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#화신중소형주급등</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#대원제약방어주부각</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피서킷브레이커발동</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#매도사이드카발동장세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장중칠천사백선저가</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#검은월요일국내증시폭락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#AI반도체펀더멘털논쟁</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#단기과열조정여부주목</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장마감직후코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#이천이십육년유월시황정리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#국내증시일일시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#급락장수급방향엇갈림</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스닥 #삼성전자 #SK하이닉스 #반도체 #코스피7484폭락마감 #검은월요일서킷브레이커발동 #코스닥구백십일폭락 #코스피팔퍼센트급락패닉 #반도체대형주동반급락 #브로드컴AI고점론충격 #필라델피아반도체지수폭락 #원달러환율천오백오십오원쇼크 #기관일조사천억순매도 #개인일조칠천억저가매수 #외국인코스닥순매수전환 #SK네트웍스상한가직행 #NAVER나홀로강세대형주 #화신중소형주급등 #대원제약방어주부각 #코스피서킷브레이커발동 #매도사이드카발동장세 #장중칠천사백선저가 #검은월요일국내증시폭락 #AI반도체펀더멘털논쟁 #단기과열조정여부주목 #장마감직후코스피시황 #이천이십육년유월시황정리 #국내증시일일시황 #급락장수급방향엇갈림</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
