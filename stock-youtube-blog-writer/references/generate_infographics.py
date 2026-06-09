@@ -66,6 +66,19 @@ def fit_font(text: str, max_width: float, base_size: int, char_factor: float = 0
     return max(min_size, min(base_size, new_size))
 
 
+def clamp_attr(text: str, max_width: float, size: int, char_factor: float = 0.62) -> str:
+    """추정 너비가 max_width를 넘으면 SVG textLength로 강제 압축(절대 캔버스 밖으로 안 나가게).
+    fit_font로 1차 축소 후에도 추정 오차로 넘칠 수 있어, 마지막 안전장치로 사용한다."""
+    if not text:
+        return ""
+    has_kor = any('가' <= ch <= '힣' for ch in text)
+    cf = max(char_factor, 0.62) if has_kor else char_factor
+    est = len(text) * size * cf
+    if est > max_width:
+        return f' textLength="{int(max_width)}" lengthAdjust="spacingAndGlyphs"'
+    return ""
+
+
 def html_doc(svg_inner: str) -> str:
     """공통 HTML 래퍼."""
     return f"""<!DOCTYPE html>
@@ -103,7 +116,9 @@ def _common_defs(accent_from: str, accent_to: str, hero_from: str, hero_to: str)
 
 def _header(date: str, label: str, title: str, accent_from: str, accent_to: str) -> str:
     """공통 헤더 (섹션 라벨 + 큰 타이틀 + 디바이더). 날짜 배지는 표시 안 함."""
-    title_size = fit_font(title, SIZE - 96, base_size=58, char_factor=0.62, min_size=36)
+    _title_w = SIZE - 96
+    title_size = fit_font(title, _title_w, base_size=58, char_factor=0.68, min_size=30)
+    _title_clamp = clamp_attr(title, _title_w, title_size, char_factor=0.68)
     return f"""
   <!-- 상단 accent bar -->
   <rect x="0" y="0" width="{SIZE}" height="8" fill="url(#accent)"/>
@@ -112,7 +127,7 @@ def _header(date: str, label: str, title: str, accent_from: str, accent_to: str)
   <text x="48" y="80" fill="{COLORS['text_dim']}" font-size="24" font-weight="700" letter-spacing="6">{label}</text>
 
   <!-- 메인 타이틀 -->
-  <text x="48" y="148" fill="{COLORS['text_pri']}" font-size="{title_size}" font-weight="800">{title}</text>
+  <text x="48" y="148" fill="{COLORS['text_pri']}" font-size="{title_size}" font-weight="800"{_title_clamp}>{title}</text>
 
   <!-- 디바이더 -->
   <rect x="48" y="160" width="100" height="5" fill="url(#accent)" rx="2"/>
@@ -122,12 +137,15 @@ def _header(date: str, label: str, title: str, accent_from: str, accent_to: str)
 def _footer(footer_quote: str, footer_author: str, accent_from: str = "#3B82F6") -> str:
     """공통 푸터 — 인용구 박스 + 브랜딩. 강조형 카드(좌측 accent 막대 + 흰색 큰 인용)."""
     quote_y = SIZE - 170
+    _q_w = SIZE - 96 - 80  # 박스 내부, 좌측 인용부호/우측 여백 제외
+    q_size = fit_font(footer_quote, _q_w, base_size=32, char_factor=0.64, min_size=20)
+    _q_clamp = clamp_attr(footer_quote, _q_w, q_size, char_factor=0.64)
     return f"""
   <!-- 인용구 박스 -->
   <rect x="48" y="{quote_y}" width="{SIZE-96}" height="120" fill="{COLORS['card_alt']}" rx="16" opacity="0.75"/>
   <rect x="48" y="{quote_y}" width="6" height="120" fill="{accent_from}" rx="3"/>
   <text x="76" y="{quote_y+44}" fill="{accent_from}" font-size="38" font-weight="900">"</text>
-  <text x="104" y="{quote_y+50}" fill="#FFFFFF" font-size="32" font-weight="800">{footer_quote}</text>
+  <text x="104" y="{quote_y+50}" fill="#FFFFFF" font-size="{q_size}" font-weight="800"{_q_clamp}>{footer_quote}</text>
   <text x="76" y="{quote_y+92}" fill="{COLORS['text_sec']}" font-size="20" font-weight="700">— {footer_author}</text>
 
   <!-- 우측 하단 브랜딩 -->
@@ -230,7 +248,7 @@ def build_market_html(data: dict, date: str) -> str:
 {_header(date, a['label'], title, a['from'], a['to'])}
 
   <!-- HERO 영역 -->
-  <text x="48" y="270" fill="url(#hero)" font-size="118" font-weight="900" filter="url(#glow)">{hero_value}</text>
+  <text x="48" y="270" fill="url(#hero)" font-size="{fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56)}" font-weight="900" filter="url(#glow)"{clamp_attr(hero_value, SIZE-260, fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56), char_factor=0.60)}>{hero_value}</text>
   <text x="48" y="318" fill="{COLORS['text_sec']}" font-size="24" font-weight="700">{hero_label}</text>
 
   <!-- 우측 변동 표시 (방향 자동 분기) -->
@@ -286,8 +304,11 @@ def build_psychology_html(data: dict, date: str) -> str:
     # Hero 메시지 (헤더 아래, 함정 위)
     hero_svg = ""
     if hero_msg:
+        _hm_w = SIZE - 96
+        hm_size = fit_font(hero_msg, _hm_w, base_size=62, char_factor=0.66, min_size=34)
+        _hm_clamp = clamp_attr(hero_msg, _hm_w, hm_size, char_factor=0.66)
         hero_svg = f"""
-  <text x="48" y="250" fill="url(#hero)" font-size="62" font-weight="900" filter="url(#glow)">{hero_msg}</text>"""
+  <text x="48" y="250" fill="url(#hero)" font-size="{hm_size}" font-weight="900" filter="url(#glow)"{_hm_clamp}>{hero_msg}</text>"""
 
     svg = f"""<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" font-family="'NanumGothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
 {_common_defs(a['from'], a['to'], a['hero_from'], a['hero_to'])}
