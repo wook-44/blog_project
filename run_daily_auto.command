@@ -130,10 +130,33 @@ fi
 echo ""
 echo "📝 [2/6] 오늘 본문 확인..."
 # ${DATE}_blog.md (Actions v2 산출물) 우선, 없으면 구형 ${DATE}-슬러그.md 탐색
-POST=$(ls -t "$BLOG"/${DATE}_blog.md "$BLOG"/${DATE}-*.md 2>/dev/null | grep -v bak | grep -v summary | head -1)
+find_post() {
+  ls -t "$BLOG"/${DATE}_blog.md "$BLOG"/${DATE}-*.md 2>/dev/null | grep -v bak | grep -v summary | head -1
+}
+POST=$(find_post)
+
+# 2-1. 본문 미도착 시 폴링 대기 (2026-06-10): 본문 생성이 17:30 이후 push되는
+#      순서 문제 대응 — 5분 간격 pull 재시도, 최대 60분.
 if [ -z "$POST" ]; then
-  echo "  ℹ️  오늘 본문 없음. GitHub Actions가 새 영상을 못 찾았거나 아직 미완료."
-  notify "12시에 만나요 ${DATE}" "오늘은 새 영상 없음 또는 GitHub Actions 미완료"
+  echo "  ⏳ 본문 미도착 — 5분 간격 pull 재시도 (최대 60분)..."
+  tg "⏳ [2/6] 본문 미도착 — 5분 간격 재시도, 최대 60분 대기"
+  for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+    sleep 300
+    find "$BLOG/.git" -maxdepth 1 -name "*.lock" -mmin +5 -delete 2>/dev/null
+    git -C "$BLOG" pull --rebase origin main >/dev/null 2>&1 || true
+    POST=$(find_post)
+    if [ -n "$POST" ]; then
+      echo "  ✅ ${i}회차($((i*5))분 경과)에 본문 도착"
+      tg "✅ [2/6] 본문 도착 ($((i*5))분 대기) — 마무리 계속"
+      break
+    fi
+    echo "  …${i}회차($((i*5))분) 본문 없음"
+  done
+fi
+
+if [ -z "$POST" ]; then
+  echo "  ℹ️  60분 대기에도 본문 없음. 새 영상이 없거나 생성 파이프라인 미완료."
+  notify "12시에 만나요 ${DATE}" "60분 대기에도 본문 없음 — 새 영상 없음 또는 생성 미완료"
   exit 0
 fi
 echo "  ✅ 본문: $(basename "$POST")"
