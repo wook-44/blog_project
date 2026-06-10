@@ -86,6 +86,8 @@ echo "📥 [1/6] Git pull (GitHub Actions 결과 인계)..."
 #      - *.lock.bak* / *.lock.stale* / *.lock.p* 등 park 잔해: 무조건 삭제
 find "$BLOG/.git" -maxdepth 1 -name "*.lock" -mmin +5 -delete 2>/dev/null
 find "$BLOG/.git" -maxdepth 1 -name "*.lock.*" -delete 2>/dev/null
+rm -rf "$BLOG/.git/junk_locks" 2>/dev/null
+find "$BLOG/.git/refs" -name "*.lock*" -delete 2>/dev/null
 
 # 1-b. pull (실패 시 lock 재정리 후 1회 재시도, 그래도 실패면 원인 보고)
 PULL_OUT=$(git -C "$BLOG" pull --rebase origin main 2>&1)
