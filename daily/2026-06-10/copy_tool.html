@@ -54,9 +54,17 @@
 <!-- STEP 0: 제목 -->
 <div class="step">
   <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목 (에디터 제목칸에 입력)</div>
-  <div class="text-box" id="titleBox">코스피 7,731 급락, CPI·이란 공습 변동장 대응법 ㅣ 2026년 6월 1화</div>
+  <div class="text-box" id="titleBox">코스피 7,731 급락, CPI·이란 공습 변동장 대응법</div>
   <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
   <span class="toast" id="toastTitle">✅ 복사됨!</span>
+  <div class="section" style="border:1px solid #f59e0b;border-radius:10px;padding:14px;margin-top:14px;">
+    <h2 style="margin-top:0;">▶️ 유튜브 설명란용 한 줄</h2>
+    <div class="text-box" id="ytDescBox">📊 오늘 영상 풀 분석(코스피 7,731 급락·CPI·광수생각 정리) → https://blog.naver.com/ddasoot/{포스트번호}</div>
+    <button class="btn" style="background:#f59e0b;color:#111;margin-top:10px;" onclick="copyPlain('ytDescBox','toastYt')">📋 유튜브 설명란용 한 줄 복사</button>
+    <span class="toast" id="toastYt">✅ 복사됨!</span>
+    <p style="font-size:12px;color:#888;margin:8px 0 0;">⚠️ 발행 후 네이버 포스트 URL로 ddasoot/{포스트번호} 교체 (GitHub 링크 금지)</p>
+  </div>
+
 </div>
 
 <!-- STEP 1: 텍스트 복사 -->
