@@ -81,6 +81,24 @@ ${DATE} $(date '+%H:%M:%S')"
 echo ""
 echo "📥 [1/6] Git pull (GitHub Actions 결과 인계)..."
 
+# 1-0. CSV가 오늘자가 아니면 Actions를 직접 트리거 (무료 크론 1~3시간 지연 대비, 2026-06-10)
+if ! tail -1 "$BLOG/data/new_videos.csv" 2>/dev/null | grep -q "^$(date +%Y-%m-%d)T"; then
+  GH_TOKEN=$(git -C "$BLOG" remote get-url origin | sed -n 's#https://\([^@]*\)@github.com.*#\1#p')
+  if [ -n "$GH_TOKEN" ]; then
+    HTTP=$(curl -s -o /dev/null -w '%{http_code}' -X POST \
+      -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+      "https://api.github.com/repos/wook-44/blog_project/actions/workflows/youtube-check.yml/dispatches" \
+      -d '{"ref":"main"}')
+    if [ "$HTTP" = "204" ]; then
+      echo "  🚀 Actions(youtube-check) 수동 트리거 OK — 완료 대기 120초..."
+      tg "🚀 [1/6] CSV가 오늘자 아님 → Actions 수동 트리거, 120초 대기"
+      sleep 120
+    else
+      echo "  ⚠️ Actions 트리거 실패(HTTP $HTTP) — 크론 결과에 의존"
+    fi
+  fi
+fi
+
 # 1-a. stale lock 정리 (샌드박스 세션이 남긴 lock은 Mac에서만 삭제 가능)
 #      - index.lock 등 진짜 lock: 5분 이상 지난 것만 stale로 간주하고 삭제
 #      - *.lock.bak* / *.lock.stale* / *.lock.p* 등 park 잔해: 무조건 삭제
