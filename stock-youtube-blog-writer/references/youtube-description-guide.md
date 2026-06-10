@@ -76,22 +76,21 @@
 
 ---
 
-## 5. 블로그 URL 표준
+## 5. 블로그 URL 표준 — v2.1 (2026-06-10): 네이버 1순위
 
-3가지 옵션 중 **GitHub Pages** 를 1순위로 권장.
+> **변경 사유**: 목표 지표가 '네이버 블로그 방문자'이므로 유튜브發 트래픽은 전부
+> 네이버로 보내야 함. GitHub(raw/Pages) 링크는 방문자 집계도, 이웃 추가도 안 됨.
+> **GitHub 링크를 설명란·고정댓글에 쓰는 것 금지.**
 
-| 옵션 | URL 형식 | 장단점 |
-|---|---|---|
-| GitHub Pages | `https://wook-44.github.io/blog_project/daily/YYYY-MM-DD/` | 안정적, 인덱싱 잘됨, 본문·이미지 모두 노출. 다만 GitHub Pages 활성화 필요. |
-| 네이버 블로그 단축 URL | `https://blog.naver.com/{id}/{postno}` | 네이버 검색 점수 ↑. 단축 URL은 수동 복사 필요. |
-| 티스토리 URL | `https://{id}.tistory.com/{slug}` | 검색 노출 OK, 부가 트래픽 채널. |
+| 우선순위 | 옵션 | URL 형식 | 비고 |
+|---|---|---|---|
+| **1** | 네이버 블로그 포스트 URL | `https://blog.naver.com/{내ID}/{포스트번호}` | 방문자·체류·이웃 모두 집계. 발행 직후 수동 복사 |
+| 2 | 네이버 블로그 홈 | `https://blog.naver.com/{내ID}` | 포스트 URL 확보 전 임시 |
+| ✕ | GitHub raw/Pages | — | 사용 금지 (방문자 0 집계) |
 
-**전환 흐름** (가장 트래픽 효율 높은 순):
-1. 유튜브 → GitHub Pages (즉시 보기, 광고 없음)
-2. GitHub Pages 본문 끝에 네이버 블로그 원본 링크 → 네이버 추가 트래픽
-
-GitHub Pages 활성화 여부는 `wook-44/blog_project` 저장소 Settings → Pages 에서 확인.
-미활성 시 우선 네이버 블로그 단축 URL 사용, 활성화 작업은 별도 처리.
+**SEO 메타 생성 룰**: 에이전트 5는 유튜브 설명란용 한 줄·고정댓글에
+`https://blog.naver.com/{내ID}/{포스트번호}` 플레이스홀더를 넣는다.
+주인님이 네이버 발행 직후 실제 URL로 교체 (copy_tool 8번 버튼 복사 시점).
 
 ---
 

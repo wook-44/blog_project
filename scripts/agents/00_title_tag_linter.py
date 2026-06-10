@@ -29,8 +29,9 @@ BLOG_DIR = Path(__file__).resolve().parents[2]
 TITLE_MIN, TITLE_MAX = 28, 32
 TITLE_KW_HEAD_LIMIT = 12          # 메인 키워드는 앞 12자 안에
 HOOK_MIN, HOOK_MAX = 100, 200     # 첫 후킹 문단 길이
-TAGS_MIN = 30
-LONGTAIL_MIN_RATIO = 0.5          # 롱테일(7자 이상 한글) 비중
+TAGS_MIN = 8                      # v2.1 (2026-06-10): 30 → 8 (실검색어만)
+TAGS_MAX = 10                     # v2.1: 조합형 태그 양산 방지 상한
+LONGTAIL_MIN_RATIO = 0.2          # v2.1: 롱테일 2~3개/10개 기준으로 하향
 BODY_MIN_CHARS = 2500             # v2: 2200 → 2500 (목차·관련 종목표 추가분)
 TAG_HEAD_KW_MIN = 3               # v2: 태그 앞 5개에 종목/지수 키워드 3개 이상
 TAG_HEAD_WINDOW = 5
@@ -230,12 +231,21 @@ def lint(post_path: Path) -> dict:
         else:
             passed.append(f"[H3] 후킹 영역 키워드 반복 OK ({hook_kw_count}회)")
 
-    # ── 검사 7: 태그 30개
+    # ── 검사 7: 태그 8~10개 (v2.1)
     tag_count = len(tags)
     if tag_count < TAGS_MIN:
         issues.append(f"[G1] 태그 {tag_count}개 — 최소 {TAGS_MIN}개")
+    elif tag_count > TAGS_MAX:
+        issues.append(f"[G1] 태그 {tag_count}개 — 최대 {TAGS_MAX}개 (v2.1: 실검색어만 압축)")
     else:
         passed.append(f"[G1] 태그 수 OK ({tag_count}개)")
+
+    # ── 검사 7b (v2.1): 조합형 태그 금지 — 12자 이상 한글 연속 태그는 검색량 0
+    combo_tags = [t for t in tags if len(t.lstrip("#")) >= 12]
+    if combo_tags:
+        issues.append(f"[G3] 조합형 태그 {len(combo_tags)}개 발견 (12자 이상): {', '.join(combo_tags[:3])} — 실검색어로 교체")
+    else:
+        passed.append("[G3] 조합형 태그 없음")
 
     # ── 검사 8: 롱테일 비중
     if tags:
