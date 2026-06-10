@@ -24,7 +24,7 @@
   },
   "risk": {
     "title": "변동장 리스크 체크",
-    "hero_value": "반응 ❌ 대응 ⭕",
+    "hero_value": "반응 NO · 대응 YES",
     "hero_label": "[광수생각] 변동장 생존법",
     "stats": [
       {"value": "3일 연속", "label": "안전장치 발동", "delta": "CB→매수SC→매도SC"},

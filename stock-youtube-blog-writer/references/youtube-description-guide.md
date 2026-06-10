@@ -84,12 +84,12 @@
 
 | 우선순위 | 옵션 | URL 형식 | 비고 |
 |---|---|---|---|
-| **1** | 네이버 블로그 포스트 URL | `https://blog.naver.com/{내ID}/{포스트번호}` | 방문자·체류·이웃 모두 집계. 발행 직후 수동 복사 |
-| 2 | 네이버 블로그 홈 | `https://blog.naver.com/{내ID}` | 포스트 URL 확보 전 임시 |
+| **1** | 네이버 블로그 포스트 URL | `https://blog.naver.com/ddasoot/{포스트번호}` | 방문자·체류·이웃 모두 집계. 발행 직후 수동 복사 |
+| 2 | 네이버 블로그 홈 | `https://blog.naver.com/ddasoot` | 포스트 URL 확보 전 임시 |
 | ✕ | GitHub raw/Pages | — | 사용 금지 (방문자 0 집계) |
 
 **SEO 메타 생성 룰**: 에이전트 5는 유튜브 설명란용 한 줄·고정댓글에
-`https://blog.naver.com/{내ID}/{포스트번호}` 플레이스홀더를 넣는다.
+`https://blog.naver.com/ddasoot/{포스트번호}` 플레이스홀더를 넣는다.
 주인님이 네이버 발행 직후 실제 URL로 교체 (copy_tool 8번 버튼 복사 시점).
 
 ---
