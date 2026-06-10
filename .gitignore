@@ -30,3 +30,7 @@ _정리휴지통_*/
 
 # 백업
 *.bak
+
+# 루트 images/는 작업본 (정본은 daily/{날짜}/images) — 2026-06-10
+/images/20*
+/images/html/
