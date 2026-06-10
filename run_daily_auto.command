@@ -80,13 +80,37 @@ ${DATE} $(date '+%H:%M:%S')"
 # ── ① Git pull (GitHub Actions 결과물 인계) ──────────
 echo ""
 echo "📥 [1/6] Git pull (GitHub Actions 결과 인계)..."
-git -C "$BLOG" pull --rebase origin main 2>&1 || echo "  ⚠️ pull 충돌/실패 — 로컬 상태로 계속"
-tg "✅ [1/6] Git pull 완료"
+
+# 1-a. stale lock 정리 (샌드박스 세션이 남긴 lock은 Mac에서만 삭제 가능)
+#      - index.lock 등 진짜 lock: 5분 이상 지난 것만 stale로 간주하고 삭제
+#      - *.lock.bak* / *.lock.stale* / *.lock.p* 등 park 잔해: 무조건 삭제
+find "$BLOG/.git" -maxdepth 1 -name "*.lock" -mmin +5 -delete 2>/dev/null
+find "$BLOG/.git" -maxdepth 1 -name "*.lock.*" -delete 2>/dev/null
+
+# 1-b. pull (실패 시 lock 재정리 후 1회 재시도, 그래도 실패면 원인 보고)
+PULL_OUT=$(git -C "$BLOG" pull --rebase origin main 2>&1)
+PULL_RC=$?
+echo "$PULL_OUT"
+if [ $PULL_RC -ne 0 ]; then
+  echo "  ⚠️ pull 실패 — lock 정리 후 재시도..."
+  rm -f "$BLOG/.git/index.lock" "$BLOG/.git/HEAD.lock" 2>/dev/null
+  git -C "$BLOG" rebase --abort 2>/dev/null
+  PULL_OUT=$(git -C "$BLOG" pull --rebase origin main 2>&1)
+  PULL_RC=$?
+  echo "$PULL_OUT"
+fi
+if [ $PULL_RC -ne 0 ]; then
+  report_error "[1/6] Git pull" "재시도 후에도 실패 — 로컬 상태로 계속 진행
+원인: $(echo "$PULL_OUT" | head -3 | tr '\n' ' ' | head -c 300)"
+else
+  tg "✅ [1/6] Git pull 완료"
+fi
 
 # ── ② 오늘 본문 확인 ─────────────────────────────────
 echo ""
 echo "📝 [2/6] 오늘 본문 확인..."
-POST=$(ls -t "$BLOG"/${DATE}-*.md 2>/dev/null | grep -v bak | head -1)
+# ${DATE}_blog.md (Actions v2 산출물) 우선, 없으면 구형 ${DATE}-슬러그.md 탐색
+POST=$(ls -t "$BLOG"/${DATE}_blog.md "$BLOG"/${DATE}-*.md 2>/dev/null | grep -v bak | grep -v summary | head -1)
 if [ -z "$POST" ]; then
   echo "  ℹ️  오늘 본문 없음. GitHub Actions가 새 영상을 못 찾았거나 아직 미완료."
   notify "12시에 만나요 ${DATE}" "오늘은 새 영상 없음 또는 GitHub Actions 미완료"
