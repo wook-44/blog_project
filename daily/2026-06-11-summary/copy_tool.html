@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-06-11 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 7,764 V자 반등, 코스닥 4.8% 급등 마감</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 7,764 V자 반등, 코스닥 4.8% 급등 마감</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 6월 11일 '네 마녀의 날' 장 초반 4.35% 급락하며 7,394까지 밀렸다가, 코스피 종가 7,763.95(+0.43%)로 상승 마감했습니다. 하루 변동폭이 400포인트가 넘는 V자 반등이었는데요. 코스닥은 4.76% 급등하며 1,000선 코앞까지 왔습니다. 이 반전의 주인공은 누구였을까요?</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 7,764 +0.43% V자 반등, 코스닥 997 +4.76% 급등</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 외국인 1.5조 순매도 지속, 개인 2.1조 매수로 받아내</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — 상한가 3개 등장, 콘덴서·기판 등 부품주 급등</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">7,763.95</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▲ 33.13</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+0.43%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">996.93</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▲ 45.30</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+4.76%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">숫자만 보면 평범한 강보합이지만, 과정은 전혀 평범하지 않았습니다. 선물·옵션 동시 만기일인 '네 마녀의 날'을 맞은 코스피는 2.86% 하락 출발 직후 낙폭을 4.35%까지 키우며 7,394.46까지 밀렸습니다. 장중 7,400선 아래는 14거래일 만이었습니다. 간밤 뉴욕증시에서 나스닥이 1.98% 급락하고 필라델피아 반도체지수가 3.6% 빠진 데다, 트럼프 대통령의 "이란을 더 강하게 타격하겠다"는 발언으로 중동 긴장이 다시 고조된 영향이 컸습니다. 그런데 오전 10시를 넘기며 분위기가 급변했습니다. 만기일 포지션 청산 물량이 소화되자 지수는 가파르게 낙폭을 줄였고, 오전 중 상승 전환에 성공해 장중 고가 7,800.62까지 올랐다가 7,763.95로 마감했습니다. 저가 대비 370포인트를 끌어올린 V자 반등입니다. 코스닥은 더 극적이었습니다. 저가 921.08에서 고가 997.11까지 치솟아 사실상 고가 마감하며 1,000선 회복을 눈앞에 뒀습니다. 이날 코스피에서는 상한가 3개를 포함해 506개 종목이 오르고 380개가 내렸으며, 거래대금은 45조 2천억 원으로 폭발적이었습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-14,649억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-6,013억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+20,662억 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">수급 구도는 어제와 같았습니다. 외국인이 1조 5천억 원 가까이 팔고 기관이 6천억 원을 보태는 동안, 개인이 2조 1천억 원을 받아냈습니다. 다만 내용은 다릅니다. 어제는 개인이 사도 지수가 4.5% 빠졌는데, 오늘은 같은 구도에서 지수가 상승 마감했습니다. 만기일 청산 물량이라는 기술적 매도가 컸던 만큼, 외국인 매도의 질이 어제보다는 덜 공격적이었다고 볼 수 있습니다. 흥미로운 건 코스닥입니다. 코스닥에서는 기관이 7,114억 원을 순매수하며 지수를 4.76% 밀어 올렸고, 오히려 개인이 3,519억 원을 차익 실현했습니다. 대형주 만기 변동성을 피해 기관 자금이 코스닥 중소형주로 이동한 흐름이 뚜렷했습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>STX그린로지스</b> +30.00% — 3,380원, 상한가로 해운 소형주 매수세 집중</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>마니커</b> +29.97% — 1,340원, 상한가 부근 동반 급등</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>미래에셋생명</b> +29.87% — 29,350원, 보험주에 보기 드문 상한가</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>이수화학</b> +26.89% — 15,620원, 그룹주 동반 강세 속 폭등</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>삼화콘덴서</b> +20.80% — 132,400원, AI 전력 인프라 수혜 기대 부각</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">시가총액 상위에서는 명암이 갈렸습니다. SK하이닉스가 +2.59%로 210만 원을 회복하며 '210만닉스'에 안착한 반면, 삼성전자는 -1.49%로 29만 8천 원까지 밀리며 30만 원 선을 내줬습니다. 한미반도체 +5.93%, 이수페타시스 +10.09%, HD현대일렉트릭 +4.87% 등 AI 인프라 관련 부품·전력주가 강했고, 삼화콘덴서까지 더하면 오늘 장의 색깔은 '반도체 본체보다 주변 부품'이었습니다. 반면 기아 -3.32%, KB금융 -1.95%, NAVER -1.98% 등 내수·금융 대형주는 약세를 벗어나지 못했습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">시가총액(추정)</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**SK하이닉스**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 153조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">2,101,000원 +2.59%, 210만 원 선 재탈환</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼성전자**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 178조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">298,000원 -1.49%, 30만 원 선 하루 만에 반납</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼화콘덴서**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 1.4조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">132,400원 +20.80%, 전력 인프라 테마의 새 얼굴</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">❓ 오늘의 용어 — 네 마녀의 날이란?</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">네 마녀의 날(쿼드러플 위칭 데이)은 주가지수 선물, 주가지수 옵션, 개별주식 선물, 개별주식 옵션 네 가지 파생상품의 만기가 겹치는 날입니다. 우리 시장에서는 3·6·9·12월 두 번째 목요일로, 오늘이 바로 그날이었습니다. 만기일에는 외국인과 기관이 보유 포지션을 청산하거나 다음 만기로 넘기는 과정에서 현물 주식을 대량으로 사고팔기 때문에, 기업 실적과 무관하게 주가가 크게 출렁입니다. 마치 네 명의 마녀가 빗자루를 타고 다니며 시장을 휘젓는 것 같다고 해서 붙은 이름입니다. 오늘 장 초반 4%대 급락이 오전 중 곧바로 되돌려진 것도, 펀더멘털 악재라기보다 만기일 수급 왜곡의 성격이 짙었다는 방증입니다. 만기일의 급등락은 다음 날 되돌림도 잦다는 점을 기억해 둘 만합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 장은 '진짜 매도'와 '기술적 매도'를 구분하는 좋은 교본이었습니다. 같은 외국인 순매도라도 어제처럼 지수를 끝까지 누르는 매도가 있고, 오늘처럼 만기 청산이 끝나자 흡수되는 매도가 있습니다. 장중 저가에서 370포인트를 되돌린 복원력, 그리고 기관이 코스닥을 7천억 원 넘게 산 것은 시장 에너지가 아직 살아 있다는 신호로 읽힙니다. 다만 내일은 스페이스X 상장이라는 대형 이벤트가 미국 시장의 유동성을 빨아들일 수 있고, 중동 변수도 그대로입니다. V자 반등에 안도하기보다 외국인 매도세가 실제로 줄어드는지 하루 더 확인할 구간입니다. 오후 본편에서는 SK하이닉스와 삼성전자의 엇갈린 행보, 그리고 만기 이후 수급 방향을 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 7,764 V자 반등, 코스닥 4.8% 급등 마감
+
+코스피가 6월 11일 &#x27;네 마녀의 날&#x27; 장 초반 4.35% 급락하며 7,394까지 밀렸다가, 코스피 종가 7,763.95(+0.43%)로 상승 마감했습니다. 하루 변동폭이 400포인트가 넘는 V자 반등이었는데요. 코스닥은 4.76% 급등하며 1,000선 코앞까지 왔습니다. 이 반전의 주인공은 누구였을까요?
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 7,764 +0.43% V자 반등, 코스닥 997 +4.76% 급등
+- 외국인/기관 수급 — 외국인 1.5조 순매도 지속, 개인 2.1조 매수로 받아내
+- 상승률 상위 종목 — 상한가 3개 등장, 콘덴서·기판 등 부품주 급등
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 7,763.95 | ▲ 33.13 | +0.43% |
+| 코스닥 | 996.93 | ▲ 45.30 | +4.76% |
+
+숫자만 보면 평범한 강보합이지만, 과정은 전혀 평범하지 않았습니다. 선물·옵션 동시 만기일인 &#x27;네 마녀의 날&#x27;을 맞은 코스피는 2.86% 하락 출발 직후 낙폭을 4.35%까지 키우며 7,394.46까지 밀렸습니다. 장중 7,400선 아래는 14거래일 만이었습니다. 간밤 뉴욕증시에서 나스닥이 1.98% 급락하고 필라델피아 반도체지수가 3.6% 빠진 데다, 트럼프 대통령의 &quot;이란을 더 강하게 타격하겠다&quot;는 발언으로 중동 긴장이 다시 고조된 영향이 컸습니다. 그런데 오전 10시를 넘기며 분위기가 급변했습니다. 만기일 포지션 청산 물량이 소화되자 지수는 가파르게 낙폭을 줄였고, 오전 중 상승 전환에 성공해 장중 고가 7,800.62까지 올랐다가 7,763.95로 마감했습니다. 저가 대비 370포인트를 끌어올린 V자 반등입니다. 코스닥은 더 극적이었습니다. 저가 921.08에서 고가 997.11까지 치솟아 사실상 고가 마감하며 1,000선 회복을 눈앞에 뒀습니다. 이날 코스피에서는 상한가 3개를 포함해 506개 종목이 오르고 380개가 내렸으며, 거래대금은 45조 2천억 원으로 폭발적이었습니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -14,649억 원 |
+| 기관 | -6,013억 원 |
+| 개인 | +20,662억 원 |
+
+수급 구도는 어제와 같았습니다. 외국인이 1조 5천억 원 가까이 팔고 기관이 6천억 원을 보태는 동안, 개인이 2조 1천억 원을 받아냈습니다. 다만 내용은 다릅니다. 어제는 개인이 사도 지수가 4.5% 빠졌는데, 오늘은 같은 구도에서 지수가 상승 마감했습니다. 만기일 청산 물량이라는 기술적 매도가 컸던 만큼, 외국인 매도의 질이 어제보다는 덜 공격적이었다고 볼 수 있습니다. 흥미로운 건 코스닥입니다. 코스닥에서는 기관이 7,114억 원을 순매수하며 지수를 4.76% 밀어 올렸고, 오히려 개인이 3,519억 원을 차익 실현했습니다. 대형주 만기 변동성을 피해 기관 자금이 코스닥 중소형주로 이동한 흐름이 뚜렷했습니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. STX그린로지스 +30.00% — 3,380원, 상한가로 해운 소형주 매수세 집중
+2. 마니커 +29.97% — 1,340원, 상한가 부근 동반 급등
+3. 미래에셋생명 +29.87% — 29,350원, 보험주에 보기 드문 상한가
+4. 이수화학 +26.89% — 15,620원, 그룹주 동반 강세 속 폭등
+5. 삼화콘덴서 +20.80% — 132,400원, AI 전력 인프라 수혜 기대 부각
+
+시가총액 상위에서는 명암이 갈렸습니다. SK하이닉스가 +2.59%로 210만 원을 회복하며 &#x27;210만닉스&#x27;에 안착한 반면, 삼성전자는 -1.49%로 29만 8천 원까지 밀리며 30만 원 선을 내줬습니다. 한미반도체 +5.93%, 이수페타시스 +10.09%, HD현대일렉트릭 +4.87% 등 AI 인프라 관련 부품·전력주가 강했고, 삼화콘덴서까지 더하면 오늘 장의 색깔은 &#x27;반도체 본체보다 주변 부품&#x27;이었습니다. 반면 기아 -3.32%, KB금융 -1.95%, NAVER -1.98% 등 내수·금융 대형주는 약세를 벗어나지 못했습니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 시가총액(추정) | 한 줄 코멘트 |
+|---|---|---|
+| SK하이닉스 | 약 153조 원 | 2,101,000원 +2.59%, 210만 원 선 재탈환 |
+| 삼성전자 | 약 178조 원 | 298,000원 -1.49%, 30만 원 선 하루 만에 반납 |
+| 삼화콘덴서 | 약 1.4조 원 | 132,400원 +20.80%, 전력 인프라 테마의 새 얼굴 |
+
+❓ 오늘의 용어 — 네 마녀의 날이란?
+
+네 마녀의 날(쿼드러플 위칭 데이)은 주가지수 선물, 주가지수 옵션, 개별주식 선물, 개별주식 옵션 네 가지 파생상품의 만기가 겹치는 날입니다. 우리 시장에서는 3·6·9·12월 두 번째 목요일로, 오늘이 바로 그날이었습니다. 만기일에는 외국인과 기관이 보유 포지션을 청산하거나 다음 만기로 넘기는 과정에서 현물 주식을 대량으로 사고팔기 때문에, 기업 실적과 무관하게 주가가 크게 출렁입니다. 마치 네 명의 마녀가 빗자루를 타고 다니며 시장을 휘젓는 것 같다고 해서 붙은 이름입니다. 오늘 장 초반 4%대 급락이 오전 중 곧바로 되돌려진 것도, 펀더멘털 악재라기보다 만기일 수급 왜곡의 성격이 짙었다는 방증입니다. 만기일의 급등락은 다음 날 되돌림도 잦다는 점을 기억해 둘 만합니다.
+
+💡 내 생각
+
+오늘 장은 &#x27;진짜 매도&#x27;와 &#x27;기술적 매도&#x27;를 구분하는 좋은 교본이었습니다. 같은 외국인 순매도라도 어제처럼 지수를 끝까지 누르는 매도가 있고, 오늘처럼 만기 청산이 끝나자 흡수되는 매도가 있습니다. 장중 저가에서 370포인트를 되돌린 복원력, 그리고 기관이 코스닥을 7천억 원 넘게 산 것은 시장 에너지가 아직 살아 있다는 신호로 읽힙니다. 다만 내일은 스페이스X 상장이라는 대형 이벤트가 미국 시장의 유동성을 빨아들일 수 있고, 중동 변수도 그대로입니다. V자 반등에 안도하기보다 외국인 매도세가 실제로 줄어드는지 하루 더 확인할 구간입니다. 오후 본편에서는 SK하이닉스와 삼성전자의 엇갈린 행보, 그리고 만기 이후 수급 방향을 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <p style="font-size:13px;color:#dc2626;">⚠️ 인포그래픽 이미지 없음</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK하이닉스</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성전자</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#네마녀의날뜻</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#선물옵션만기일</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥급등이유</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼화콘덴서</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#스페이스X상장</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스닥 #SK하이닉스 #삼성전자 #네마녀의날뜻 #선물옵션만기일 #오늘코스피시황 #코스닥급등이유 #삼화콘덴서 #스페이스X상장</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
