@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 이미지 복사 도구 — 2026-06-12_summary</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .tag-chip:hover { background: #fde68a; }
+  .tag-chip:active { background: #f59e0b; color: #fff; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .kw-chip { display: inline-block; padding: 5px 12px; margin: 3px; background: #e0f2fe; color: #075985; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .kw-chip:hover { background: #bae6fd; }
+  .kw-chip.copied { background: #10b981; color: #fff; }
+  .kw-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 14px; line-height: 1.9; }
+  .tag-box  { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .body-preview h1 { font-size: 20px; margin: 8px 0 12px; color: #0f172a; }
+  .body-preview h2 { font-size: 17px; margin: 18px 0 8px; color: #1e293b; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+  .body-preview p { margin: 8px 0; }
+  .body-preview ul { margin: 8px 0 8px 12px; }
+  .body-preview li { margin: 4px 0; }
+  .body-preview hr { border: none; border-top: 1px dashed #cbd5e1; margin: 16px 0; }
+  .body-preview blockquote { margin: 8px 0; padding: 8px 14px; background: #eff6ff; border-left: 3px solid #3b82f6; border-radius: 4px; font-size: 14px; }
+  .body-preview table { border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+  .body-preview th, .body-preview td { border: 1px solid #cbd5e1; padding: 6px 10px; }
+  .body-preview th { background: #f1f5f9; }
+  .btn:active { opacity: 0.8; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  #copyStatus { display: none; background: #d1fae5; border: 1px solid #6ee7b7; border-radius: 8px; padding: 10px 16px; font-size: 14px; color: #065f46; margin-top: 10px; }
+  .hidden-body { display: none; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구</h1>
+<p class="desc">
+  아래 순서대로 진행하세요:<br>
+  <b>① 텍스트 복사 → 네이버 블로그 본문에 붙여넣기</b><br>
+  <b>② 이미지1~0 순서대로 복사 → 네이버 블로그 본문의 해당 위치에 붙여넣기</b>
+</p>
+
+<!-- STEP 0: 제목 -->
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목 (에디터 제목칸에 입력)</div>
+  <div class="text-box" id="titleBox">코스피 8,124 급등 마감, 외국인 2.1조 매수 전환</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<!-- STEP 1: 텍스트 복사 -->
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:8px;">아래 본문 미리보기 확인 후 복사 버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div id="copyStatus">텍스트가 복사되었습니다. 네이버 블로그 에디터에 Cmd+V 로 붙여넣으세요.</div>
+
+  <!-- 본문 미리보기 (화면에 보임 + 복사 대상) -->
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 8,124 급등 마감, 외국인 2.1조 매수 전환</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 6월 12일 트럼프 대통령의 이란 공습 취소 소식에 4.63% 급등하며 코스피 종가 8,123.62로 마감했습니다. 외국인은 11거래일 만에 2조 1천억 원 매수로 돌아섰고, 코스닥은 1,029.05로 '천스닥'을 회복했는데요. 이 랠리, 믿어도 될까요?</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<p>&nbsp;</p>
+<ul style="margin:8px 0;padding-left:20px;">
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">코스피·코스닥 종가</span> — 코스피 8,124 +4.63% 급등, 코스닥 1,029 +3.22% 천스닥 회복</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">외국인/기관 수급</span> — 외국인 2.1조·기관 2.2조 쌍끌이 매수, 개인 4.3조 차익 실현</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><span style="font-weight:bold;">상승률 상위 종목</span> — HL만도 상한가, 한미반도체 +22.7% 등 반도체·부품주 폭등</li>
+</ul>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">📊 지수 종가</h2>
+<p>&nbsp;</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">|---|---|---|---|</p>
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">코스피</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">8,123.62</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">▲ 359.67</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">+4.63%</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">1,029.05</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▲ 32.11</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+3.22%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">방향을 바꾼 것은 간밤의 헤드라인이었습니다. 트럼프 대통령이 이란 추가 공습을 전격 취소하고 협상 임박을 시사하면서 국제 유가와 달러 가치가 동반 급락했고, 원·달러 환율은 1,510원대로 내려왔습니다. 여기에 미국 5월 생산자물가지수(PPI)가 안도감을 주면서 뉴욕증시에서 마이크론 +11.7%, 인텔 +9.3% 등 반도체주가 폭등한 흐름이 그대로 이어졌습니다. 코스피는 499포인트 오른 8,263.85로 출발해 개장과 동시에 8,000선을 재탈환했고, 오전 9시 6분에는 올해 13번째 매수 사이드카가 발동됐습니다. 장중 한때 8,434.40까지 닿으며 8% 가까이 치솟았지만, 오후 들어 상승분 일부를 반납하고 8,123.62로 마쳤습니다. 그래도 하루 +359.67포인트, 어제 지켜낸 7,700선에서 단숨에 8,100선까지 올라선 셈입니다. 이날 코스피에서는 상한가 2개를 포함해 760개 종목이 올랐고 내린 종목은 139개에 그쳤으며, 거래대금은 51조 1천억 원으로 폭발했습니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<p>&nbsp;</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">|---|---|</p>
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">외국인</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">+21,063억 원</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+22,303억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-43,367억 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 수급의 핵심은 단연 외국인입니다. 어제까지 10거래일 연속 '팔자'를 이어가던 외국인이 11거래일 만에 2조 1천억 원 순매수로 방향을 틀었고, 기관도 2조 2천억 원을 보태며 쌍끌이 매수가 들어왔습니다. 반대로 그동안 하락장을 받아내던 개인은 4조 3천억 원을 팔며 차익 실현에 나섰습니다. 급락 구간에서 사 모은 물량을 급등일에 넘기는, 교과서적인 손바뀜입니다. 코스닥은 결이 달랐습니다. 외국인이 3,415억 원, 개인이 3,028억 원을 파는 동안 기관이 6,443억 원을 순매수하며 지수를 밀어 올렸습니다. 어제 코스닥 급등을 주도한 기관 자금이 이틀째 중소형주에 머물고 있다는 점은 눈여겨볼 부분입니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">1. <span style="font-weight:bold;">HL만도</span> +30.00% — 65,000원, 상한가 직행한 자동차 부품 대장</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">2. <span style="font-weight:bold;">드림텍</span> +29.79% — 5,860원, 상한가 부근까지 치솟은 전자부품주</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">3. <span style="font-weight:bold;">엠앤씨솔루션</span> +29.17% — 93,000원, 방산 부품 매수세 집중</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">4. <span style="font-weight:bold;">한미반도체</span> +22.68% — 357,000원, 미국 반도체 급등의 직접 수혜</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">5. <span style="font-weight:bold;">태영건설우</span> +21.41% — 10,150원, 우선주 특유의 급등 탄력</p>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">시가총액 상위는 사실상 전 종목 강세였습니다. 삼성전자가 +8.03%로 323,000원에 마감하며 하루 만에 30만 원 선을 되찾았고, SK하이닉스 +3.90%, SK스퀘어 +12.05%, NAVER +10.49%, 삼성SDI +8.12%, 현대모비스 +7.64% 등 반도체·IT 대형주가 지수를 끌었습니다. 어제 '반도체 본체보다 주변 부품'이었던 장세가 오늘은 본체와 부품이 함께 달리는 장으로 바뀐 겁니다. 다만 그 와중에도 삼성전기 -5.10%, LG이노텍 -2.61% 등 일부 부품주는 차익 매물에 밀렸습니다. 다 같이 오르는 날에도 어제 급등한 종목부터 식는다는 점은 기억해 둘 만합니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<p>&nbsp;</p>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">시가총액(추정)</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">|---|---|---|</p>
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">**삼성전자**</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">약 193조 원</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">323,000원 +8.03%, 하루 만에 30만 원 선 재탈환</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**SK하이닉스**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 159조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">2,183,000원 +3.90%, 218만 원으로 사상 최고가권</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**한미반도체**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">약 35조 원</td><td style="padding:6px 10px;border:1px solid #d1d5db;">357,000원 +22.68%, 마이크론發 훈풍의 최대 수혜</td></tr>
+</table>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">❓ 오늘의 용어 — 매수 사이드카란?</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">매수 사이드카는 선물 가격이 전일 대비 5% 이상(코스닥 6%) 급등한 상태가 1분간 지속될 때, 프로그램 매수 호가의 효력을 5분간 정지시키는 제도입니다. 과열된 시장에 잠시 브레이크를 걸어 투자자에게 생각할 시간을 주는 장치인데요. 오늘 오전 9시 6분 발동된 것이 올해 들어 벌써 13번째입니다. 사이드카가 1년에 한두 번 나올까 말까 했던 과거와 비교하면, 올해 시장이 얼마나 극단적으로 출렁이는지 보여주는 숫자입니다. 급등에도 브레이크가 걸린다는 것, 그만큼 지금 시장의 속도가 빠르다는 뜻이기도 합니다.</p>
+<p>&nbsp;</p>
+<h2 style="font-size:26px;font-weight:bold;margin:22px 0 10px;line-height:1.35;color:#0f172a;">💡 내 생각</h2>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 가장 중요한 숫자는 지수 상승률이 아니라 외국인 +2.1조입니다. 10거래일을 내리 팔던 자금이 돌아선 첫날이니까요. 다만 단서가 둘 있습니다. 첫째, 오늘 매수의 방아쇠는 펀더멘털이 아니라 '이란 공습 취소'라는 헤드라인입니다. 협상이 틀어지면 같은 속도로 되돌려질 수 있습니다. 둘째, 장중 +8% 가까이 갔던 지수가 종가에는 +4.63%로 절반 가까이 반납했습니다. 8,400선 위에서는 파는 손이 여전히 많다는 뜻입니다. 외국인 매수가 하루짜리 이벤트인지 추세 전환인지는 내일과 모레 이틀이 말해줄 겁니다. 오후 영상 분석에서는 이 외국인 매수 전환의 지속성과 반도체 대형주의 다음 구간을 더 깊이 짚어보겠습니다.</p>
+<p>&nbsp;</p>
+<hr style="border:none;border-top:1px solid #d1d5db;margin:16px 0;">
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+  </div>
+</div>
+
+
+
+
+<!-- STEP 2: 태그 -->
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#f59e0b;">2</span> 해시태그 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:6px;">총 30개 — 네이버 권장 30개</p>
+  <p style="font-size:12px;color:#dc2626;margin-bottom:10px;">⚠️ 네이버는 태그 한 개씩 입력 → Enter 필요. 각 태그(노란 칩)를 클릭하면 그 태그만 복사됩니다. 빠른 방법은 칩을 차례로 클릭→네이버 태그칸 붙여넣기→Enter 반복.</p>
+  <div class="tag-box" id="tagBox"><span class="tag-chip" onclick="copyOneTag(this, '#코스피')" title="클릭하면 이 태그만 복사">#코스피</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥')" title="클릭하면 이 태그만 복사">#코스닥</span> <span class="tag-chip" onclick="copyOneTag(this, '#삼성전자')" title="클릭하면 이 태그만 복사">#삼성전자</span> <span class="tag-chip" onclick="copyOneTag(this, '#한미반도체')" title="클릭하면 이 태그만 복사">#한미반도체</span> <span class="tag-chip" onclick="copyOneTag(this, '#외국인순매수')" title="클릭하면 이 태그만 복사">#외국인순매수</span> <span class="tag-chip" onclick="copyOneTag(this, '#SK하이닉스')" title="클릭하면 이 태그만 복사">#SK하이닉스</span> <span class="tag-chip" onclick="copyOneTag(this, '#매수사이드카뜻')" title="클릭하면 이 태그만 복사">#매수사이드카뜻</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피급등이유')" title="클릭하면 이 태그만 복사">#코스피급등이유</span> <span class="tag-chip" onclick="copyOneTag(this, '#오늘코스피시황')" title="클릭하면 이 태그만 복사">#오늘코스피시황</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피전망')" title="클릭하면 이 태그만 복사">#코스피전망</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥천스닥')" title="클릭하면 이 태그만 복사">#코스닥천스닥</span> <span class="tag-chip" onclick="copyOneTag(this, '#이란공습취소')" title="클릭하면 이 태그만 복사">#이란공습취소</span> <span class="tag-chip" onclick="copyOneTag(this, '#미국이란종전협상')" title="클릭하면 이 태그만 복사">#미국이란종전협상</span> <span class="tag-chip" onclick="copyOneTag(this, '#유가급락')" title="클릭하면 이 태그만 복사">#유가급락</span> <span class="tag-chip" onclick="copyOneTag(this, '#환율하락')" title="클릭하면 이 태그만 복사">#환율하락</span> <span class="tag-chip" onclick="copyOneTag(this, '#HL만도')" title="클릭하면 이 태그만 복사">#HL만도</span> <span class="tag-chip" onclick="copyOneTag(this, '#드림텍')" title="클릭하면 이 태그만 복사">#드림텍</span> <span class="tag-chip" onclick="copyOneTag(this, '#엠앤씨솔루션')" title="클릭하면 이 태그만 복사">#엠앤씨솔루션</span> <span class="tag-chip" onclick="copyOneTag(this, '#태영건설우')" title="클릭하면 이 태그만 복사">#태영건설우</span> <span class="tag-chip" onclick="copyOneTag(this, '#SK스퀘어')" title="클릭하면 이 태그만 복사">#SK스퀘어</span> <span class="tag-chip" onclick="copyOneTag(this, '#NAVER주가')" title="클릭하면 이 태그만 복사">#NAVER주가</span> <span class="tag-chip" onclick="copyOneTag(this, '#삼성SDI')" title="클릭하면 이 태그만 복사">#삼성SDI</span> <span class="tag-chip" onclick="copyOneTag(this, '#현대모비스')" title="클릭하면 이 태그만 복사">#현대모비스</span> <span class="tag-chip" onclick="copyOneTag(this, '#반도체주가전망')" title="클릭하면 이 태그만 복사">#반도체주가전망</span> <span class="tag-chip" onclick="copyOneTag(this, '#마이크론급등')" title="클릭하면 이 태그만 복사">#마이크론급등</span> <span class="tag-chip" onclick="copyOneTag(this, '#외국인매수전환')" title="클릭하면 이 태그만 복사">#외국인매수전환</span> <span class="tag-chip" onclick="copyOneTag(this, '#기관순매수')" title="클릭하면 이 태그만 복사">#기관순매수</span> <span class="tag-chip" onclick="copyOneTag(this, '#개인차익실현')" title="클릭하면 이 태그만 복사">#개인차익실현</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피8000돌파')" title="클릭하면 이 태그만 복사">#코스피8000돌파</span> <span class="tag-chip" onclick="copyOneTag(this, '#주식시황정리')" title="클릭하면 이 태그만 복사">#주식시황정리</span></div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 (줄바꿈 구분) 복사</button>
+  <span class="toast" id="toastTag">✅ 복사됨!</span>
+  <div class="hidden-body" id="tagsRaw">#코스피
+#코스닥
+#삼성전자
+#한미반도체
+#외국인순매수
+#SK하이닉스
+#매수사이드카뜻
+#코스피급등이유
+#오늘코스피시황
+#코스피전망
+#코스닥천스닥
+#이란공습취소
+#미국이란종전협상
+#유가급락
+#환율하락
+#HL만도
+#드림텍
+#엠앤씨솔루션
+#태영건설우
+#SK스퀘어
+#NAVER주가
+#삼성SDI
+#현대모비스
+#반도체주가전망
+#마이크론급등
+#외국인매수전환
+#기관순매수
+#개인차익실현
+#코스피8000돌파
+#주식시황정리</div>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px dashed #cbd5e1;">
+    <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">🔑 핵심 키워드 10개 (# 없음)</div>
+    <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드 클릭 = 개별 복사. 전체 한 번에 복사하려면 아래 버튼.</p>
+    <div class="kw-box">
+<span class="kw-chip" onclick="copyOneTag(this, 'HL만도')" title="클릭하면 복사">HL만도</span><span class="kw-chip" onclick="copyOneTag(this, 'NAVER주가')" title="클릭하면 복사">NAVER주가</span><span class="kw-chip" onclick="copyOneTag(this, '삼성SDI')" title="클릭하면 복사">삼성SDI</span><span class="kw-chip" onclick="copyOneTag(this, 'SK스퀘어')" title="클릭하면 복사">SK스퀘어</span><span class="kw-chip" onclick="copyOneTag(this, '드림텍')" title="클릭하면 복사">드림텍</span><span class="kw-chip" onclick="copyOneTag(this, '코스닥')" title="클릭하면 복사">코스닥</span><span class="kw-chip" onclick="copyOneTag(this, '코스피')" title="클릭하면 복사">코스피</span><span class="kw-chip" onclick="copyOneTag(this, 'SK하이닉스')" title="클릭하면 복사">SK하이닉스</span><span class="kw-chip" onclick="copyOneTag(this, '삼성전자')" title="클릭하면 복사">삼성전자</span><span class="kw-chip" onclick="copyOneTag(this, '유가급락')" title="클릭하면 복사">유가급락</span>
+    </div>
+    <button class="btn" style="background:#0ea5e9;color:#fff;margin-top:10px;" onclick="copyAllKeywords()">🔑 키워드 10개 전체 복사 (쉼표 구분)</button>
+    <span class="toast" id="toastKw">✅ 복사됨!</span>
+    <div class="hidden-body" id="kwAll">HL만도, NAVER주가, 삼성SDI, SK스퀘어, 드림텍, 코스닥, 코스피, SK하이닉스, 삼성전자, 유가급락</div>
+  </div>
+</div>
+
+
+<script>
+async function copyAllKeywords() {
+  const raw = document.getElementById('kwAll').innerText;
+  try {
+    await navigator.clipboard.writeText(raw);
+    showToast('toastKw');
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('toastKw'); }
+    catch(e2) { alert('키워드 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyOneTag(el, tag) {
+  try {
+    await navigator.clipboard.writeText(tag);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1200);
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = tag;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1200); }
+    catch(e2) { alert('태그 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyTags() {
+  const raw = document.getElementById('tagsRaw').innerText;
+  try {
+    await navigator.clipboard.writeText(raw);
+    showToast('toastTag');
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = raw;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast('toastTag'); }
+    catch(e2) { alert('태그 복사 실패'); }
+    document.body.removeChild(ta);
+  }
+}
+function showToast(id) {
+  const el = document.getElementById(id);
+  el.style.display = 'inline';
+  setTimeout(() => el.style.display = 'none', 2000);
+}
+
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(toastId);
+  } catch(e) {
+    // Fallback — 임시 textarea + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showToast(toastId); }
+    catch(e2) { alert('복사 실패 — 직접 선택하여 복사하세요'); }
+    document.body.removeChild(ta);
+  }
+}
+
+async function copyText() {
+  const body = document.getElementById('blogBodyHtml');
+  const html = body.innerHTML;
+  const text = body.innerText;
+  let ok = false;
+
+  // 1) 최신 Clipboard API — HTML + plain 같이 (네이버 에디터가 HTML 인식)
+  try {
+    if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      const item = new ClipboardItem({
+        'text/html': new Blob([html], {type: 'text/html'}),
+        'text/plain': new Blob([text], {type: 'text/plain'})
+      });
+      await navigator.clipboard.write([item]);
+      ok = true;
+    }
+  } catch(e) { console.warn('ClipboardItem 실패:', e); }
+
+  // 2) Fallback — Selection + execCommand
+  if (!ok) {
+    try {
+      const range = document.createRange();
+      range.selectNodeContents(body);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      ok = document.execCommand('copy');
+      sel.removeAllRanges();
+    } catch(e) { console.warn('execCommand 실패:', e); }
+  }
+
+  // 3) 최후 fallback — 일반 텍스트만
+  if (!ok) {
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch(e) { console.error('clipboard.writeText 실패:', e); }
+  }
+
+  if (ok) {
+    document.getElementById('copyStatus').style.display = 'block';
+    showToast('toastText');
+    setTimeout(() => document.getElementById('copyStatus').style.display = 'none', 3000);
+  } else {
+    alert('복사 실패 — 본문을 마우스로 드래그하여 직접 복사해주세요');
+  }
+}
+
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+  };
+  img.src = src;
+}
+
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(blob => {
+    const item = new ClipboardItem({'image/png': blob});
+    navigator.clipboard.write([item]).then(() => showToast(toastId));
+  });
+}
+
+// 이미지 캔버스 로드
+window.onload = function() {
+};
+</script>
+</body>
+</html>
