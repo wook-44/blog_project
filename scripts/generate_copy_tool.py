@@ -33,14 +33,19 @@ def find_md_file(date_str: str) -> Path:
 # 인포그래픽 키 → 본문 헤더 정규식 매핑.
 # 본문 작성 가이드(SKILL.md)의 헤더 표기를 그대로 따른다.
 KEY_HEADER_PATTERNS = [
-    ("market",     r"^##\s+.*시장 분석.*$"),
-    ("psychology", r"^##\s+.*투자 심리.*$"),
-    ("summary",    r"^##\s+.*핵심 포인트.*$"),
+    # v2 코너별 리뷰 기준 (### 코너 헤더, h3) — 코너 인포그래픽 우선 매칭
+    ("news",       r"^#{2,3}\s+.*(?:정오의 머니|머니 뉴스).*$"),
+    ("flows",      r"^#{2,3}\s+.*수급.*$"),
+    ("gwangsoo",   r"^#{2,3}\s+.*(?:광수생각|사랑방|시동생각|③).*$"),
+    # v1(시장 분석…) + v2(영상 리뷰 포맷 h2) 헤더 모두 매칭
+    ("market",     r"^#{2,3}\s+.*(?:시장 분석|시장 데이터).*$"),
+    ("psychology", r"^#{2,3}\s+.*(?:투자 심리|내 감상).*$"),
+    ("summary",    r"^#{2,3}\s+.*(?:핵심 포인트|이 리뷰에서 다루는).*$"),
     # 선택 섹션 (영상 비중에 따라 들어옴)
-    ("outlook",    r"^##\s+.*(?:전망|관전 포인트|시나리오).*$"),
-    ("sector",     r"^##\s+.*(?:섹터|업종).*$"),
-    ("risk",       r"^##\s+.*(?:리스크|위험|회피).*$"),
-    ("checklist",  r"^##\s+.*(?:체크리스트|적용할 점|실행 체크).*$"),
+    ("outlook",    r"^#{2,3}\s+.*(?:전망|관전 포인트|시나리오).*$"),
+    ("sector",     r"^#{2,3}\s+.*(?:섹터|업종|관련 종목).*$"),
+    ("risk",       r"^#{2,3}\s+.*(?:리스크|위험|회피).*$"),
+    ("checklist",  r"^#{2,3}\s+.*(?:체크리스트|적용할 점|실행 체크).*$"),
 ]
 
 
@@ -166,8 +171,18 @@ def md_to_html_body(md_text: str) -> str:
             if in_list: html_parts.append("</ul>"); in_list = False
             content = line[2:].strip()
             content = re.sub(r'\*\*(.+?)\*\*', r'\1', content)
-            # 이미지 마커는 중앙 정렬 빨간색 글자만
-            if "👇" in content or "🖼️" in content:
+            # 이미지 삽입 위치 마커("이미지 N (key) 여기에 붙여넣기") — 빨간 굵은 글씨로 강조
+            blk_marker = re.search(r"이미지\s*(\d+)\s*(\([^)]*\))?\s*여기에\s*붙여넣기", content)
+            if blk_marker:
+                num = blk_marker.group(1)
+                key = (" " + blk_marker.group(2)) if blk_marker.group(2) else ""
+                html_parts.append(
+                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                    f'font-size:16px;margin:18px 0;">'
+                    f'🔴 [이미지 {num}]{key} 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                )
+            # 그 외 안내성 마커는 중앙 정렬 빨간색 글자만
+            elif "👇" in content or "🖼️" in content:
                 clean = re.sub(r"[👇🖼️]\s*", "", content).strip()
                 html_parts.append(f'<p style="text-align:center;color:#dc2626;font-size:15px;margin:18px 0;">{clean}</p>')
             else:
@@ -198,6 +213,18 @@ def md_to_html_body(md_text: str) -> str:
         else:
             if in_list: html_parts.append("</ul>"); in_list = False
             content = line.strip()
+
+            # 이미지 삽입 위치 마커("이미지 N 여기에 붙여넣기") — 빨간 굵은 글씨로 강조
+            # 나중에 네이버에서 찾아 줄째 삭제하고 그 자리에 실제 이미지를 넣기 쉽도록.
+            img_marker = re.match(r"^(?:🖼️\s*)?이미지\s*(\d+)\s*여기에\s*붙여넣기", content)
+            if img_marker:
+                num = img_marker.group(1)
+                html_parts.append(
+                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                    f'font-size:16px;margin:18px 0;">'
+                    f'🔴 [이미지 {num}] 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                )
+                continue
 
             # 줄 전체가 **굵음** 한 번만 — 소제목으로 승격 (예: "**흐름 요약**", "**교정 방법**")
             full_bold = re.fullmatch(r"\*\*([^*]+)\*\*", content)
@@ -261,6 +288,13 @@ def inject_image_markers(md_text: str, pngs: list[Path]) -> str:
     """
     if not pngs:
         return md_text
+
+    # 본문에 이미 박혀 있던 평문 마커("이미지 N 여기에 붙여넣기") 제거 →
+    # 헤더 매칭 한 곳으로 단일화 (옛 포맷 md의 중복 마커 방지)
+    md_text = re.sub(
+        r"^[ \t]*>?[ \t]*[·•]?[ \t]*(?:🖼️[ \t]*)?이미지[ \t]*\d+[ \t]*(?:\([^)]*\))?[ \t]*여기에[ \t]*붙여넣기[ \t]*$",
+        "", md_text, flags=re.MULTILINE,
+    )
 
     pat_map = dict(KEY_HEADER_PATTERNS)
 

@@ -26,11 +26,11 @@ from datetime import datetime, timedelta
 BLOG_DIR = Path(__file__).resolve().parents[2]
 
 # ── 톤북 v2 임계값 ────────────────────────────────────────
-TITLE_MIN, TITLE_MAX = 28, 32
+TITLE_MIN, TITLE_MAX = 1, 200    # v3 (2026-06-11): 제목=유튜브 원제 그대로, 길이 룰 폐지
 TITLE_KW_HEAD_LIMIT = 12          # 메인 키워드는 앞 12자 안에
 HOOK_MIN, HOOK_MAX = 100, 200     # 첫 후킹 문단 길이
-TAGS_MIN = 8                      # v2.1 (2026-06-10): 30 → 8 (실검색어만)
-TAGS_MAX = 10                     # v2.1: 조합형 태그 양산 방지 상한
+TAGS_MIN = 30                     # v3 (2026-06-11): 사용자 확정 — 항상 30개
+TAGS_MAX = 30
 LONGTAIL_MIN_RATIO = 0.2          # v2.1: 롱테일 2~3개/10개 기준으로 하향
 BODY_MIN_CHARS = 2500             # v2: 2200 → 2500 (목차·관련 종목표 추가분)
 TAG_HEAD_KW_MIN = 3               # v2: 태그 앞 5개에 종목/지수 키워드 3개 이상
@@ -41,8 +41,17 @@ RELATED_TABLE_MIN_ROWS = 3        # v2: 관련 종목표 최소 3행
 BRAND_KEYWORDS_FORBIDDEN_IN_TITLE = ["12시에 만나요", "12시에만나요"]
 
 # v2: 본문 신설 섹션 패턴
-TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것"]
-RELATED_SECTION_PATTERNS = ["🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
+TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것",
+                        "📍 이 리뷰에서 다루는 것", "📍이 리뷰에서 다루는 것"]  # v3 리뷰 포맷
+# v3 (2026-06-11): 관련 종목표 → 영상 속 데이터 박스로 대체
+RELATED_SECTION_PATTERNS = ["📊 영상 속 시장 데이터", "🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
+# v3 리뷰 포맷 필수 섹션
+REVIEW_SECTIONS = {
+    "R1 한줄평+별점": ["⭐ 오늘 영상 한줄평"],
+    "R2 코너별 리뷰": ["🎬 코너별 리뷰"],
+    "R3 오늘의 명대사": ["💬 오늘의 명대사"],
+    "R4 추천 대상": ["👍 이런 분에게 추천"],
+}
 
 MAIN_KEYWORDS = [
     # 주식 — 지수/대형주
@@ -198,14 +207,9 @@ def lint(post_path: Path) -> dict:
     else:
         passed.append(f"[T2] 날짜 접두어 없음")
 
-    # ── 검사 3: 메인 키워드 앞쪽 배치
-    pos, kw = find_main_keyword_position(title)
-    if pos < 0:
-        issues.append(f"[T3] 메인 키워드가 제목에 없음 (예: 코스피/삼성전자/SK하이닉스)")
-    elif pos > TITLE_KW_HEAD_LIMIT:
-        issues.append(f"[T3] 메인 키워드 '{kw}' 위치 {pos}자 — 앞 {TITLE_KW_HEAD_LIMIT}자 이내 권장")
-    else:
-        passed.append(f"[T3] 메인 키워드 '{kw}' 앞쪽 배치 OK ({pos}자)")
+    # ── 검사 3: (v3 폐지) 제목=유튜브 원제 그대로 — 키워드 배치 검사 안 함
+    passed.append("[T3] (v3) 제목=원제 정책 — 키워드 검사 생략")
+    _, kw = find_main_keyword_position(title)  # 검사 6에서 사용 (v3 폐지 시 누락된 kw 정의 복원)
 
     # ── 검사 4: 첫 100자 후킹 문단
     hook_first = hook[:200]
@@ -256,9 +260,10 @@ def lint(post_path: Path) -> dict:
         else:
             passed.append(f"[G2] 롱테일 비중 OK ({ratio:.0%})")
 
-    # ── 검사 9: 본문 분량
-    if body_chars < BODY_MIN_CHARS:
-        issues.append(f"[B1] 본문 글자수 {body_chars}자 — {BODY_MIN_CHARS}자 이상")
+    # ── 검사 9: 본문 분량 (시황 요약 포스트는 1,500자로 완화 — SKILL 15:30 룰)
+    body_min = 1500 if "summary" in post_path.stem.lower() else BODY_MIN_CHARS
+    if body_chars < body_min:
+        issues.append(f"[B1] 본문 글자수 {body_chars}자 — {body_min}자 이상")
     else:
         passed.append(f"[B1] 본문 분량 OK ({body_chars}자)")
 
@@ -273,11 +278,8 @@ def lint(post_path: Path) -> dict:
     # 사용자 요청으로 자동 추가 룰 제거 (2026-05-13).
 
     # ── 검사 V1 (v2): 브랜드 키워드 제목 노출 금지
-    brand_in_title = [b for b in BRAND_KEYWORDS_FORBIDDEN_IN_TITLE if b in title]
-    if brand_in_title:
-        issues.append(f"[V1] 제목에 브랜드 키워드 {brand_in_title} 노출 — 검색 트래픽 0, 종목/지수 키워드로 교체")
-    else:
-        passed.append(f"[V1] 제목 브랜드 키워드 없음")
+    # (v3 폐지) 제목=원제 정책 — 브랜드 키워드 "[12시에 만나요]"는 원제의 일부
+    passed.append("[V1] (v3) 제목=원제 정책 — 브랜드 키워드 검사 생략")
 
     # ── 검사 V2 (v2): 본문에 📍 목차 섹션
     has_toc = any(p in body for p in TOC_SECTION_PATTERNS)
@@ -286,23 +288,19 @@ def lint(post_path: Path) -> dict:
     else:
         passed.append(f"[V2] 목차 섹션 존재")
 
-    # ── 검사 V3 (v2): 🔗 관련 종목 한눈에 섹션 + 표 행 3개 이상
-    has_related = any(p in body for p in RELATED_SECTION_PATTERNS)
-    if not has_related:
-        issues.append(f"[V3] '🔗 관련 종목 한눈에' 섹션 없음 — 톤북 v2 §3 신설 항목")
+    # ── 검사 V3 (v3): 📊 영상 속 시장 데이터 박스 (수치 보조 요약)
+    if not any(p in body for p in RELATED_SECTION_PATTERNS):
+        issues.append(f"[V3] '📊 영상 속 시장 데이터' 박스 없음 — 톤북 v3 §3 (수치는 보조 박스로)")
     else:
-        # 섹션 이후 표 추출 (다음 ## 또는 --- 까지)
-        m = re.search(r"🔗\s*관련 종목 한눈에.*?\n([\s\S]+?)(?=\n##\s|\n---|$)", body)
-        if m:
-            table_rows = [ln for ln in m.group(1).splitlines() if ln.strip().startswith("|") and "---" not in ln]
-            # 헤더 한 줄 제외하고 데이터 행만
-            data_rows = max(0, len(table_rows) - 1)
-            if data_rows < RELATED_TABLE_MIN_ROWS:
-                issues.append(f"[V3] 관련 종목 표 데이터 행 {data_rows}개 — 최소 {RELATED_TABLE_MIN_ROWS}개")
-            else:
-                passed.append(f"[V3] 관련 종목 표 행 OK ({data_rows}개)")
+        passed.append(f"[V3] 데이터 박스 존재")
+
+    # ── 검사 V5 (v3): 리뷰 포맷 필수 섹션 — 시황 요약(summary) 포스트는 제외
+    is_summary = "summary" in post_path.stem.lower()
+    for label, pats in ({} if is_summary else REVIEW_SECTIONS).items():
+        if not any(p in body for p in pats):
+            issues.append(f"[V5] 리뷰 섹션 '{pats[0]}' 없음 — 톤북 v3 §3 ({label})")
         else:
-            issues.append(f"[V3] 관련 종목 표 파싱 실패")
+            passed.append(f"[V5] {label} 존재")
 
     # ── 검사 V4 (v2): 태그 앞 5개에 종목/지수 키워드 3개 이상
     head_tags = tags[:TAG_HEAD_WINDOW]

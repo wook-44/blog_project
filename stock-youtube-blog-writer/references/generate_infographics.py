@@ -42,6 +42,10 @@ ACCENTS = {
     "checklist":  {"icon": "☑️", "label": "ACTION CHECKLIST",     "kor": "체크리스트","from": "#F97316", "to": "#EF4444", "hero_from": "#F97316", "hero_to": "#FBBF24"},
     "sector":     {"icon": "🏭", "label": "SECTOR ROTATION",      "kor": "섹터/순환매","from": "#14B8A6", "to": "#0EA5E9", "hero_from": "#14B8A6", "hero_to": "#3B82F6"},
     "risk":       {"icon": "⚠️", "label": "RISK FACTORS",         "kor": "리스크",    "from": "#EF4444", "to": "#F97316", "hero_from": "#EF4444", "hero_to": "#FBBF24"},
+    # ── v2 영상 리뷰 포맷: 코너별 리뷰 기준 ──
+    "news":       {"icon": "📰", "label": "MIDDAY MONEY NEWS",    "kor": "정오의 머니 뉴스","from": "#3B82F6", "to": "#06B6D4", "hero_from": "#F59E0B", "hero_to": "#EF4444"},
+    "flows":      {"icon": "🔁", "label": "FLOWS & STOCKS",       "kor": "수급 & 종목","from": "#14B8A6", "to": "#0EA5E9", "hero_from": "#14B8A6", "hero_to": "#3B82F6"},
+    "gwangsoo":   {"icon": "🗣️", "label": "GWANGSOO'S WARNING",   "kor": "광수생각",  "from": "#A78BFA", "to": "#EC4899", "hero_from": "#FBBF24", "hero_to": "#F472B6"},
 }
 
 # 알 수 없는 키 fallback (회색 톤)
