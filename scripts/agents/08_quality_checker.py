@@ -51,7 +51,7 @@ PLATFORM_MIN_LENGTH = {
 PASS_THRESHOLD = 70
 
 # ── 톤북 v2 임계값 ─────────────────────────────────────
-TITLE_MIN, TITLE_MAX = 28, 32
+TITLE_MIN, TITLE_MAX = 1, 200   # v3 (2026-06-11): 제목=유튜브 원제 그대로
 TITLE_KW_HEAD_LIMIT = 12
 TAG_MIN_COUNT = 30
 HOOK_MIN_CHARS = 100
@@ -62,8 +62,10 @@ TAG_HEAD_WINDOW = 5
 RELATED_TABLE_MIN_ROWS = 3     # 관련 종목표 최소 3행
 
 BRAND_KEYWORDS_FORBIDDEN_IN_TITLE = ["12시에 만나요", "12시에만나요"]
-TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것"]
-RELATED_SECTION_PATTERNS = ["🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
+TOC_SECTION_PATTERNS = ["📍 이 글에서 다루는 것", "📍이 글에서 다루는 것",
+                        "📍 이 리뷰에서 다루는 것", "📍이 리뷰에서 다루는 것"]  # v3
+RELATED_SECTION_PATTERNS = ["📊 영상 속 시장 데이터", "🔗 관련 종목 한눈에", "🔗관련 종목 한눈에"]
+REVIEW_SECTIONS_V3 = ["⭐ 오늘 영상 한줄평", "🎬 코너별 리뷰", "💬 오늘의 명대사", "👍 이런 분에게 추천"]
 
 VIDEO_META_PHRASES = [
     "📺 영상 정보", "## 영상 정보", "채널 |", "출연자 |",
@@ -117,19 +119,13 @@ class QualityChecker:
             if p >= 0:
                 kw_pos = p
                 break
+        # v3: 제목=유튜브 원제 그대로 — 키워드 위치 감점 없음 (참고만)
         if kw_pos < 0:
-            score -= 10
-            issues.append("제목에 메인 키워드 없음 (코스피/삼성전자/SK하이닉스 등)")
-        elif kw_pos > TITLE_KW_HEAD_LIMIT:
-            score -= 8
-            issues.append(f"메인 키워드가 제목 {kw_pos}자 뒤 — 앞 {TITLE_KW_HEAD_LIMIT}자 이내로")
+            suggestions.append("(v3) 원제에 메인 키워드 없음 — 첫 100자·태그에서 보강할 것")
 
-        # 2) 핵심 키워드 제목 포함
+        # 2) (v3 폐지) 제목=원제 — 핵심 키워드는 본문·태그에서 검사
         if focus_kw and focus_kw not in title:
-            score -= 10
-            issues.append(f"핵심 키워드 '{focus_kw}'가 제목에 없습니다")
-        elif focus_kw:
-            suggestions.append(f"✓ 핵심 키워드 제목 포함")
+            suggestions.append(f"(v3) 핵심 키워드 '{focus_kw}'는 제목 대신 첫 100자·태그에 배치")
 
         # 3) 메타 설명 길이 (70~160자)
         desc_len = len(meta_desc)
@@ -212,12 +208,8 @@ class QualityChecker:
                 suggestions.append("✓ 영상 메타 누수 없음")
 
         # 9) v2 — 브랜드 키워드 제목 노출 금지
-        brand_leaked = [b for b in BRAND_KEYWORDS_FORBIDDEN_IN_TITLE if b in title]
-        if brand_leaked:
-            score -= 15
-            issues.append(f"[v2] 제목에 브랜드 키워드 {brand_leaked} 노출 — 검색 트래픽 0, 종목/지수 키워드로 교체")
-        else:
-            suggestions.append("✓ [v2] 제목 브랜드 키워드 없음")
+        # (v3 폐지) 제목=원제 정책 — 브랜드 키워드는 원제의 일부
+        suggestions.append("✓ [v3] 제목=원제 정책 — 브랜드 키워드 검사 생략")
 
         # 10) v2 — 본문에 📍 목차 섹션
         if not any(p in content for p in TOC_SECTION_PATTERNS):
@@ -226,20 +218,18 @@ class QualityChecker:
         else:
             suggestions.append("✓ [v2] 목차 섹션 존재")
 
-        # 11) v2 — 🔗 관련 종목 한눈에 + 표 행 3개 이상
+        # 11) v3 — 📊 영상 속 시장 데이터 박스 + 리뷰 필수 섹션
         if not any(p in content for p in RELATED_SECTION_PATTERNS):
-            score -= 12
-            issues.append("[v2] '🔗 관련 종목 한눈에' 섹션 없음 — 톤북 v2 §3 신설 필수 (체류시간 핵심)")
+            score -= 10
+            issues.append("[v3] '📊 영상 속 시장 데이터' 박스 없음 — 수치는 보조 박스로 (톤북 v3 §3)")
         else:
-            m = re.search(r"🔗\s*관련 종목 한눈에.*?\n([\s\S]+?)(?=\n##\s|\n---|$)", content)
-            if m:
-                table_rows = [ln for ln in m.group(1).splitlines() if ln.strip().startswith("|") and "---" not in ln]
-                data_rows = max(0, len(table_rows) - 1)
-                if data_rows < RELATED_TABLE_MIN_ROWS:
-                    score -= 6
-                    issues.append(f"[v2] 관련 종목 표 데이터 행 {data_rows}개 — 최소 {RELATED_TABLE_MIN_ROWS}개")
-                else:
-                    suggestions.append(f"✓ [v2] 관련 종목 표 행 OK ({data_rows}개)")
+            suggestions.append("✓ [v3] 데이터 박스 존재")
+        for sec in REVIEW_SECTIONS_V3:
+            if sec not in content:
+                score -= 8
+                issues.append(f"[v3] 리뷰 필수 섹션 '{sec}' 없음 — 톤북 v3 §3")
+            else:
+                suggestions.append(f"✓ [v3] '{sec}' 존재")
 
         # 12) v2 — 태그 앞 5개에 종목/지수 키워드 3개 이상
         if tags:
