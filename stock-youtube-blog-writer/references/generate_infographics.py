@@ -290,7 +290,7 @@ def build_psychology_html(data: dict, date: str) -> str:
         cards_svg += f"""
   <rect x="{x}" y="{cards_y}" width="{card_w}" height="290" fill="{COLORS['card']}" rx="16" stroke="{a['from']}44" stroke-width="2"/>
   <circle cx="{x+card_w/2}" cy="{cards_y+66}" r="44" fill="{a['from']}22"/>
-  <text x="{x+card_w/2}" y="{cards_y+82}" text-anchor="middle" font-size="53">{['😱','🤯','😩'][i] if i<3 else '⚠️'}</text>
+  <text x="{x+card_w/2}" y="{cards_y+82}" text-anchor="middle" font-size="53">{['●','●','●'][i] if i<3 else '●'}</text>
   <text x="{x+card_w/2}" y="{cards_y+158}" text-anchor="middle" fill="{a['from']}" font-size="29" font-weight="800">{t.get('name','함정')}</text>
   <foreignObject x="{x+16}" y="{cards_y+182}" width="{card_w-32}" height="96">
     <div xmlns="http://www.w3.org/1999/xhtml" style="color:{COLORS['text_sec']};font-size:20px;line-height:1.5;text-align:center;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{t.get('desc','')}</div>
@@ -298,11 +298,13 @@ def build_psychology_html(data: dict, date: str) -> str:
 
     # 교정 카드 (큰 카드, 함정 아래)
     cor_y = cards_y + 310
+    _cor_len = len(correction)
+    _cor_fs = 29 if _cor_len <= 40 else 25 if _cor_len <= 58 else 22 if _cor_len <= 78 else 19
     correction_svg = f"""
   <rect x="48" y="{cor_y}" width="{SIZE-96}" height="160" fill="{a['to']}1A" rx="16" stroke="{a['to']}66" stroke-width="2"/>
-  <text x="80" y="{cor_y+48}" fill="{a['to']}" font-size="20" font-weight="800" letter-spacing="3">✓ 교정 방법</text>
-  <foreignObject x="80" y="{cor_y+62}" width="{SIZE-160}" height="92">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:31px;font-weight:700;line-height:1.45;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{correction}</div>
+  <text x="80" y="{cor_y+44}" fill="{a['to']}" font-size="20" font-weight="800" letter-spacing="3">교정 방법</text>
+  <foreignObject x="80" y="{cor_y+58}" width="{SIZE-160}" height="96">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:{_cor_fs}px;font-weight:700;line-height:1.4;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word;overflow:hidden;max-height:96px">{correction}</div>
   </foreignObject>"""
 
     # Hero 메시지 (헤더 아래, 함정 위)
@@ -338,11 +340,13 @@ def build_summary_html(data: dict, date: str) -> str:
     footer_a = data.get("footer_author", "12시에 만나요")
 
     # Hero takeaway 박스
+    _ht_len = len(hero_takeaway)
+    _ht_fs = 34 if _ht_len <= 36 else 29 if _ht_len <= 52 else 25 if _ht_len <= 72 else 22
     hero_svg = f"""
   <rect x="48" y="200" width="{SIZE-96}" height="160" fill="{a['from']}1A" rx="18" stroke="{a['from']}66" stroke-width="2"/>
   <text x="80" y="244" fill="{a['from']}" font-size="20" font-weight="800" letter-spacing="3">⭐ TODAY'S TAKEAWAY</text>
-  <foreignObject x="80" y="260" width="{SIZE-160}" height="94">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:36px;font-weight:800;line-height:1.4;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word">{hero_takeaway}</div>
+  <foreignObject x="80" y="258" width="{SIZE-160}" height="100">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#FFFFFF;font-size:{_ht_fs}px;font-weight:800;line-height:1.38;font-family:NanumGothic,sans-serif;word-break:keep-all;overflow-wrap:break-word;overflow:hidden;max-height:100px">{hero_takeaway}</div>
   </foreignObject>"""
 
     # 5 포인트 (큰 번호 + 텍스트, 컴팩트 리스트)
