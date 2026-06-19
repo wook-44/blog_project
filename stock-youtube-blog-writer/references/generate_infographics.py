@@ -14,6 +14,7 @@ stock-youtube-blog-writer / generate_infographics.py  (v3 — 정사각형 모�
 """
 
 import argparse
+import re
 import json
 import os
 import subprocess
@@ -32,7 +33,29 @@ COLORS = {
     "text_pri": "#FFFFFF",
     "text_sec": "#94A3B8",
     "text_dim": "#64748B",
+    "up":       "#EF4444",  # 한국 관례: 상승=빨강
+    "down":     "#3B82F6",  # 한국 관례: 하락=파랑
 }
+
+
+def dir_of(text: str):
+    """문자열에서 등락 방향 판정 → 'up'/'down'/None. 한국 주식 관례 색 적용용."""
+    s = str(text)
+    if any(k in s for k in ['▲', '↑', '상승', '급등', '강세', '순매수']):
+        return 'up'
+    if any(k in s for k in ['▼', '↓', '하락', '급락', '폭락', '약세', '순매도', '매도', '붕괴']):
+        return 'down'
+    if re.search(r'-\s?\d', s) or '(-' in s:
+        return 'down'
+    if re.search(r'\+\s?\d', s) or s.strip().startswith('+'):
+        return 'up'
+    return None
+
+
+def dir_color(text, default):
+    """방향 있으면 빨강/파랑, 없으면 default."""
+    d = dir_of(text)
+    return COLORS['up'] if d == 'up' else COLORS['down'] if d == 'down' else default
 
 ACCENTS = {
     "market":     {"icon": "📊", "label": "MARKET STATUS",       "kor": "시장 분석", "from": "#3B82F6", "to": "#06B6D4", "hero_from": "#F59E0B", "hero_to": "#EF4444"},
@@ -206,11 +229,14 @@ def build_market_html(data: dict, date: str) -> str:
         label_size = fit_font(label, card_w - 24, base_size=19, char_factor=0.65, min_size=15)
         delta = s.get('delta', '')
         delta_size = fit_font(delta, card_w - 24, base_size=18, char_factor=0.62, min_size=14)
+        _cdir = dir_of(f"{delta} {val}")
+        _vcol = COLORS['up'] if _cdir=='up' else COLORS['down'] if _cdir=='down' else a['from']
+        _dcol = COLORS['up'] if _cdir=='up' else COLORS['down'] if _cdir=='down' else COLORS['text_sec']
         cards_svg += f"""
   <rect x="{x}" y="{cards_y}" width="{card_w}" height="{card_h}" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
   <text x="{x+card_w/2}" y="{cards_y+40}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="{label_size}" font-weight="700" letter-spacing="2">{label}</text>
-  <text x="{x+card_w/2}" y="{cards_y+112}" text-anchor="middle" fill="{a['from']}" font-size="{val_size}" font-weight="900">{val}</text>
-  <text x="{x+card_w/2}" y="{cards_y+154}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="{delta_size}">{delta}</text>"""
+  <text x="{x+card_w/2}" y="{cards_y+112}" text-anchor="middle" fill="{_vcol}" font-size="{val_size}" font-weight="900">{val}</text>
+  <text x="{x+card_w/2}" y="{cards_y+154}" text-anchor="middle" fill="{_dcol}" font-size="{delta_size}">{delta}</text>"""
 
     # 칩 (5개) — 카드 끝나는 곳 아래 (자동 줄바꿈)
     chip_y = cards_y + card_h + 24
@@ -225,9 +251,10 @@ def build_market_html(data: dict, date: str) -> str:
             if chip_x + chip_w > chip_max_x:
                 chip_x = 48
                 chip_y += chip_h + 10
+            _chcol = dir_color(c, a['from'])
             chips_svg += f"""
-  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="{chip_h}" fill="{a['from']}1A" rx="21" stroke="{a['from']}55" stroke-width="1"/>
-  <text x="{chip_x+chip_w/2}" y="{chip_y+27}" text-anchor="middle" fill="{a['from']}" font-size="18" font-weight="700">{c}</text>"""
+  <rect x="{chip_x}" y="{chip_y}" width="{chip_w}" height="{chip_h}" fill="{_chcol}1A" rx="21" stroke="{_chcol}55" stroke-width="1"/>
+  <text x="{chip_x+chip_w/2}" y="{chip_y+27}" text-anchor="middle" fill="{_chcol}" font-size="18" font-weight="700">{c}</text>"""
             chip_x += chip_w + 10
         chip_bottom = chip_y + chip_h
     else:
@@ -252,7 +279,7 @@ def build_market_html(data: dict, date: str) -> str:
 {_header(date, a['label'], title, a['from'], a['to'])}
 
   <!-- HERO 영역 -->
-  <text x="48" y="270" fill="url(#hero)" font-size="{fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56)}" font-weight="900" filter="url(#glow)"{clamp_attr(hero_value, SIZE-260, fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56), char_factor=0.60)}>{hero_value}</text>
+  <text x="48" y="270" fill="{_poly_color}" font-size="{fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56)}" font-weight="900" filter="url(#glow)"{clamp_attr(hero_value, SIZE-260, fit_font(hero_value, SIZE-260, base_size=118, char_factor=0.60, min_size=56), char_factor=0.60)}>{hero_value}</text>
   <text x="48" y="318" fill="{COLORS['text_sec']}" font-size="24" font-weight="700">{hero_label}</text>
 
   <!-- 우측 변동 표시 (방향 자동 분기) -->
@@ -426,11 +453,14 @@ def build_generic_html(data: dict, date: str, section_key: str = "section") -> s
             label_size = fit_font(label, card_w - 24, base_size=17, char_factor=0.65, min_size=13)
             delta = s.get('delta', '')
             delta_size = fit_font(delta, card_w - 24, base_size=17, char_factor=0.62, min_size=13)
+            _cdir = dir_of(f"{delta} {val}")
+            _vcol = COLORS['up'] if _cdir=='up' else COLORS['down'] if _cdir=='down' else a['from']
+            _dcol = COLORS['up'] if _cdir=='up' else COLORS['down'] if _cdir=='down' else COLORS['text_sec']
             cards_svg += f"""
   <rect x="{x}" y="{cards_y}" width="{card_w}" height="{card_h}" fill="{COLORS['card']}" rx="14" stroke="{COLORS['border']}" stroke-width="1"/>
   <text x="{x+card_w/2}" y="{cards_y+36}" text-anchor="middle" fill="{COLORS['text_dim']}" font-size="{label_size}" font-weight="700" letter-spacing="2">{label}</text>
-  <text x="{x+card_w/2}" y="{cards_y+96}" text-anchor="middle" fill="{a['from']}" font-size="{val_size}" font-weight="900">{val}</text>
-  <text x="{x+card_w/2}" y="{cards_y+130}" text-anchor="middle" fill="{COLORS['text_sec']}" font-size="{delta_size}">{delta}</text>"""
+  <text x="{x+card_w/2}" y="{cards_y+96}" text-anchor="middle" fill="{_vcol}" font-size="{val_size}" font-weight="900">{val}</text>
+  <text x="{x+card_w/2}" y="{cards_y+130}" text-anchor="middle" fill="{_dcol}" font-size="{delta_size}">{delta}</text>"""
 
     # 칩 (자동 줄바꿈)
     chip_y = cards_y + card_h + 24 if stats else cards_y
