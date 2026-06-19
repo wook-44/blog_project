@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-06-19 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 9,052 강보합 — 장중 9,385 사상최고 후 기관 1.3조 매도 반락</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 9,052 강보합 — 장중 9,385 사상최고 후 기관 1.3조 매도 반락</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 6월 19일 장중 사상 처음으로 9,385.59까지 치솟아 신고가를 새로 썼지만, 기관이 1조 2,945억 원을 쏟아내며 결국 전일 대비 -0.13% 내린 9,052.42로 강보합 마감했습니다. 간밤 필라델피아 반도체지수 6% 급등을 타고 9,300선을 처음 넘긴 코스피가 왜 오후에 힘없이 밀렸을까요?</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 9,052 강보합, 코스닥 966 -3.43%로 1,000선 붕괴</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 기관 1.29조 매도 폭탄, 개인 1.69조 받아낸 하루</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — 다스코·보해양조 상한가, 반도체 대형주는 강세 유지</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">9,052.42</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 11.42</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-0.13%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">966.59</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 34.34</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-3.43%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피는 9,288.89에 출발해 오전 10시 30분경 장중 고점 9,385.59까지 치솟으며 사상 최고가를 다시 갈아치웠습니다. 장중 기준 9,300선을 넘긴 것도 이번이 처음입니다. 하지만 고점 직후 기관의 차익 실현 매물이 폭발적으로 출회되며 오후 1시 6분 장중 저점 8,831.71까지 밀렸고, 종가는 가까스로 9,000선을 지킨 9,052.42였습니다. 장중 고점에서 저점까지 낙폭이 550포인트를 넘은 극적인 하루였습니다. 코스닥은 제약바이오·반도체 장비·로봇주가 동반 약세를 보이며 -3.43% 급락해 1,000선을 내줬습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-3,922억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-1조 2,945억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+1조 6,866억 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 수급의 핵심은 '기관이 1.29조를 던졌다'는 점입니다. 어제 첫 9천피를 외국인이 만들었다면, 오늘은 기관의 대규모 차익 실현이 사상 최고 행진에 제동을 걸었습니다. 외국인도 3,922억 원 순매도로 돌아섰고, 개인이 1.69조 원을 홀로 받아내며 지수를 9,000선 위에서 방어했습니다. 코스닥에서는 외국인이 4,957억 원을 순매수했지만 기관 매도(-5,753억)를 막지 못해 지수가 크게 빠졌습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>다스코</b> +29.96% — 3,470원, 상한가 직행</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>보해양조</b> +29.88% — 2,130원, 저가 소형주 급등</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>화신</b> +18.62% — 14,270원, 자동차 부품주 강세</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>경동인베스트</b> +14.34% — 56,600원, 자원 관련주 부각</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>삼성전기우</b> +10.61% — 803,000원, MLCC 대장 우선주 동반 강세</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">지수는 약보합이었지만 종목 장세는 살아 있었습니다. 다스코·보해양조 등 소형주가 상한가에 오른 가운데, 시가총액 상위에서는 반도체·부품주가 버팀목이 됐습니다. SK하이닉스 +3.78%, 삼성전기 +3.05%, SK스퀘어 +5.41%로 어제에 이어 강세를 유지했고 삼성SDI(+5.94%)·삼성생명(+5.54%)도 올랐습니다. 반면 한화에어로스페이스 -6.48%, LG이노텍 -8.81%, LG전자 -6.35%, 삼성바이오로직스 -5.03% 등 방산·전자부품·바이오는 큰 폭으로 밀렸습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가·등락</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**SK하이닉스**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">2,786,500원 +3.78%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">필라델피아 반도체 6% 급등 수혜, 지수 버팀목</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**SK스퀘어**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">1,792,000원 +5.41%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">반도체 지주 강세, 외국인·개인 매수 집중</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼성전기**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">2,267,000원 +3.05%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">MLCC·부품 테마, 우선주까지 동반 상승</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">❓ 오늘의 용어 — 차익 실현(profit-taking)</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">차익 실현은 주가가 오른 종목을 팔아 그동안의 평가이익을 현금으로 확정하는 행위를 말합니다. 오늘 코스피가 사상 최고가를 찍자마자 빠르게 되돌림이 나온 건, 단기 급등에 부담을 느낀 기관이 차익 실현 매물을 한꺼번에 쏟아냈기 때문입니다. 지수가 신고가를 경신하는 국면에서는 '얼마나 올랐나'만큼 '누가 팔고 있나'를 함께 보는 게 중요한데요. 오늘처럼 개인이 받아내고 기관이 던지는 구도가 이어지면, 추가 상승을 위해서는 결국 기관·외국인의 매수 복귀가 필요합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 가장 눈여겨볼 숫자는 장중 고점 9,385가 아니라, 기관이 하루에 1.29조를 던졌다는 점입니다. 사상 최고를 찍자마자 550포인트 넘게 출렁였다는 건 그만큼 9천피 부근에서 차익 실현 욕구가 강하다는 신호입니다. 코스피는 강보합으로 버텼지만 코스닥이 -3.43%로 1,000선을 내준 디커플링은 시장 체력이 반도체 대형주에 쏠려 있음을 다시 확인시켜 줬습니다. 9,000선 안착 여부와 기관 수급의 방향 전환을 며칠 단위로 지켜보는 게 중요합니다. 오후 영상 분석에서는 이 기관 매도 전환과 사상 최고 이후의 변동성 대응 전략을 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 9,052 강보합 — 장중 9,385 사상최고 후 기관 1.3조 매도 반락
+
+코스피가 6월 19일 장중 사상 처음으로 9,385.59까지 치솟아 신고가를 새로 썼지만, 기관이 1조 2,945억 원을 쏟아내며 결국 전일 대비 -0.13% 내린 9,052.42로 강보합 마감했습니다. 간밤 필라델피아 반도체지수 6% 급등을 타고 9,300선을 처음 넘긴 코스피가 왜 오후에 힘없이 밀렸을까요?
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 9,052 강보합, 코스닥 966 -3.43%로 1,000선 붕괴
+- 외국인/기관 수급 — 기관 1.29조 매도 폭탄, 개인 1.69조 받아낸 하루
+- 상승률 상위 종목 — 다스코·보해양조 상한가, 반도체 대형주는 강세 유지
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 9,052.42 | ▼ 11.42 | -0.13% |
+| 코스닥 | 966.59 | ▼ 34.34 | -3.43% |
+
+코스피는 9,288.89에 출발해 오전 10시 30분경 장중 고점 9,385.59까지 치솟으며 사상 최고가를 다시 갈아치웠습니다. 장중 기준 9,300선을 넘긴 것도 이번이 처음입니다. 하지만 고점 직후 기관의 차익 실현 매물이 폭발적으로 출회되며 오후 1시 6분 장중 저점 8,831.71까지 밀렸고, 종가는 가까스로 9,000선을 지킨 9,052.42였습니다. 장중 고점에서 저점까지 낙폭이 550포인트를 넘은 극적인 하루였습니다. 코스닥은 제약바이오·반도체 장비·로봇주가 동반 약세를 보이며 -3.43% 급락해 1,000선을 내줬습니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -3,922억 원 |
+| 기관 | -1조 2,945억 원 |
+| 개인 | +1조 6,866억 원 |
+
+오늘 수급의 핵심은 &#x27;기관이 1.29조를 던졌다&#x27;는 점입니다. 어제 첫 9천피를 외국인이 만들었다면, 오늘은 기관의 대규모 차익 실현이 사상 최고 행진에 제동을 걸었습니다. 외국인도 3,922억 원 순매도로 돌아섰고, 개인이 1.69조 원을 홀로 받아내며 지수를 9,000선 위에서 방어했습니다. 코스닥에서는 외국인이 4,957억 원을 순매수했지만 기관 매도(-5,753억)를 막지 못해 지수가 크게 빠졌습니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. 다스코 +29.96% — 3,470원, 상한가 직행
+2. 보해양조 +29.88% — 2,130원, 저가 소형주 급등
+3. 화신 +18.62% — 14,270원, 자동차 부품주 강세
+4. 경동인베스트 +14.34% — 56,600원, 자원 관련주 부각
+5. 삼성전기우 +10.61% — 803,000원, MLCC 대장 우선주 동반 강세
+
+지수는 약보합이었지만 종목 장세는 살아 있었습니다. 다스코·보해양조 등 소형주가 상한가에 오른 가운데, 시가총액 상위에서는 반도체·부품주가 버팀목이 됐습니다. SK하이닉스 +3.78%, 삼성전기 +3.05%, SK스퀘어 +5.41%로 어제에 이어 강세를 유지했고 삼성SDI(+5.94%)·삼성생명(+5.54%)도 올랐습니다. 반면 한화에어로스페이스 -6.48%, LG이노텍 -8.81%, LG전자 -6.35%, 삼성바이오로직스 -5.03% 등 방산·전자부품·바이오는 큰 폭으로 밀렸습니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 종가·등락 | 한 줄 코멘트 |
+|---|---|---|
+| SK하이닉스 | 2,786,500원 +3.78% | 필라델피아 반도체 6% 급등 수혜, 지수 버팀목 |
+| SK스퀘어 | 1,792,000원 +5.41% | 반도체 지주 강세, 외국인·개인 매수 집중 |
+| 삼성전기 | 2,267,000원 +3.05% | MLCC·부품 테마, 우선주까지 동반 상승 |
+
+❓ 오늘의 용어 — 차익 실현(profit-taking)
+
+차익 실현은 주가가 오른 종목을 팔아 그동안의 평가이익을 현금으로 확정하는 행위를 말합니다. 오늘 코스피가 사상 최고가를 찍자마자 빠르게 되돌림이 나온 건, 단기 급등에 부담을 느낀 기관이 차익 실현 매물을 한꺼번에 쏟아냈기 때문입니다. 지수가 신고가를 경신하는 국면에서는 &#x27;얼마나 올랐나&#x27;만큼 &#x27;누가 팔고 있나&#x27;를 함께 보는 게 중요한데요. 오늘처럼 개인이 받아내고 기관이 던지는 구도가 이어지면, 추가 상승을 위해서는 결국 기관·외국인의 매수 복귀가 필요합니다.
+
+💡 내 생각
+
+오늘 가장 눈여겨볼 숫자는 장중 고점 9,385가 아니라, 기관이 하루에 1.29조를 던졌다는 점입니다. 사상 최고를 찍자마자 550포인트 넘게 출렁였다는 건 그만큼 9천피 부근에서 차익 실현 욕구가 강하다는 신호입니다. 코스피는 강보합으로 버텼지만 코스닥이 -3.43%로 1,000선을 내준 디커플링은 시장 체력이 반도체 대형주에 쏠려 있음을 다시 확인시켜 줬습니다. 9,000선 안착 여부와 기관 수급의 방향 전환을 며칠 단위로 지켜보는 게 중요합니다. 오후 영상 분석에서는 이 기관 매도 전환과 사상 최고 이후의 변동성 대응 전략을 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <p style="font-size:13px;color:#dc2626;">⚠️ 인포그래픽 이미지 없음</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK하이닉스</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인수급</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피9천피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피강보합</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장중사상최고</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관순매도</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#기관매도폭탄</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#개인순매수</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#차익실현</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피반락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥1000선붕괴</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥약세</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK스퀘어</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성전기</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성SDI</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#필라델피아반도체</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체대형주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#다스코</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#보해양조</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#화신</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피9385</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#6월19일시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장마감시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘주식시황정리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피수급</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥디커플링</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스닥 #SK하이닉스 #반도체 #외국인수급 #코스피9천피 #코스피강보합 #장중사상최고 #오늘코스피시황 #기관순매도 #기관매도폭탄 #개인순매수 #차익실현 #코스피반락 #코스닥1000선붕괴 #코스닥약세 #SK스퀘어 #삼성전기 #삼성SDI #필라델피아반도체 #반도체대형주 #다스코 #보해양조 #화신 #코스피9385 #6월19일시황 #장마감시황 #오늘주식시황정리 #코스피수급 #코스닥디커플링</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
