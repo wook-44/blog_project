@@ -402,16 +402,20 @@ def _render_keyword_chips(tags: list[str]) -> tuple[str, str]:
     return chips, all_text
 
 
-def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None) -> str:
-    """HTML 복사 도구 생성"""
+def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None, body_html_naver: str = "") -> str:
+    """HTML 복사 도구 생성.
+    body_html       : 이미지 인라인 포함 (티스토리/워드/구글독스용 — 한 번 복사로 이미지까지).
+    body_html_naver : 이미지 자리에 빨간 '여기에 붙여넣기' 마커 (네이버용 — 텍스트만 + 위치표시).
+    """
     tags = tags or []
+    body_html_naver = body_html_naver or body_html
 
     # 핵심 키워드 chip 영역
     _kw_chips, _kw_all = _render_keyword_chips(tags) if tags else ("", "")
 
-    # 이미지 섹션 생성
+    # 이미지 섹션 생성 (네이버 폴백용 개별 이미지 버튼 — 전체 장수)
     img_sections = ""
-    for i, png in enumerate(png_files[:5], 1):
+    for i, png in enumerate(png_files, 1):
         b64 = img_to_base64(png)
         img_name = png.name
         img_sections += f"""
@@ -428,7 +432,7 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 """
 
     # 태그 섹션 (마지막 STEP)
-    tag_step_idx = len(png_files[:5]) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
+    tag_step_idx = len(png_files) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
     # 네이버 호환: 줄바꿈으로 구분 — 일부 환경에서 자동 분리, 시각적으로도 명확
     tags_for_paste = "\n".join(f"#{t}" for t in tags)
     # 각 태그 chip — 클릭 시 그 태그만 복사
@@ -462,7 +466,7 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
     # 이미지 JS 로더
     img_loaders = ""
-    for i, png in enumerate(png_files[:5], 1):
+    for i, png in enumerate(png_files, 1):
         b64 = img_to_base64(png)
         img_loaders += f"""
   loadImgToCanvas('img{i}', 'data:image/png;base64,{b64}');"""
@@ -529,15 +533,23 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
 <!-- STEP 1: 텍스트 복사 -->
 <div class="step">
-  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
-  <p style="font-size:13px;color:#64748b;margin-bottom:8px;">아래 본문 미리보기 확인 후 복사 버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
-  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <div class="step-title"><span class="order">1</span> 블로그 본문 복사 → 에디터에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:10px;">발행처에 맞는 버튼을 누르세요.</p>
+  <button class="btn btn-text" onclick="copyText('blogBodyHtml','toastText')">🟦 티스토리·워드용 복사 (이미지 포함)</button>
   <span class="toast" id="toastText">✅ 복사됨!</span>
-  <div id="copyStatus">텍스트가 복사되었습니다. 네이버 블로그 에디터에 Cmd+V 로 붙여넣으세요.</div>
+  <br>
+  <button class="btn btn-text" style="background:#10b981;margin-top:8px;" onclick="copyText('blogBodyHtmlNaver','toastTextN')">🟩 네이버용 복사 (텍스트 + 이미지 자리표시)</button>
+  <span class="toast" id="toastTextN">✅ 복사됨!</span>
+  <p style="font-size:12px;color:#64748b;margin-top:8px;">🟦 티스토리: 이미지까지 한 번에 들어갑니다. &nbsp;🟩 네이버: 텍스트만 들어가고 이미지 자리에 빨간 표시가 남아요 → 아래 개별 이미지 버튼으로 그 자리에 하나씩 붙여넣으세요(네이버는 붙여넣기 이미지를 막아서 어쩔 수 없는 폴백).</p>
+  <div id="copyStatus">복사되었습니다. 에디터에 Cmd+V 로 붙여넣으세요.</div>
 
-  <!-- 본문 미리보기 (화면에 보임 + 복사 대상) -->
+  <!-- 본문 미리보기 (화면에 보임 + 티스토리용 복사 대상, 이미지 인라인) -->
   <div class="body-preview" id="blogBodyHtml">
 {body_html}
+  </div>
+  <!-- 네이버용 복사 대상 (숨김, 이미지 자리에 빨간 마커) -->
+  <div class="hidden-body" id="blogBodyHtmlNaver">
+{body_html_naver}
   </div>
 </div>
 
@@ -616,8 +628,10 @@ async function copyPlain(boxId, toastId) {{
   }}
 }}
 
-async function copyText() {{
-  const body = document.getElementById('blogBodyHtml');
+async function copyText(boxId, toastId) {{
+  boxId = boxId || 'blogBodyHtml';
+  toastId = toastId || 'toastText';
+  const body = document.getElementById(boxId);
   const html = body.innerHTML;
   const text = body.innerText;
   let ok = false;
@@ -657,7 +671,7 @@ async function copyText() {{
 
   if (ok) {{
     document.getElementById('copyStatus').style.display = 'block';
-    showToast('toastText');
+    showToast(toastId);
     setTimeout(() => document.getElementById('copyStatus').style.display = 'none', 3000);
   }} else {{
     alert('복사 실패 — 본문을 마우스로 드래그하여 직접 복사해주세요');
@@ -749,17 +763,20 @@ def main():
             img_map[i] = (img_to_base64(p), p.stem)
         except Exception:
             pass
-    body_html = md_to_html_body(body_md, img_map)
+    body_html = md_to_html_body(body_md, img_map)            # 티스토리/워드용: 이미지 인라인
+    body_html_naver = md_to_html_body(body_md)               # 네이버용: 이미지 자리에 빨간 마커
 
-    # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가
+    # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가 (양쪽 동일)
     insight_text = extract_insight(md_text)
     if insight_text:
-        body_html += (
+        insight_html = (
             '\n<hr style="margin:32px 0 16px;">'
             '\n<p style="font-size:14px;color:#64748b;font-style:italic;line-height:1.8;">'
             f'💡 {insight_text}'
             '</p>'
         )
+        body_html += insight_html
+        body_html_naver += insight_html
         print(f"💡 인사이트: {insight_text[:60]}...")
 
     # 태그 추출
@@ -767,7 +784,7 @@ def main():
     print(f"🏷️  태그: {len(tags)}개")
 
     # HTML 생성
-    html = generate_html(date_str, title, body_html, png_files, tags)
+    html = generate_html(date_str, title, body_html, png_files, tags, body_html_naver)
 
     # 저장 (output/ 폴더)
     out_dir = BASE / "output"
