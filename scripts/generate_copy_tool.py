@@ -120,8 +120,13 @@ def extract_insight(md_text: str) -> str:
     return ""
 
 
-def md_to_html_body(md_text: str) -> str:
-    """간단한 마크다운 → HTML 변환 (블로그 본문용)"""
+def md_to_html_body(md_text: str, img_map: dict = None) -> str:
+    """간단한 마크다운 → HTML 변환 (블로그 본문용).
+    img_map: {마커번호(int): (base64str, alt)} — 주어지면 '이미지 N 여기에 붙여넣기' 마커를
+    실제 <img>(base64)로 인라인 치환해서 본문 한 번 복사로 이미지까지 함께 들어가게 한다.
+    (Tistory/워드/구글독스는 확실히 임베드. 네이버는 data URI를 떼어낼 수 있어 개별 버튼이 폴백.)
+    """
+    img_map = img_map or {}
     lines = md_text.split("\n")
     html_parts = []
     in_table = False
@@ -181,11 +186,19 @@ def md_to_html_body(md_text: str) -> str:
             if blk_marker:
                 num = blk_marker.group(1)
                 key = (" " + blk_marker.group(2)) if blk_marker.group(2) else ""
-                html_parts.append(
-                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
-                    f'font-size:16px;margin:18px 0;">'
-                    f'🔴 [이미지 {num}]{key} 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
-                )
+                if int(num) in img_map:
+                    b64, alt = img_map[int(num)]
+                    html_parts.append(
+                        f'<p style="text-align:center;margin:18px 0;">'
+                        f'<img src="data:image/png;base64,{b64}" alt="{alt}" '
+                        f'style="max-width:100%;height:auto;border-radius:8px;"></p>'
+                    )
+                else:
+                    html_parts.append(
+                        f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                        f'font-size:16px;margin:18px 0;">'
+                        f'🔴 [이미지 {num}]{key} 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                    )
             # 그 외 안내성 마커는 중앙 정렬 빨간색 글자만
             elif "👇" in content or "🖼️" in content:
                 clean = re.sub(r"[👇🖼️]\s*", "", content).strip()
@@ -224,11 +237,19 @@ def md_to_html_body(md_text: str) -> str:
             img_marker = re.match(r"^(?:🖼️\s*)?이미지\s*(\d+)\s*여기에\s*붙여넣기", content)
             if img_marker:
                 num = img_marker.group(1)
-                html_parts.append(
-                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
-                    f'font-size:16px;margin:18px 0;">'
-                    f'🔴 [이미지 {num}] 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
-                )
+                if int(num) in img_map:
+                    b64, alt = img_map[int(num)]
+                    html_parts.append(
+                        f'<p style="text-align:center;margin:18px 0;">'
+                        f'<img src="data:image/png;base64,{b64}" alt="{alt}" '
+                        f'style="max-width:100%;height:auto;border-radius:8px;"></p>'
+                    )
+                else:
+                    html_parts.append(
+                        f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                        f'font-size:16px;margin:18px 0;">'
+                        f'🔴 [이미지 {num}] 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                    )
                 continue
 
             # 줄 전체가 **굵음** 한 번만 — 소제목으로 승격 (예: "**흐름 요약**", "**교정 방법**")
@@ -494,9 +515,8 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
 <h1>📋 네이버 블로그 포스팅 도구</h1>
 <p class="desc">
-  아래 순서대로 진행하세요:<br>
-  <b>① 텍스트 복사 → 네이버 블로그 본문에 붙여넣기</b><br>
-  <b>② 이미지1~{len(png_files)} 순서대로 복사 → 네이버 블로그 본문의 해당 위치에 붙여넣기</b>
+  <b>본문 전체 복사 한 번에 이미지까지 함께 들어갑니다.</b> 아래 "📄 텍스트 전체 복사"를 누르고 에디터에 붙여넣으면 끝.<br>
+  <span style="font-size:13px;color:#64748b;">티스토리·워드·구글독스는 이미지가 그대로 임베드됩니다. 네이버 에디터가 이미지를 떼어내면(보안상 data 이미지 차단) 아래 <b>개별 이미지 버튼</b>으로 해당 위치에 하나씩 붙여넣으세요(폴백).</span>
 </p>
 
 <!-- STEP 0: 제목 -->
@@ -721,7 +741,15 @@ def main():
 
     # 이미지 삽입 마커 — pngs 순서대로 1, 2, 3, ... 번호
     body_md = inject_image_markers(body_md, png_files)
-    body_html = md_to_html_body(body_md)
+    # 본문 한 번 복사로 이미지까지 함께 들어가도록 base64 인라인 <img> 맵 구성
+    # (png_files 순서 = 마커 번호 1..N)
+    img_map = {}
+    for i, p in enumerate(png_files, 1):
+        try:
+            img_map[i] = (img_to_base64(p), p.stem)
+        except Exception:
+            pass
+    body_html = md_to_html_body(body_md, img_map)
 
     # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가
     insight_text = extract_insight(md_text)
