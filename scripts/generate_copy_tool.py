@@ -137,6 +137,11 @@ def md_to_html_body(md_text: str) -> str:
     LI = 'style="font-size:15px;line-height:1.7;margin:4px 0;"'
 
     for line in lines:
+        # 마크다운 이미지 라인(![alt](path))은 복붙 본문에서 제거 —
+        # 네이버엔 로컬 경로가 안 통하고, 이미지는 빨간 "여기에 붙여넣기" 마커로 배치한다.
+        # (GitHub .md 아카이브에선 인라인 렌더용으로 남겨두고, copy_tool에서만 드롭)
+        if re.match(r"^\s*!\[[^\]]*\]\([^)]*\)\s*$", line):
+            continue
         # 헤더 — h 태그 + 인라인 스타일 둘 다
         if line.startswith("### "):
             if in_list: html_parts.append("</ul>"); in_list = False
