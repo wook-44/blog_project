@@ -32,6 +32,9 @@ COLORS = {
     "text_pri": "#FFFFFF",
     "text_sec": "#94A3B8",
     "text_dim": "#64748B",
+    # 2026-06-24: 네온 톤다운 — hero 숫자용 소프트(거의 흰색) 그라데이션
+    "hero_soft_a": "#F1F5F9",
+    "hero_soft_b": "#CBD5E1",
 }
 
 ACCENTS = {
@@ -111,10 +114,11 @@ def _common_defs(accent_from: str, accent_to: str, hero_from: str, hero_to: str)
     <stop offset="100%" style="stop-color:{accent_to}"/>
   </linearGradient>
   <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="0%">
-    <stop offset="0%" style="stop-color:{hero_from}"/>
-    <stop offset="100%" style="stop-color:{hero_to}"/>
+    <stop offset="0%" style="stop-color:{COLORS['hero_soft_a']}"/>
+    <stop offset="100%" style="stop-color:{COLORS['hero_soft_b']}"/>
   </linearGradient>
-  <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <!-- 2026-06-24: 네온(글로우) 제거 — 헤로 숫자는 글로우 없이 깔끔하게. 섹션 컬러는 accent bar/칩에만 -->
+  <filter id="glow"><feGaussianBlur stdDeviation="0" result="b"/><feMerge><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>"""
 
 

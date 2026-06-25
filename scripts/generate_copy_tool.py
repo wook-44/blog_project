@@ -120,8 +120,13 @@ def extract_insight(md_text: str) -> str:
     return ""
 
 
-def md_to_html_body(md_text: str) -> str:
-    """간단한 마크다운 → HTML 변환 (블로그 본문용)"""
+def md_to_html_body(md_text: str, img_map: dict = None) -> str:
+    """간단한 마크다운 → HTML 변환 (블로그 본문용).
+    img_map: {마커번호(int): (base64str, alt)} — 주어지면 '이미지 N 여기에 붙여넣기' 마커를
+    실제 <img>(base64)로 인라인 치환해서 본문 한 번 복사로 이미지까지 함께 들어가게 한다.
+    (Tistory/워드/구글독스는 확실히 임베드. 네이버는 data URI를 떼어낼 수 있어 개별 버튼이 폴백.)
+    """
+    img_map = img_map or {}
     lines = md_text.split("\n")
     html_parts = []
     in_table = False
@@ -137,6 +142,11 @@ def md_to_html_body(md_text: str) -> str:
     LI = 'style="font-size:15px;line-height:1.7;margin:4px 0;"'
 
     for line in lines:
+        # 마크다운 이미지 라인(![alt](path))은 복붙 본문에서 제거 —
+        # 네이버엔 로컬 경로가 안 통하고, 이미지는 빨간 "여기에 붙여넣기" 마커로 배치한다.
+        # (GitHub .md 아카이브에선 인라인 렌더용으로 남겨두고, copy_tool에서만 드롭)
+        if re.match(r"^\s*!\[[^\]]*\]\([^)]*\)\s*$", line):
+            continue
         # 헤더 — h 태그 + 인라인 스타일 둘 다
         if line.startswith("### "):
             if in_list: html_parts.append("</ul>"); in_list = False
@@ -176,11 +186,19 @@ def md_to_html_body(md_text: str) -> str:
             if blk_marker:
                 num = blk_marker.group(1)
                 key = (" " + blk_marker.group(2)) if blk_marker.group(2) else ""
-                html_parts.append(
-                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
-                    f'font-size:16px;margin:18px 0;">'
-                    f'🔴 [이미지 {num}]{key} 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
-                )
+                if int(num) in img_map:
+                    b64, alt = img_map[int(num)]
+                    html_parts.append(
+                        f'<p style="text-align:center;margin:18px 0;">'
+                        f'<img src="data:image/png;base64,{b64}" alt="{alt}" '
+                        f'style="max-width:100%;height:auto;border-radius:8px;"></p>'
+                    )
+                else:
+                    html_parts.append(
+                        f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                        f'font-size:16px;margin:18px 0;">'
+                        f'🔴 [이미지 {num}]{key} 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                    )
             # 그 외 안내성 마커는 중앙 정렬 빨간색 글자만
             elif "👇" in content or "🖼️" in content:
                 clean = re.sub(r"[👇🖼️]\s*", "", content).strip()
@@ -219,11 +237,19 @@ def md_to_html_body(md_text: str) -> str:
             img_marker = re.match(r"^(?:🖼️\s*)?이미지\s*(\d+)\s*여기에\s*붙여넣기", content)
             if img_marker:
                 num = img_marker.group(1)
-                html_parts.append(
-                    f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
-                    f'font-size:16px;margin:18px 0;">'
-                    f'🔴 [이미지 {num}] 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
-                )
+                if int(num) in img_map:
+                    b64, alt = img_map[int(num)]
+                    html_parts.append(
+                        f'<p style="text-align:center;margin:18px 0;">'
+                        f'<img src="data:image/png;base64,{b64}" alt="{alt}" '
+                        f'style="max-width:100%;height:auto;border-radius:8px;"></p>'
+                    )
+                else:
+                    html_parts.append(
+                        f'<p style="text-align:center;color:#dc2626;font-weight:bold;'
+                        f'font-size:16px;margin:18px 0;">'
+                        f'🔴 [이미지 {num}] 여기에 붙여넣기 — 이 줄 삭제 후 이미지 삽입 🔴</p>'
+                    )
                 continue
 
             # 줄 전체가 **굵음** 한 번만 — 소제목으로 승격 (예: "**흐름 요약**", "**교정 방법**")
@@ -376,16 +402,20 @@ def _render_keyword_chips(tags: list[str]) -> tuple[str, str]:
     return chips, all_text
 
 
-def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None) -> str:
-    """HTML 복사 도구 생성"""
+def generate_html(date_str: str, title: str, body_html: str, png_files: list[Path], tags: list[str] = None, body_html_naver: str = "") -> str:
+    """HTML 복사 도구 생성.
+    body_html       : 이미지 인라인 포함 (티스토리/워드/구글독스용 — 한 번 복사로 이미지까지).
+    body_html_naver : 이미지 자리에 빨간 '여기에 붙여넣기' 마커 (네이버용 — 텍스트만 + 위치표시).
+    """
     tags = tags or []
+    body_html_naver = body_html_naver or body_html
 
     # 핵심 키워드 chip 영역
     _kw_chips, _kw_all = _render_keyword_chips(tags) if tags else ("", "")
 
-    # 이미지 섹션 생성
+    # 이미지 섹션 생성 (네이버 폴백용 개별 이미지 버튼 — 전체 장수)
     img_sections = ""
-    for i, png in enumerate(png_files[:5], 1):
+    for i, png in enumerate(png_files, 1):
         b64 = img_to_base64(png)
         img_name = png.name
         img_sections += f"""
@@ -402,7 +432,7 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 """
 
     # 태그 섹션 (마지막 STEP)
-    tag_step_idx = len(png_files[:5]) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
+    tag_step_idx = len(png_files) + 2  # 0(제목) + 1(본문) + N(이미지) 다음
     # 네이버 호환: 줄바꿈으로 구분 — 일부 환경에서 자동 분리, 시각적으로도 명확
     tags_for_paste = "\n".join(f"#{t}" for t in tags)
     # 각 태그 chip — 클릭 시 그 태그만 복사
@@ -436,7 +466,7 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
     # 이미지 JS 로더
     img_loaders = ""
-    for i, png in enumerate(png_files[:5], 1):
+    for i, png in enumerate(png_files, 1):
         b64 = img_to_base64(png)
         img_loaders += f"""
   loadImgToCanvas('img{i}', 'data:image/png;base64,{b64}');"""
@@ -489,9 +519,8 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
 <h1>📋 네이버 블로그 포스팅 도구</h1>
 <p class="desc">
-  아래 순서대로 진행하세요:<br>
-  <b>① 텍스트 복사 → 네이버 블로그 본문에 붙여넣기</b><br>
-  <b>② 이미지1~{len(png_files)} 순서대로 복사 → 네이버 블로그 본문의 해당 위치에 붙여넣기</b>
+  <b>본문 전체 복사 한 번에 이미지까지 함께 들어갑니다.</b> 아래 "📄 텍스트 전체 복사"를 누르고 에디터에 붙여넣으면 끝.<br>
+  <span style="font-size:13px;color:#64748b;">티스토리·워드·구글독스는 이미지가 그대로 임베드됩니다. 네이버 에디터가 이미지를 떼어내면(보안상 data 이미지 차단) 아래 <b>개별 이미지 버튼</b>으로 해당 위치에 하나씩 붙여넣으세요(폴백).</span>
 </p>
 
 <!-- STEP 0: 제목 -->
@@ -504,15 +533,23 @@ def generate_html(date_str: str, title: str, body_html: str, png_files: list[Pat
 
 <!-- STEP 1: 텍스트 복사 -->
 <div class="step">
-  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
-  <p style="font-size:13px;color:#64748b;margin-bottom:8px;">아래 본문 미리보기 확인 후 복사 버튼을 누르면 서식 포함 전체 텍스트가 클립보드에 복사됩니다.</p>
-  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <div class="step-title"><span class="order">1</span> 블로그 본문 복사 → 에디터에 붙여넣기</div>
+  <p style="font-size:13px;color:#64748b;margin-bottom:10px;">발행처에 맞는 버튼을 누르세요.</p>
+  <button class="btn btn-text" onclick="copyText('blogBodyHtml','toastText')">🟦 티스토리·워드용 복사 (이미지 포함)</button>
   <span class="toast" id="toastText">✅ 복사됨!</span>
-  <div id="copyStatus">텍스트가 복사되었습니다. 네이버 블로그 에디터에 Cmd+V 로 붙여넣으세요.</div>
+  <br>
+  <button class="btn btn-text" style="background:#10b981;margin-top:8px;" onclick="copyText('blogBodyHtmlNaver','toastTextN')">🟩 네이버용 복사 (텍스트 + 이미지 자리표시)</button>
+  <span class="toast" id="toastTextN">✅ 복사됨!</span>
+  <p style="font-size:12px;color:#64748b;margin-top:8px;">🟦 티스토리: 이미지까지 한 번에 들어갑니다. &nbsp;🟩 네이버: 텍스트만 들어가고 이미지 자리에 빨간 표시가 남아요 → 아래 개별 이미지 버튼으로 그 자리에 하나씩 붙여넣으세요(네이버는 붙여넣기 이미지를 막아서 어쩔 수 없는 폴백).</p>
+  <div id="copyStatus">복사되었습니다. 에디터에 Cmd+V 로 붙여넣으세요.</div>
 
-  <!-- 본문 미리보기 (화면에 보임 + 복사 대상) -->
+  <!-- 본문 미리보기 (화면에 보임 + 티스토리용 복사 대상, 이미지 인라인) -->
   <div class="body-preview" id="blogBodyHtml">
 {body_html}
+  </div>
+  <!-- 네이버용 복사 대상 (숨김, 이미지 자리에 빨간 마커) -->
+  <div class="hidden-body" id="blogBodyHtmlNaver">
+{body_html_naver}
   </div>
 </div>
 
@@ -591,8 +628,10 @@ async function copyPlain(boxId, toastId) {{
   }}
 }}
 
-async function copyText() {{
-  const body = document.getElementById('blogBodyHtml');
+async function copyText(boxId, toastId) {{
+  boxId = boxId || 'blogBodyHtml';
+  toastId = toastId || 'toastText';
+  const body = document.getElementById(boxId);
   const html = body.innerHTML;
   const text = body.innerText;
   let ok = false;
@@ -632,7 +671,7 @@ async function copyText() {{
 
   if (ok) {{
     document.getElementById('copyStatus').style.display = 'block';
-    showToast('toastText');
+    showToast(toastId);
     setTimeout(() => document.getElementById('copyStatus').style.display = 'none', 3000);
   }} else {{
     alert('복사 실패 — 본문을 마우스로 드래그하여 직접 복사해주세요');
@@ -716,17 +755,28 @@ def main():
 
     # 이미지 삽입 마커 — pngs 순서대로 1, 2, 3, ... 번호
     body_md = inject_image_markers(body_md, png_files)
-    body_html = md_to_html_body(body_md)
+    # 본문 한 번 복사로 이미지까지 함께 들어가도록 base64 인라인 <img> 맵 구성
+    # (png_files 순서 = 마커 번호 1..N)
+    img_map = {}
+    for i, p in enumerate(png_files, 1):
+        try:
+            img_map[i] = (img_to_base64(p), p.stem)
+        except Exception:
+            pass
+    body_html = md_to_html_body(body_md, img_map)            # 티스토리/워드용: 이미지 인라인
+    body_html_naver = md_to_html_body(body_md)               # 네이버용: 이미지 자리에 빨간 마커
 
-    # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가
+    # 인사이트 추출 → 본문 맨 아래에 텍스트 한 줄 추가 (양쪽 동일)
     insight_text = extract_insight(md_text)
     if insight_text:
-        body_html += (
+        insight_html = (
             '\n<hr style="margin:32px 0 16px;">'
             '\n<p style="font-size:14px;color:#64748b;font-style:italic;line-height:1.8;">'
             f'💡 {insight_text}'
             '</p>'
         )
+        body_html += insight_html
+        body_html_naver += insight_html
         print(f"💡 인사이트: {insight_text[:60]}...")
 
     # 태그 추출
@@ -734,7 +784,7 @@ def main():
     print(f"🏷️  태그: {len(tags)}개")
 
     # HTML 생성
-    html = generate_html(date_str, title, body_html, png_files, tags)
+    html = generate_html(date_str, title, body_html, png_files, tags, body_html_naver)
 
     # 저장 (output/ 폴더)
     out_dir = BASE / "output"
