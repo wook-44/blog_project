@@ -553,6 +553,268 @@ def convert_html_to_png(html_path: Path, png_path: Path) -> str:
 
 
 # ── 메인 생성 ─────────────────────────────────────────────────
+# ════════════════════════════════════════════════════════════════
+# E/F 플랫 리디자인 (2026-06-23 사용자 확정 / 2026-06-26 구현)
+#   - "AI티"(그라데이션 글로우·이모지·균일 다크카드 적층) 제거 → 라이트 플랫
+#   - E = build_colorblock_html : 베이지 배경 + 원색 컬러블록 2열
+#   - F = build_datachart_html  : 흰 배경 + 가로 막대(상승=빨강/하락=파랑)
+#   - assign_styles : E_PRI(summary/news/gwangsoo/checklist) / F_PRI(sector/market/flows/outlook/risk)
+#   - F인데 막대 데이터 없으면 E로 자동 폴백(빈 차트 방지)
+# ════════════════════════════════════════════════════════════════
+import re as _re
+
+FLAT = {
+    "beige": "#F2EFE8", "ink": "#1A1A1A", "white": "#FFFFFF",
+    "grid": "#E5E7EB",
+    "up_red": "#E8413A", "down_blue": "#2E6FD6",
+    # 컬러블록 팔레트: 빨강/노랑/초록/파랑/먹
+    "pal": ["#E8413A", "#F2B705", "#2FA84F", "#2E6FD6", "#1A1A1A"],
+}
+
+
+def _tw(s: str, size: float) -> float:
+    w = 0.0
+    for ch in s:
+        o = ord(ch)
+        if ch == ' ':
+            w += size * 0.30
+        elif 0xAC00 <= o <= 0xD7A3 or 0x3000 <= o <= 0x30FF or 0x4E00 <= o <= 0x9FFF or 0xFF00 <= o <= 0xFFEF:
+            w += size * 1.02
+        elif ch in '·—…':
+            w += size * 1.0
+        elif ch in '|ㅣ!.,:;\'"`()[]':
+            w += size * 0.34
+        elif ch.isdigit():
+            w += size * 0.58
+        else:
+            w += size * 0.60
+    return w
+
+
+def _esc(s: str) -> str:
+    return str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
+def _wrap(text: str, max_w: float, size: float):
+    lines, cur = [], ''
+    for word in str(text).split(' '):
+        cand = (cur + ' ' + word).strip()
+        if _tw(cand, size) <= max_w:
+            cur = cand
+        else:
+            if cur:
+                lines.append(cur)
+            while _tw(word, size) > max_w and len(word) > 1:
+                i = len(word)
+                while i > 1 and _tw(word[:i], size) > max_w:
+                    i -= 1
+                lines.append(word[:i]); word = word[i:]
+            cur = word
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def _block(text: str, x: float, y: float, max_w: float, size: float, fill: str,
+           weight: int = 800, line_h: float = None, anchor: str = 'start'):
+    line_h = line_h or size * 1.32
+    lines = _wrap(text, max_w, size)
+    tspans = ''.join(
+        f'<tspan x="{x:.0f}" y="{y + i*line_h:.0f}">{_esc(ln)}</tspan>'
+        for i, ln in enumerate(lines))
+    return (f'<text text-anchor="{anchor}" fill="{fill}" font-size="{size:.0f}" '
+            f'font-weight="{weight}">{tspans}</text>', len(lines))
+
+
+def _fit(text: str, max_w: float, base: int, min_size: int = 30) -> int:
+    s = base
+    while s > min_size and _tw(text, s) > max_w:
+        s -= 1
+    return s
+
+
+def _flat_label_title(parts, label, title, ink):
+    parts.append(f'<rect x="0" y="0" width="{SIZE}" height="10" fill="{ink}"/>')
+    parts.append(f'<text x="64" y="94" fill="{ink}" font-size="24" font-weight="800" '
+                 f'letter-spacing="6" opacity="0.55">{_esc(label)}</text>')
+    ts = _fit(title, SIZE - 128, 56, 34)
+    tb, tl = _block(title, 64, 156, SIZE - 128, ts, ink, 900, line_h=ts * 1.18)
+    parts.append(tb)
+    return int(156 + tl * ts * 1.18)
+
+
+def _flat_footer(parts, fq, ink, max_w=SIZE - 280):
+    if fq:
+        qy = SIZE - 96
+        parts.append(f'<rect x="48" y="{qy-34}" width="6" height="62" fill="{ink}"/>')
+        qb, _ = _block(fq, 72, qy, max_w, 26, ink, 800, line_h=34)
+        parts.append(qb)
+    parts.append(f'<text x="{SIZE-48}" y="{SIZE-26}" text-anchor="end" fill="{ink}" '
+                 f'opacity="0.45" font-size="17" font-weight="700">12시에 만나요 · 주식 분석 블로그</text>')
+
+
+def _extract_metric(s: str) -> str:
+    m = _re.search(r'-?\d[\d,]*\.?\d*\s*%', str(s))
+    if m:
+        return m.group(0).replace(' ', '')
+    m = _re.search(r'\d[\d,]*', str(s))
+    return ''
+
+
+def parse_bars(data: dict):
+    """data['bars']=[{label,pct}] 우선, 없으면 stats의 value/delta에서 부호 % 추출."""
+    out = []
+    for b in (data.get('bars') or []):
+        try:
+            out.append((str(b.get('label', '')), float(b.get('pct'))))
+        except (TypeError, ValueError):
+            pass
+    if out:
+        return out[:6]
+    for s in (data.get('stats') or []):
+        for fld in ('value', 'delta'):
+            m = _re.search(r'(-?\d+(?:\.\d+)?)\s*%', str(s.get(fld, '')))
+            if m:
+                out.append((str(s.get('label', '')), float(m.group(1))))
+                break
+    return out[:6]
+
+
+def build_colorblock_html(data: dict, date: str, key: str = 'section') -> str:
+    """E — 베이지 배경 + 원색 컬러블록 (플랫)."""
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    F = FLAT
+    beige, ink, pal = F['beige'], F['ink'], F['pal']
+    title = data.get('title') or a['kor']
+    parts = [f'<rect width="{SIZE}" height="{SIZE}" fill="{beige}"/>']
+    y = _flat_label_title(parts, a['label'], title, ink) + 40
+
+    hero_v = data.get('hero_value', '')
+    hero_l = data.get('hero_label', '')
+    takeaway = data.get('hero_takeaway', '')
+    stats = data.get('stats') or []
+    points = data.get('points') or []
+    ci = 0
+
+    # 1) hero band (full width)
+    if hero_v:
+        col = pal[ci % len(pal)]; ci += 1
+        bh = 188
+        parts.append(f'<rect x="48" y="{y}" width="{SIZE-96}" height="{bh}" fill="{col}" rx="18"/>')
+        hs = _fit(hero_v, SIZE - 96 - 360, 92, 46)
+        parts.append(f'<text x="84" y="{y+116}" fill="#FFFFFF" font-size="{hs}" font-weight="900">{_esc(hero_v)}</text>')
+        lb, _ = _block(hero_l, SIZE - 84, y + 92, 340, 30, "#FFFFFF", 700, line_h=38, anchor='end')
+        parts.append(lb)
+        y += bh + 22
+    elif takeaway:
+        col = pal[ci % len(pal)]; ci += 1
+        tl = _wrap(takeaway, SIZE - 96 - 72, 34)
+        bh = max(150, 56 + len(tl) * 48)
+        parts.append(f'<rect x="48" y="{y}" width="{SIZE-96}" height="{bh}" fill="{col}" rx="18"/>')
+        tb, _ = _block(takeaway, 84, y + 64, SIZE - 96 - 72, 34, "#FFFFFF", 800, line_h=48)
+        parts.append(tb)
+        y += bh + 22
+
+    # 2) grid 2-col from stats(우선) else points
+    items = []
+    if stats:
+        for s in stats[:4]:
+            items.append((s.get('value', ''), s.get('label', '')))
+    else:
+        for p in points[:4]:
+            items.append((_extract_metric(p), p))
+
+    n = len(items)
+    if n:
+        gap = 22
+        cols = 2
+        cw = (SIZE - 96 - gap) / cols
+        rows = (n + cols - 1) // cols
+        foot = 150
+        avail = (SIZE - foot) - y
+        ch = max(150, min(232, (avail - (rows - 1) * gap) / rows))
+        for i, (big, small) in enumerate(items):
+            r, c = i // cols, i % cols
+            bx = 48 + c * (cw + gap)
+            by = y + r * (ch + gap)
+            col = pal[ci % len(pal)]; ci += 1
+            tc = "#1A1A1A" if col == "#F2B705" else "#FFFFFF"
+            parts.append(f'<rect x="{bx:.0f}" y="{by:.0f}" width="{cw:.0f}" height="{ch:.0f}" fill="{col}" rx="16"/>')
+            if big:
+                bs = _fit(big, cw - 48, 56, 30)
+                parts.append(f'<text x="{bx+26:.0f}" y="{by+76:.0f}" fill="{tc}" font-size="{bs}" font-weight="900">{_esc(big)}</text>')
+                sb, _ = _block(small, bx + 26, by + 116, cw - 52, 24, tc, 700, line_h=31)
+                parts.append(sb)
+            else:
+                sb, _ = _block(small, bx + 26, by + 58, cw - 52, 27, tc, 800, line_h=37)
+                parts.append(sb)
+
+    _flat_footer(parts, data.get('footer_quote', ''), ink)
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(parts) + '</svg>')
+    return html_doc(svg)
+
+
+def build_datachart_html(data: dict, date: str, key: str = 'section') -> str:
+    """F — 흰 배경 + 가로 막대 차트 (상승=빨강·하락=파랑)."""
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    F = FLAT
+    white, ink, grid = F['white'], F['ink'], F['grid']
+    up, down = F['up_red'], F['down_blue']
+    title = data.get('title') or a['kor']
+    parts = [f'<rect width="{SIZE}" height="{SIZE}" fill="{white}"/>']
+    top = _flat_label_title(parts, a['label'], title, ink) + 54
+
+    bars = parse_bars(data)
+    maxabs = max((abs(p) for _, p in bars), default=1.0) or 1.0
+    n = len(bars)
+    chart_bottom = SIZE - 230
+    row_h = min(160, (chart_bottom - top) / max(1, n))
+    label_w = 280
+    x0 = 64 + label_w
+    bar_max = SIZE - 72 - x0 - 150
+    parts.append(f'<line x1="{x0}" y1="{top-6:.0f}" x2="{x0}" y2="{top + n*row_h:.0f}" stroke="{grid}" stroke-width="3"/>')
+    for i, (lab, pct) in enumerate(bars):
+        cy = top + i * row_h + row_h / 2
+        ls = _fit(lab, label_w - 20, 34, 22)
+        parts.append(f'<text x="64" y="{cy+ls*0.34:.0f}" fill="{ink}" font-size="{ls}" font-weight="800">{_esc(lab)}</text>')
+        L = abs(pct) / maxabs * bar_max
+        col = down if pct < 0 else up
+        parts.append(f'<rect x="{x0}" y="{cy-34:.0f}" width="{max(6,L):.0f}" height="68" fill="{col}" rx="8"/>')
+        arrow = '▼' if pct < 0 else '▲'
+        parts.append(f'<text x="{x0+max(6,L)+18:.0f}" y="{cy+13:.0f}" fill="{col}" font-size="38" font-weight="900">{arrow} {abs(pct):.1f}%</text>')
+
+    # key-stat strip (hero)
+    hero_v = data.get('hero_value', '')
+    hero_l = data.get('hero_label', '')
+    if hero_v:
+        # 키-스탯 띠가 있으면 푸터 인용구는 생략(겹침 방지) — 띠 + 브랜딩만
+        sy = SIZE - 150
+        parts.append(f'<rect x="48" y="{sy}" width="{SIZE-96}" height="74" fill="{ink}" rx="12"/>')
+        parts.append(f'<text x="78" y="{sy+49}" fill="#FFFFFF" font-size="34" font-weight="900">{_esc(hero_v)}</text>')
+        kl, _ = _block(hero_l, SIZE - 78, sy + 47, 560, 25, "#FFFFFF", 700, line_h=31, anchor='end')
+        parts.append(kl)
+        parts.append(f'<text x="{SIZE-48}" y="{SIZE-18}" text-anchor="end" fill="{ink}" '
+                     f'opacity="0.45" font-size="16" font-weight="700">12시에 만나요 · 주식 분석 블로그</text>')
+    else:
+        _flat_footer(parts, data.get('footer_quote', ''), ink)
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(parts) + '</svg>')
+    return html_doc(svg)
+
+
+def assign_styles(keys):
+    E_PRI = ['summary', 'news', 'gwangsoo', 'checklist', 'psychology']
+    F_PRI = ['sector', 'market', 'flows', 'outlook', 'risk']
+    st = {}
+    for k in keys:
+        if k in F_PRI:
+            st[k] = 'F'
+        else:
+            st[k] = 'E'  # E_PRI + 미지정은 E(빈 차트 방지)
+    return st
+
+
 def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
     """가변 빌더 — infographic_data에 있는 섹션만 생성한다.
     - 'market'/'psychology'/'summary'는 전용 빌더 사용
@@ -567,6 +829,9 @@ def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
     SKIP_KEYS = {"insight"}  # 톤북 v1: insight는 이미지 X
     results = {}
 
+    # E/F 플랫 스타일 배정 (2026-06-23 확정)
+    styles = assign_styles(list(infographic_data.keys()))
+
     for key, data in infographic_data.items():
         if key in SKIP_KEYS:
             print(f"  ⏭️  {key}: 톤북 v1 룰로 이미지 생성 안 함")
@@ -575,12 +840,15 @@ def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
             print(f"  ⏭️  {key}: 데이터 비어있음, 스킵")
             continue
 
-        builder = BUILDERS.get(key)
-        if builder is None:
-            # 알 수 없는 키 → generic 빌더 (커스텀 섹션 가능)
-            html_content = build_generic_html(data, date, key)
+        style = styles.get(key, 'E')
+        # F인데 막대 데이터 2개 미만이면 E로 폴백(빈 차트 방지)
+        if style == 'F' and len(parse_bars(data)) < 2:
+            style = 'E'
+        if style == 'F':
+            html_content = build_datachart_html(data, date, key)
         else:
-            html_content = builder(data, date)
+            html_content = build_colorblock_html(data, date, key)
+        print(f"  🎨 {key}: style={style}")
 
         html_path = html_dir / f"{date}-{key}.html"
         png_path = output_dir / f"{date}-{key}.png"
