@@ -803,6 +803,233 @@ def build_datachart_html(data: dict, date: str, key: str = 'section') -> str:
     return html_doc(svg)
 
 
+# ════════════════════════════════════════════════════════════════
+# 코너별 개별 디자인 콘셉트 (2026-06-26 사용자 요청: "각 이미지마다 디자인 콘셉을 다르게")
+#   summary  → bigtype    : 매거진 빅타이포 + 넘버링 리스트 (크림)
+#   news     → newscard   : 신문 1면 마스트헤드 + 컬럼 (흰)
+#   flows    → barchart   : 가로 막대 차트 (= build_datachart_html, 흰)
+#   gwangsoo → checklist  : 원칙 체크리스트 행 카드 (크림)
+#   market   → indexboard : 지표 보드(데이터 테이블) (오프화이트)
+#   outlook  → timeline   : 관전 포인트 타임라인 (크림)
+# ════════════════════════════════════════════════════════════════
+
+def build_bigtype(data: dict, date: str, key: str = 'summary') -> str:
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    cream, ink, accent = "#F4EFE4", "#1A1A1A", FLAT['up_red']
+    title = data.get('title') or a['kor']
+    take = data.get('hero_takeaway', '') or title
+    points = (data.get('points') or [])[:5]
+    P = [f'<rect width="{SIZE}" height="{SIZE}" fill="{cream}"/>']
+    P.append(f'<rect x="0" y="0" width="{SIZE}" height="10" fill="{accent}"/>')
+    P.append(f'<text x="64" y="96" fill="{accent}" font-size="24" font-weight="800" letter-spacing="6">{_esc(a["label"])}</text>')
+    # big headline takeaway
+    hs = 46
+    while len(_wrap(take, SIZE - 128, hs)) > 3 and hs > 32:
+        hs -= 2
+    hb, hl = _block(take, 64, 168, SIZE - 128, hs, ink, 900, line_h=hs * 1.28)
+    P.append(hb)
+    y = int(168 + hl * hs * 1.28) + 26
+    P.append(f'<rect x="64" y="{y}" width="{SIZE-128}" height="4" fill="{ink}"/>')
+    y += 40
+    n = max(1, len(points))
+    avail = (SIZE - 96) - y
+    rh = min(150, avail / n)
+    for i, p in enumerate(points):
+        ry = y + i * rh
+        P.append(f'<text x="64" y="{ry+52:.0f}" fill="{accent}" font-size="46" font-weight="900">{i+1:02d}</text>')
+        tb, _ = _block(p, 168, ry + 34, SIZE - 168 - 56, 28, ink, 700, line_h=37)
+        P.append(tb)
+        if i < n - 1:
+            P.append(f'<rect x="168" y="{ry+rh-14:.0f}" width="{SIZE-168-64}" height="1.5" fill="#D8D0BE"/>')
+    P.append(f'<text x="{SIZE-48}" y="{SIZE-26}" text-anchor="end" fill="{ink}" opacity="0.45" font-size="17" font-weight="700">12시에 만나요 · 주식 분석 블로그</text>')
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(P) + '</svg>')
+    return html_doc(svg)
+
+
+def build_newscard(data: dict, date: str, key: str = 'news') -> str:
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    white, ink = "#FFFFFF", "#1A1A1A"
+    accent = FLAT['up_red']
+    title = data.get('title') or a['kor']
+    dstr = str(date).replace('-', '.')
+    stats = (data.get('stats') or [])[:3]
+    hv = data.get('hero_value', ''); hl = data.get('hero_label', '')
+    fq = data.get('footer_quote', '')
+    P = [f'<rect width="{SIZE}" height="{SIZE}" fill="{white}"/>']
+    # masthead
+    P.append(f'<rect x="0" y="0" width="{SIZE}" height="78" fill="{ink}"/>')
+    P.append(f'<text x="48" y="52" fill="#FFFFFF" font-size="30" font-weight="900" letter-spacing="2">12시에 만나요 · 머니브리프</text>')
+    P.append(f'<text x="{SIZE-48}" y="51" text-anchor="end" fill="#FFFFFF" opacity="0.85" font-size="24" font-weight="700">{dstr}</text>')
+    # kicker + headline
+    P.append(f'<text x="48" y="150" fill="{accent}" font-size="24" font-weight="800" letter-spacing="5">{_esc(a["label"])}</text>')
+    ts = _fit(title, SIZE - 96, 52, 32)
+    tb, tl = _block(title, 48, 210, SIZE - 96, ts, ink, 900, line_h=ts * 1.18)
+    P.append(tb)
+    y = int(210 + tl * ts * 1.18) + 24
+    P.append(f'<rect x="48" y="{y}" width="{SIZE-96}" height="5" fill="{ink}"/>')
+    y += 46
+    # lead hero
+    if hv:
+        hsz = _fit(hv, 520, 96, 52)
+        P.append(f'<text x="48" y="{y+78:.0f}" fill="{ink}" font-size="{hsz}" font-weight="900">{_esc(hv)}</text>')
+        lb, _ = _block(hl, SIZE - 48, y + 44, 440, 30, ink, 700, line_h=38, anchor='end')
+        P.append(lb)
+        y += 130
+    # 3 columns (newspaper)
+    if stats:
+        gap = 28
+        cw = (SIZE - 96 - gap * (len(stats) - 1)) / len(stats)
+        for i, s in enumerate(stats):
+            cx = 48 + i * (cw + gap)
+            P.append(f'<rect x="{cx:.0f}" y="{y}" width="{cw:.0f}" height="4" fill="{accent}"/>')
+            lab, _ = _block(s.get('label', ''), cx, y + 40, cw, 23, "#6B7280", 700, line_h=29)
+            P.append(lab)
+            vs = _fit(s.get('value', ''), cw, 46, 26)
+            P.append(f'<text x="{cx:.0f}" y="{y+104:.0f}" fill="{ink}" font-size="{vs}" font-weight="900">{_esc(s.get("value",""))}</text>')
+            dl, _ = _block(s.get('delta', ''), cx, y + 140, cw, 22, "#6B7280", 600, line_h=28)
+            P.append(dl)
+    # pull quote
+    if fq:
+        qy = SIZE - 92
+        P.append(f'<rect x="48" y="{qy-34}" width="6" height="60" fill="{accent}"/>')
+        qb, _ = _block(fq, 72, qy, SIZE - 240, 26, ink, 800, line_h=34)
+        P.append(qb)
+    P.append(f'<text x="{SIZE-48}" y="{SIZE-22}" text-anchor="end" fill="{ink}" opacity="0.45" font-size="16" font-weight="700">12시에 만나요 · 주식 분석 블로그</text>')
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(P) + '</svg>')
+    return html_doc(svg)
+
+
+def build_checklist(data: dict, date: str, key: str = 'gwangsoo') -> str:
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    cream, ink = "#EFEBE0", "#1A1A1A"
+    pal = FLAT['pal']
+    title = data.get('title') or a['kor']
+    stats = (data.get('stats') or [])[:4]
+    points = data.get('points') or []
+    fq = data.get('footer_quote', '')
+    P = [f'<rect width="{SIZE}" height="{SIZE}" fill="{cream}"/>']
+    y0 = _flat_label_title(P, a['label'], title, ink) + 36
+    items = []
+    if stats:
+        for s in stats:
+            items.append((s.get('value', ''), (s.get('label', ''), s.get('delta', ''))))
+    else:
+        for p in points[:4]:
+            items.append((p, ('', '')))
+    n = max(1, len(items))
+    avail = (SIZE - 150) - y0
+    rh = min(180, avail / n)
+    for i, (head, sub) in enumerate(items):
+        ry = y0 + i * rh
+        col = pal[i % len(pal)]
+        card_h = rh - 18
+        P.append(f'<rect x="48" y="{ry:.0f}" width="{SIZE-96}" height="{card_h:.0f}" fill="#FFFFFF" rx="14"/>')
+        P.append(f'<rect x="48" y="{ry:.0f}" width="14" height="{card_h:.0f}" fill="{col}" rx="7"/>')
+        # marker square
+        msz = 56
+        my = ry + card_h / 2 - msz / 2
+        P.append(f'<rect x="84" y="{my:.0f}" width="{msz}" height="{msz}" fill="{col}" rx="12"/>')
+        P.append(f'<circle cx="{84+msz/2:.0f}" cy="{my+msz/2:.0f}" r="9" fill="#FFFFFF"/>')
+        hx = 84 + msz + 28
+        hs = _fit(str(head), SIZE - hx - 60, 36, 26)
+        P.append(f'<text x="{hx:.0f}" y="{ry+card_h/2-2:.0f}" fill="{ink}" font-size="{hs}" font-weight="900">{_esc(head)}</text>')
+        subtxt = ' · '.join([t for t in sub if t]) if isinstance(sub, tuple) else str(sub)
+        if subtxt:
+            sb, _ = _block(subtxt, hx, ry + card_h / 2 + 32, SIZE - hx - 60, 24, "#6B7280", 700, line_h=30)
+            P.append(sb)
+    _flat_footer(P, fq, ink)
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(P) + '</svg>')
+    return html_doc(svg)
+
+
+def build_indexboard(data: dict, date: str, key: str = 'market') -> str:
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    bg, ink = "#FAFAF7", "#1A1A1A"
+    up, down = FLAT['up_red'], FLAT['down_blue']
+    title = data.get('title') or a['kor']
+    stats = (data.get('stats') or [])[:5]
+    fq = data.get('footer_quote', '')
+    P = [f'<rect width="{SIZE}" height="{SIZE}" fill="{bg}"/>']
+    y0 = _flat_label_title(P, a['label'], title, ink) + 40
+    # header row
+    colL, colV, colD = 64, SIZE - 430, SIZE - 64
+    P.append(f'<text x="{colL}" y="{y0}" fill="#6B7280" font-size="22" font-weight="800" letter-spacing="2">종목·지수</text>')
+    P.append(f'<text x="{colV}" y="{y0}" text-anchor="end" fill="#6B7280" font-size="22" font-weight="800">현재</text>')
+    P.append(f'<text x="{colD}" y="{y0}" text-anchor="end" fill="#6B7280" font-size="22" font-weight="800">등락</text>')
+    y0 += 18
+    P.append(f'<rect x="64" y="{y0}" width="{SIZE-128}" height="3" fill="{ink}"/>')
+    y0 += 14
+    n = max(1, len(stats))
+    avail = (SIZE - 200) - y0
+    rh = min(140, avail / n)
+    for i, s in enumerate(stats):
+        ry = y0 + i * rh
+        if i % 2 == 1:
+            P.append(f'<rect x="56" y="{ry:.0f}" width="{SIZE-112}" height="{rh:.0f}" fill="#FFFFFF" rx="10"/>')
+        cy = ry + rh / 2
+        lab = s.get('label', ''); val = s.get('value', ''); dlt = s.get('delta', '')
+        ls = _fit(lab, colV - colL - 220, 34, 22)
+        P.append(f'<text x="{colL}" y="{cy+ls*0.34:.0f}" fill="{ink}" font-size="{ls}" font-weight="800">{_esc(lab)}</text>')
+        vs = _fit(val, 280, 44, 26)
+        P.append(f'<text x="{colV}" y="{cy+vs*0.34:.0f}" text-anchor="end" fill="{ink}" font-size="{vs}" font-weight="900">{_esc(val)}</text>')
+        dcol = down if ('▼' in dlt or '-' in dlt or '하회' in dlt or '하락' in dlt) else (up if '▲' in dlt else "#6B7280")
+        ds = _fit(dlt, 360, 26, 17)
+        P.append(f'<text x="{colD}" y="{cy+ds*0.34:.0f}" text-anchor="end" fill="{dcol}" font-size="{ds}" font-weight="800">{_esc(dlt)}</text>')
+    _flat_footer(P, fq, ink)
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(P) + '</svg>')
+    return html_doc(svg)
+
+
+def build_timeline(data: dict, date: str, key: str = 'outlook') -> str:
+    a = ACCENTS.get(key, DEFAULT_ACCENT)
+    cream, ink = "#EEF1EC", "#1A1A1A"
+    node_pal = ["#E8413A", "#F2B705", "#2FA84F", "#2E6FD6"]
+    title = data.get('title') or a['kor']
+    stats = (data.get('stats') or [])[:4]
+    points = data.get('points') or []
+    fq = data.get('footer_quote', '')
+    P = [f'<rect width="{SIZE}" height="{SIZE}" fill="{cream}"/>']
+    y0 = _flat_label_title(P, a['label'], title, ink) + 50
+    items = stats if stats else [{'value': '', 'label': p, 'delta': ''} for p in points[:4]]
+    n = max(1, len(items))
+    line_x = 110
+    avail = (SIZE - 170) - y0
+    step = min(190, avail / n)
+    P.append(f'<line x1="{line_x}" y1="{y0}" x2="{line_x}" y2="{y0 + (n-1)*step + 40:.0f}" stroke="#C9D0C6" stroke-width="4"/>')
+    for i, s in enumerate(items):
+        ny = y0 + i * step + 20
+        col = node_pal[i % len(node_pal)]
+        P.append(f'<circle cx="{line_x}" cy="{ny}" r="20" fill="{col}"/>')
+        P.append(f'<circle cx="{line_x}" cy="{ny}" r="8" fill="#FFFFFF"/>')
+        tx = line_x + 56
+        head = s.get('value', '') or s.get('label', '')
+        hs = _fit(str(head), SIZE - tx - 60, 40, 26)
+        P.append(f'<text x="{tx}" y="{ny-4:.0f}" fill="{ink}" font-size="{hs}" font-weight="900">{_esc(head)}</text>')
+        sub = ' · '.join([t for t in [s.get('label', ''), s.get('delta', '')] if t]) if s.get('value') else ''
+        if sub:
+            sb, _ = _block(sub, tx, ny + 34, SIZE - tx - 60, 25, "#5B6660", 700, line_h=32)
+            P.append(sb)
+    _flat_footer(P, fq, ink)
+    svg = (f'<svg viewBox="0 0 {SIZE} {SIZE}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="NanumGothic,sans-serif">' + ''.join(P) + '</svg>')
+    return html_doc(svg)
+
+
+# 코너별 콘셉트 라우팅 (표준 6코너). 없으면 assign_styles의 E/F로 폴백.
+CONCEPT_MAP = {
+    "summary":  build_bigtype,
+    "news":     build_newscard,
+    "flows":    build_datachart_html,   # barchart
+    "gwangsoo": build_checklist,
+    "market":   build_indexboard,
+    "outlook":  build_timeline,
+}
+
+
 def assign_styles(keys):
     E_PRI = ['summary', 'news', 'gwangsoo', 'checklist', 'psychology']
     F_PRI = ['sector', 'market', 'flows', 'outlook', 'risk']
@@ -840,15 +1067,21 @@ def generate_all(date: str, infographic_data: dict, output_dir: Path) -> dict:
             print(f"  ⏭️  {key}: 데이터 비어있음, 스킵")
             continue
 
-        style = styles.get(key, 'E')
-        # F인데 막대 데이터 2개 미만이면 E로 폴백(빈 차트 방지)
-        if style == 'F' and len(parse_bars(data)) < 2:
-            style = 'E'
-        if style == 'F':
-            html_content = build_datachart_html(data, date, key)
+        concept = CONCEPT_MAP.get(key)
+        if concept is not None:
+            # barchart(flows)인데 막대 데이터 부족하면 컬러블록으로 폴백
+            if concept is build_datachart_html and len(parse_bars(data)) < 2:
+                html_content = build_colorblock_html(data, date, key)
+                print(f"  🎨 {key}: concept=colorblock(fallback)")
+            else:
+                html_content = concept(data, date, key)
+                print(f"  🎨 {key}: concept={concept.__name__}")
         else:
-            html_content = build_colorblock_html(data, date, key)
-        print(f"  🎨 {key}: style={style}")
+            style = styles.get(key, 'E')
+            if style == 'F' and len(parse_bars(data)) < 2:
+                style = 'E'
+            html_content = build_datachart_html(data, date, key) if style == 'F' else build_colorblock_html(data, date, key)
+            print(f"  🎨 {key}: style={style}")
 
         html_path = html_dir / f"{date}-{key}.html"
         png_path = output_dir / f"{date}-{key}.png"
