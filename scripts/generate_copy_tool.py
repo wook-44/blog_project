@@ -633,7 +633,16 @@ async function copyText(boxId, toastId) {{
   toastId = toastId || 'toastText';
   const body = document.getElementById(boxId);
   const html = body.innerHTML;
-  const text = body.innerText;
+
+  // 네이버용 대상은 display:none(hidden-body)이라 innerText가 비고 선택 복사가 막힌다.
+  // 복사하는 동안만 화면 밖으로 잠깐 노출했다가 복원한다.
+  const wasHidden = getComputedStyle(body).display === 'none';
+  let prevStyle = null;
+  if (wasHidden) {{
+    prevStyle = body.getAttribute('style');
+    body.style.cssText = 'position:fixed;left:-99999px;top:0;display:block;width:800px;';
+  }}
+  const text = body.innerText || body.textContent || '';
   let ok = false;
 
   // 1) 최신 Clipboard API — HTML + plain 같이 (네이버 에디터가 HTML 인식)
@@ -648,7 +657,7 @@ async function copyText(boxId, toastId) {{
     }}
   }} catch(e) {{ console.warn('ClipboardItem 실패:', e); }}
 
-  // 2) Fallback — Selection + execCommand
+  // 2) Fallback — Selection + execCommand (요소가 노출됐으므로 선택 가능)
   if (!ok) {{
     try {{
       const range = document.createRange();
@@ -667,6 +676,11 @@ async function copyText(boxId, toastId) {{
       await navigator.clipboard.writeText(text);
       ok = true;
     }} catch(e) {{ console.error('clipboard.writeText 실패:', e); }}
+  }}
+
+  if (wasHidden) {{                       // 원상 복원
+    if (prevStyle === null) body.removeAttribute('style');
+    else body.setAttribute('style', prevStyle);
   }}
 
   if (ok) {{
