@@ -706,10 +706,25 @@ function loadImgToCanvas(canvasId, src) {{
 
 function copyImg(canvasId, toastId) {{
   const canvas = document.getElementById(canvasId);
-  canvas.toBlob(blob => {{
-    const item = new ClipboardItem({{'image/png': blob}});
-    navigator.clipboard.write([item]).then(() => showToast(toastId));
-  }});
+  // toBlob 콜백이 끝날 때쯤이면 클릭(사용자 제스처) 권한이 만료돼 클립보드 쓰기가 막힌다.
+  // ClipboardItem에 Promise<Blob>을 넘기면 클릭 즉시 write가 호출돼 제스처가 유지된다.
+  try {{
+    if (!(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write)) {{
+      throw new Error('Clipboard image API 미지원');
+    }}
+    const item = new ClipboardItem({{
+      'image/png': new Promise(resolve => canvas.toBlob(b => resolve(b), 'image/png'))
+    }});
+    navigator.clipboard.write([item])
+      .then(() => showToast(toastId))
+      .catch(err => {{
+        console.error('이미지 복사 실패:', err);
+        alert('이미지 복사가 막혔습니다. 위 이미지를 마우스 우클릭 → "이미지 복사"로 복사한 뒤 네이버에 붙여넣어 주세요.');
+      }});
+  }} catch(e) {{
+    console.error('copyImg 예외:', e);
+    alert('이 브라우저는 버튼 이미지 복사를 지원하지 않습니다. 이미지를 우클릭 → "이미지 복사"로 복사해 주세요. (Chrome 권장)');
+  }}
 }}
 
 // 이미지 캔버스 로드
