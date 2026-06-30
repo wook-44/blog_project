@@ -378,22 +378,54 @@
 <!-- STEP 8: 태그 -->
 <div class="step">
   <div class="step-title"><span class="order" style="background:#f59e0b;">8</span> 해시태그 → 네이버 에디터 하단 태그칸에 붙여넣기</div>
-  <p style="font-size:13px;color:#64748b;margin-bottom:6px;">총 0개 — 네이버 권장 30개</p>
+  <p style="font-size:13px;color:#64748b;margin-bottom:6px;">총 30개 — 네이버 권장 30개</p>
   <p style="font-size:12px;color:#dc2626;margin-bottom:10px;">⚠️ 네이버는 태그 한 개씩 입력 → Enter 필요. 각 태그(노란 칩)를 클릭하면 그 태그만 복사됩니다. 빠른 방법은 칩을 차례로 클릭→네이버 태그칸 붙여넣기→Enter 반복.</p>
-  <div class="tag-box" id="tagBox"></div>
+  <div class="tag-box" id="tagBox"><span class="tag-chip" onclick="copyOneTag(this, '#코스피')" title="클릭하면 이 태그만 복사">#코스피</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥')" title="클릭하면 이 태그만 복사">#코스닥</span> <span class="tag-chip" onclick="copyOneTag(this, '#삼성전자')" title="클릭하면 이 태그만 복사">#삼성전자</span> <span class="tag-chip" onclick="copyOneTag(this, '#SK하이닉스')" title="클릭하면 이 태그만 복사">#SK하이닉스</span> <span class="tag-chip" onclick="copyOneTag(this, '#반도체')" title="클릭하면 이 태그만 복사">#반도체</span> <span class="tag-chip" onclick="copyOneTag(this, '#3대메가프로젝트')" title="클릭하면 이 태그만 복사">#3대메가프로젝트</span> <span class="tag-chip" onclick="copyOneTag(this, '#K반도체청사진')" title="클릭하면 이 태그만 복사">#K반도체청사진</span> <span class="tag-chip" onclick="copyOneTag(this, '#반도체메가클러스터')" title="클릭하면 이 태그만 복사">#반도체메가클러스터</span> <span class="tag-chip" onclick="copyOneTag(this, '#AI데이터센터')" title="클릭하면 이 태그만 복사">#AI데이터센터</span> <span class="tag-chip" onclick="copyOneTag(this, '#피지컬AI')" title="클릭하면 이 태그만 복사">#피지컬AI</span> <span class="tag-chip" onclick="copyOneTag(this, '#이재명정부정책')" title="클릭하면 이 태그만 복사">#이재명정부정책</span> <span class="tag-chip" onclick="copyOneTag(this, '#전남광주반도체')" title="클릭하면 이 태그만 복사">#전남광주반도체</span> <span class="tag-chip" onclick="copyOneTag(this, '#800조투자')" title="클릭하면 이 태그만 복사">#800조투자</span> <span class="tag-chip" onclick="copyOneTag(this, '#메모리팹')" title="클릭하면 이 태그만 복사">#메모리팹</span> <span class="tag-chip" onclick="copyOneTag(this, '#LG에너지솔루션')" title="클릭하면 이 태그만 복사">#LG에너지솔루션</span> <span class="tag-chip" onclick="copyOneTag(this, '#에코프로')" title="클릭하면 이 태그만 복사">#에코프로</span> <span class="tag-chip" onclick="copyOneTag(this, '#이차전지')" title="클릭하면 이 태그만 복사">#이차전지</span> <span class="tag-chip" onclick="copyOneTag(this, '#순환매')" title="클릭하면 이 태그만 복사">#순환매</span> <span class="tag-chip" onclick="copyOneTag(this, '#외국인순매도')" title="클릭하면 이 태그만 복사">#외국인순매도</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피8394')" title="클릭하면 이 태그만 복사">#코스피8394</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스닥920')" title="클릭하면 이 태그만 복사">#코스닥920</span> <span class="tag-chip" onclick="copyOneTag(this, '#12시에만나요')" title="클릭하면 이 태그만 복사">#12시에만나요</span> <span class="tag-chip" onclick="copyOneTag(this, '#이광수')" title="클릭하면 이 태그만 복사">#이광수</span> <span class="tag-chip" onclick="copyOneTag(this, '#박시동')" title="클릭하면 이 태그만 복사">#박시동</span> <span class="tag-chip" onclick="copyOneTag(this, '#반도체대형주')" title="클릭하면 이 태그만 복사">#반도체대형주</span> <span class="tag-chip" onclick="copyOneTag(this, '#정책수혜주')" title="클릭하면 이 태그만 복사">#정책수혜주</span> <span class="tag-chip" onclick="copyOneTag(this, '#오늘증시정리')" title="클릭하면 이 태그만 복사">#오늘증시정리</span> <span class="tag-chip" onclick="copyOneTag(this, '#코스피전망')" title="클릭하면 이 태그만 복사">#코스피전망</span> <span class="tag-chip" onclick="copyOneTag(this, '#국내증시시황')" title="클릭하면 이 태그만 복사">#국내증시시황</span> <span class="tag-chip" onclick="copyOneTag(this, '#반도체투자')" title="클릭하면 이 태그만 복사">#반도체투자</span></div>
   <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 (줄바꿈 구분) 복사</button>
   <span class="toast" id="toastTag">✅ 복사됨!</span>
-  <div class="hidden-body" id="tagsRaw"></div>
+  <div class="hidden-body" id="tagsRaw">#코스피
+#코스닥
+#삼성전자
+#SK하이닉스
+#반도체
+#3대메가프로젝트
+#K반도체청사진
+#반도체메가클러스터
+#AI데이터센터
+#피지컬AI
+#이재명정부정책
+#전남광주반도체
+#800조투자
+#메모리팹
+#LG에너지솔루션
+#에코프로
+#이차전지
+#순환매
+#외국인순매도
+#코스피8394
+#코스닥920
+#12시에만나요
+#이광수
+#박시동
+#반도체대형주
+#정책수혜주
+#오늘증시정리
+#코스피전망
+#국내증시시황
+#반도체투자</div>
 
   <div style="margin-top:18px;padding-top:14px;border-top:1px dashed #cbd5e1;">
     <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:6px;">🔑 핵심 키워드 10개 (# 없음)</div>
     <p style="font-size:12px;color:#64748b;margin-bottom:8px;">각 키워드 클릭 = 개별 복사. 전체 한 번에 복사하려면 아래 버튼.</p>
     <div class="kw-box">
-
+<span class="kw-chip" onclick="copyOneTag(this, '800조투자')" title="클릭하면 복사">800조투자</span><span class="kw-chip" onclick="copyOneTag(this, '박시동')" title="클릭하면 복사">박시동</span><span class="kw-chip" onclick="copyOneTag(this, '반도체')" title="클릭하면 복사">반도체</span><span class="kw-chip" onclick="copyOneTag(this, '순환매')" title="클릭하면 복사">순환매</span><span class="kw-chip" onclick="copyOneTag(this, '이광수')" title="클릭하면 복사">이광수</span><span class="kw-chip" onclick="copyOneTag(this, '코스닥')" title="클릭하면 복사">코스닥</span><span class="kw-chip" onclick="copyOneTag(this, '코스닥920')" title="클릭하면 복사">코스닥920</span><span class="kw-chip" onclick="copyOneTag(this, '코스피')" title="클릭하면 복사">코스피</span><span class="kw-chip" onclick="copyOneTag(this, '코스피8394')" title="클릭하면 복사">코스피8394</span><span class="kw-chip" onclick="copyOneTag(this, '피지컬AI')" title="클릭하면 복사">피지컬AI</span>
     </div>
     <button class="btn" style="background:#0ea5e9;color:#fff;margin-top:10px;" onclick="copyAllKeywords()">🔑 키워드 10개 전체 복사 (쉼표 구분)</button>
     <span class="toast" id="toastKw">✅ 복사됨!</span>
-    <div class="hidden-body" id="kwAll"></div>
+    <button class="btn" style="background:#06b6d4;color:#fff;margin-top:8px;" onclick="copyYtDesc()">📺 유튜브 설명란용 한 줄 복사</button>
+    <span class="toast" id="toastYt">✅ 복사됨!</span>
+    <script>function copyYtDesc(){var t="📊 오늘 영상 풀 분석: [12시에 만나요] 3대 메가 프로젝트 두둥등장! K-반도체 청사진 어떻게 그려질까? → [네이버 블로그 링크]";function ok(){if(typeof showToast==="function")showToast("toastYt");}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);}else{fallback();}function fallback(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);ok();}}</script>
+    <div class="hidden-body" id="kwAll">800조투자, 박시동, 반도체, 순환매, 이광수, 코스닥, 코스닥920, 코스피, 코스피8394, 피지컬AI</div>
   </div>
 </div>
 
