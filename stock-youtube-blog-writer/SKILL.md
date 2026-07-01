@@ -75,9 +75,13 @@ description: |
 
 1. Chrome으로 재생목록 열기: `https://www.youtube.com/playlist?list=PLpDZdhM6kelSHHNdphTwAWuxxwbI4kGyX`
 2. 가장 최근 업로드된 영상 확인 후 클릭
-3. 자막 추출:
-   - 영상 하단 `...` → `자막(스크립트) 열기` 또는 `Show transcript` 클릭
-   - 전체 자막 텍스트 복사
+3. 자막 추출 (⭐2026-07 셀렉터 갱신 — 게이팅 아님, 요소명 변경이었음):
+   - 설명 하단 `스크립트 표시`(Show transcript) 버튼 클릭. (`...` 메뉴는 폴백)
+   - 세그먼트 셀렉터 = **`transcript-segment-view-model`** (옛 `ytd-transcript-segment-renderer`/`.segment-text`는 이제 0개).
+     JS: `[...document.querySelectorAll('transcript-segment-view-model')].map(s=>s.innerText)` → 앞머리 타임스탬프(`^\d{1,2}:\d{2}(:\d{2})?`) 제거 후 join.
+   - ⚠️ Claude in Chrome `javascript_tool`은 토큰 URL을 `[BLOCKED]`로 가리고 반환을 ~2000자에서 자른다. → 전문을 `window.__TR`에 저장 후 `window.__TR.slice(a,b)`로 2000자 이하씩 회수.
+   - ⚠️ caption baseUrl 직접 fetch·innertube `get_transcript`는 여전히 빈값/게이팅. UI 패널 DOM만 로그인 탭에서 채워진다.
+   - 로컬 대안: `python3 scripts/get_youtube_transcript.py <URL> [YYYY-MM-DD]` (Playwright, 신 셀렉터 반영됨).
 4. 메타데이터 수집: 영상 제목, 채널명, 출연자 목록, 업로드 날짜, URL, 영상 길이
 
 ### 출력 (에이전트 2로 전달)

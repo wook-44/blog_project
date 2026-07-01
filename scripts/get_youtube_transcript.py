@@ -75,7 +75,19 @@ async def extract_transcript(video_url: str, date_str: str) -> str:
                 await more_btn.first.click()
                 await page.wait_for_timeout(1000)
 
-            # "..." 또는 "공유" 옆 메뉴 버튼
+            # (2026-07) 신형 UI: 설명 하단 "스크립트 표시" 버튼이 1차. ...메뉴보다 먼저 시도.
+            show_tr = page.locator(
+                'button:has-text("스크립트 표시"), '
+                'button[aria-label="스크립트 표시"], '
+                'button:has-text("Show transcript"), '
+                'ytd-button-renderer:has-text("스크립트 표시")'
+            )
+            if await show_tr.count() > 0:
+                await show_tr.first.click()
+                await page.wait_for_timeout(2000)
+                print("✅ '스크립트 표시' 패널 열림")
+
+            # "..." 또는 "공유" 옆 메뉴 버튼 (폴백)
             menu_btn = page.locator(
                 'button[aria-label="...에 대한 추가 작업"], '
                 'ytd-menu-renderer yt-icon-button, '
@@ -99,20 +111,29 @@ async def extract_transcript(video_url: str, date_str: str) -> str:
             print(f"   방법1 실패: {e}")
 
         # ── 방법 2: 자막 패널 텍스트 수집 ───────────────────
+        # ⭐2026-07 YouTube가 요소명 변경: 현재는 커스텀 요소
+        #   transcript-segment-view-model 로 렌더된다.
+        #   (옛 ytd-transcript-segment-renderer/.segment-text 는 0개)
         try:
             transcript_panel = page.locator(
+                'transcript-segment-view-model, '
                 'ytd-transcript-renderer, '
                 'ytd-transcript-segment-list-renderer, '
                 '#segments-container'
             )
-            await transcript_panel.wait_for(timeout=5000)
+            await transcript_panel.first.wait_for(timeout=6000)
             segments = await page.locator(
+                'transcript-segment-view-model, '
                 'ytd-transcript-segment-renderer yt-formatted-string, '
                 '.segment-text'
             ).all_text_contents()
-            if segments:
-                transcript_text = "\n".join(s.strip() for s in segments if s.strip())
-                print(f"✅ 자막 {len(segments)}개 세그먼트 추출 완료")
+            # 앞머리 타임스탬프(예: "1:00:45") 제거 후 캡션만 남김
+            ts_re = re.compile(r'^\s*\d{1,2}:\d{2}(?::\d{2})?\s*')
+            cleaned = [ts_re.sub('', s).strip() for s in segments]
+            cleaned = [s for s in cleaned if s]
+            if cleaned:
+                transcript_text = "\n".join(cleaned)
+                print(f"✅ 자막 {len(cleaned)}개 세그먼트 추출 완료")
         except Exception as e:
             print(f"   자막 패널 추출 실패: {e}")
 
