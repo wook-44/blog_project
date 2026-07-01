@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>네이버 블로그 시황 요약 복사 도구 — 2026-07-01 (15:30)</title>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 860px; margin: 0 auto; padding: 30px 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 20px; margin-bottom: 6px; }
+  .desc { font-size: 14px; color: #64748b; margin-bottom: 30px; line-height: 1.7; }
+  .step { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+  .step-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+  .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .btn-text { background: #3b82f6; color: #fff; }
+  .btn-img  { background: #10b981; color: #fff; margin-top: 10px; }
+  .btn-tag  { background: #f59e0b; color: #fff; margin-top: 10px; }
+  .tag-chip { display: inline-block; padding: 4px 10px; margin: 3px; background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; }
+  .tag-chip.copied { background: #10b981; color: #fff; }
+  .body-preview { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px 22px; margin: 12px 0; line-height: 1.7; font-size: 15px; color: #1e293b; max-height: 500px; overflow-y: auto; }
+  .toast { display: none; margin-left: 10px; font-size: 13px; color: #10b981; font-weight: 600; }
+  img.preview { width: 100%; border-radius: 8px; margin-top: 12px; border: 1px solid #e2e8f0; }
+  .order { display: inline-block; background: #3b82f6; color: #fff; border-radius: 50%; width: 22px; height: 22px; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .text-box { background: #f1f5f9; border-radius: 8px; padding: 16px 18px; font-size: 13px; line-height: 1.8; color: #475569; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+  .hidden-body { display: none; }
+  .tag-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin: 10px 0 4px; line-height: 1.8; }
+  .summary-badge { display: inline-block; padding: 2px 8px; background: #dc2626; color: #fff; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>📋 네이버 블로그 포스팅 도구 <span class="summary-badge">15:30 시황 요약</span></h1>
+<p class="desc">장 마감 직후의 시황 요약 포스트입니다.<br><b>① 제목 → ② 본문 → ③ 인포그래픽 1장 → ④ 태그</b> 순서로 진행하세요.</p>
+
+<div class="step">
+  <div class="step-title"><span class="order" style="background:#8b5cf6;">0</span> 블로그 제목</div>
+  <div class="text-box" id="titleBox">코스피 8,303 하락·코스닥 반등 — 7월 1일 외국인 1.7조 매도</div>
+  <button class="btn btn-text" style="background:#8b5cf6;margin-top:10px;" onclick="copyPlain('titleBox','toastTitle')">📋 제목 복사</button>
+  <span class="toast" id="toastTitle">✅ 복사됨!</span>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">1</span> 블로그 본문 텍스트 복사 → 네이버 붙여넣기</div>
+  <button class="btn btn-text" onclick="copyText()">📄 텍스트 전체 복사</button>
+  <span class="toast" id="toastText">✅ 복사됨!</span>
+  <div class="body-preview" id="blogBodyHtml">
+<h1 style="font-size:30px;font-weight:bold;margin:24px 0 12px;line-height:1.35;">코스피 8,303 하락·코스닥 반등 — 7월 1일 외국인 1.7조 매도</h1>
+<p>&nbsp;</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피가 7월 1일 반도체 대형주 급락에 2.04% 내린 8,303.41로 마감한 반면, 코스닥은 반도체 장비주 강세에 1.44% 오른 929.35로 반등하며 정반대로 갈렸습니다. 미국 기술주 훈풍에 8,590선까지 오르며 출발했던 코스피가 왜 하루 만에 8,143까지 밀렸을까요? 외국인이 코스피에서 1.7조 원을 던지는 동안, 개인은 1.74조 원을 받아냈습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📍 이 글에서 다루는 것</h2>
+<ul>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>코스피·코스닥 종가</b> — 코스피 8,303 -2.04% 하락, 코스닥 929 +1.44% 반등</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>외국인/기관 수급</b> — 외국인 코스피 1.7조 매도, 개인 1.74조 순매수로 방어</li>
+<li style="font-size:15px;line-height:1.7;margin:4px 0;"><b>상승률 상위 종목</b> — 전력·방산·건설 강세, 반도체 대형주는 급락</li>
+</ul>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">📊 지수 종가</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">지수</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">전일 대비</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">등락률</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스피</td><td style="padding:6px 10px;border:1px solid #d1d5db;">8,303.41</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▼ 173.07</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-2.04%</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥</td><td style="padding:6px 10px;border:1px solid #d1d5db;">929.35</td><td style="padding:6px 10px;border:1px solid #d1d5db;">▲ 13.17</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+1.44%</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">코스피는 간밤 미국 증시 강세(나스닥 +1.52%, 필라델피아반도체 +3.92%)에 힘입어 8,592선까지 오르며 강하게 출발했습니다. 하지만 오전 9시 30분을 전후해 삼성전자와 SK하이닉스 등 반도체 대형주가 하락 전환하면서 낙폭이 빠르게 커졌고, 오전 11시 11분에는 장중 저점 8,143.33까지 밀렸습니다. 이후 전력 인프라·방산·건설 테마의 저가 매수세가 유입되며 낙폭을 일부 회복했지만, 결국 전일 대비 2.04% 내린 8,303.41로 마감했습니다. 반면 코스닥은 반도체 장비주와 제약·바이오 강세에 힘입어 1.44% 오른 929.35로 반등하며 지수가 엇갈렸습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💰 수급 한눈에 (코스피)</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">주체</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">순매수</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">외국인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-1조 7,029억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">기관</td><td style="padding:6px 10px;border:1px solid #d1d5db;">-368억 원</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">개인</td><td style="padding:6px 10px;border:1px solid #d1d5db;">+1조 7,397억 원</td></tr>
+</table>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 수급의 핵심은 '외국인의 매도를 개인이 홀로 받아냈다'는 점입니다. 외국인은 코스피에서 1.7조 원을 순매도하며 지수 하락을 이끌었고, 기관도 소폭(368억) 순매도에 가담했습니다. 그 매물을 개인이 1.74조 원 순매수로 받아내며 지수 하단을 지지했습니다. 반면 코스닥에서는 외국인이 2,471억 원을 순매수하며 반도체 장비주 반등을 이끌었고, 개인(-1,095억)·기관(-1,376억)은 순매도했습니다. 코스피와 코스닥에서 외국인의 방향이 정반대였던 하루입니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🚀 오늘의 상승률 상위 (코스피)</h2>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">1. <b>가온전선</b> +29.98% — 303,500원, 전력 인프라 전선주 상한가</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">2. <b>대원전선</b> +29.97% — 13,400원, 전선주 동반 상한가</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">3. <b>금호건설</b> +29.94% — 14,540원, 건설 테마 상한가 직행</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">4. <b>LS ELECTRIC</b> +10.92% — 264,000원, 전력기기 대형주 강세</p>
+<p style="font-size:15px;line-height:1.7;margin:4px 0;">5. <b>한화에어로스페이스</b> +9.45% — 1,089,000원, 방산 대형주 급등</p>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 장의 주인공은 전력 인프라·방산·건설이었습니다. 코스피에서는 LS ELECTRIC +10.92%, 대한전선 +8.55%, 삼성E&A +8.19% 등 전력·인프라주가 강세였고, 가온전선·대원전선·금호건설 등이 상한가로 직행했습니다. 방산주 한화에어로스페이스는 9.45% 올랐고, 조선주 HD현대중공업(+4.73%)도 강했습니다. 반면 반도체 대형주는 삼성전자 -4.79%, SK하이닉스 -2.87%, LG이노텍 -8.15%로 급락했고, 지주사 SK -8.99%, 삼성물산 -7.68%도 약세였습니다. 코스닥에서는 주성엔지니어링 +19.40%, 유진테크 +10.66%, 테크윙 +8.96%, 피에스케이 +6.58%, 심텍 +4.91% 등 반도체 장비주가 반등을 주도했지만, 이차전지 대장주 에코프로(-12.85%)·에코프로비엠(-7.37%)은 급락했습니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">🔗 관련 종목 한눈에</h2>
+<table border="1" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:14px;">
+<tr><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종목</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">종가·등락</th><th style="padding:6px 10px;border:1px solid #d1d5db;background:#f3f4f6;font-weight:bold;">한 줄 코멘트</th></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**삼성전자**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">318,000원 -4.79%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">반도체 대형주 급락의 진원지, 코스피 하락 주도</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**LS ELECTRIC**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">264,000원 +10.92%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">전력 인프라 대형주, 방산·건설과 함께 지수 방어</td></tr>
+<tr><td style="padding:6px 10px;border:1px solid #d1d5db;">**주성엔지니어링**</td><td style="padding:6px 10px;border:1px solid #d1d5db;">240,000원 +19.40%</td><td style="padding:6px 10px;border:1px solid #d1d5db;">코스닥 반도체 장비주 대장, 코스닥 반등 견인</td></tr>
+</table>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">❓ 오늘의 용어 — 지수 디커플링(엇갈림)</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘처럼 코스피는 내리는데 코스닥은 오르는, 두 지수가 반대로 움직이는 현상을 '디커플링(decoupling)'이라고 합니다. 코스피 하락의 주범은 시가총액 비중이 큰 삼성전자·SK하이닉스 같은 반도체 대형주였습니다. 대형주 몇 개가 크게 빠지면 지수 전체가 눌리는데, 실제로 오늘 코스피는 하락 종목보다 상승 종목이 더 많았는데도(상승 678·하락 218) 지수는 2% 넘게 빠졌습니다. 반대로 코스닥은 반도체 장비주와 제약·바이오가 지수를 밀어 올렸습니다. 이렇게 지수 등락률만 봐서는 시장 전체 분위기를 놓칠 수 있으니, 어떤 업종에 돈이 몰리고 빠졌는지 함께 보는 게 중요합니다.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">💡 내 생각</h2>
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">오늘 가장 주목할 장면은 미국 반도체 훈풍에 강하게 출발한 코스피가 정작 반도체 대형주 급락에 무너졌다는 점입니다. 상승 출발 후 -2%까지 밀린 변동성은 반도체 고점 논란과 외국인 매도가 여전히 시장의 무거운 짐이라는 신호로 읽힙니다. 그 사이 자금은 전력 인프라·방산·건설, 그리고 코스닥 반도체 장비주로 옮겨갔는데요. 대형 반도체에서 소부장·인프라로 온기가 번지는 순환매 흐름이 하반기 첫날부터 뚜렷해졌습니다. 개인이 1.74조를 받아낸 만큼, 외국인 매도가 언제 멈추는지가 다음 반등의 열쇠가 될 것으로 보입니다. 오후 영상 분석에서는 반도체에서 전력·장비주로 옮겨가는 이 순환매 장세의 대응 전략을 더 깊이 짚어보겠습니다.</p>
+<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">
+<p style="font-size:15px;line-height:1.7;margin:8px 0;">본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.</p>
+<h2 style="font-size:21px;font-weight:bold;margin:22px 0 10px;color:#0f172a;">태그</h2>
+  </div>
+  <div class="hidden-body" id="blogBodyPlain">코스피 8,303 하락·코스닥 반등 — 7월 1일 외국인 1.7조 매도
+
+코스피가 7월 1일 반도체 대형주 급락에 2.04% 내린 8,303.41로 마감한 반면, 코스닥은 반도체 장비주 강세에 1.44% 오른 929.35로 반등하며 정반대로 갈렸습니다. 미국 기술주 훈풍에 8,590선까지 오르며 출발했던 코스피가 왜 하루 만에 8,143까지 밀렸을까요? 외국인이 코스피에서 1.7조 원을 던지는 동안, 개인은 1.74조 원을 받아냈습니다.
+
+📍 이 글에서 다루는 것
+
+- 코스피·코스닥 종가 — 코스피 8,303 -2.04% 하락, 코스닥 929 +1.44% 반등
+- 외국인/기관 수급 — 외국인 코스피 1.7조 매도, 개인 1.74조 순매수로 방어
+- 상승률 상위 종목 — 전력·방산·건설 강세, 반도체 대형주는 급락
+
+📊 지수 종가
+
+| 지수 | 종가 | 전일 대비 | 등락률 |
+|---|---|---|---|
+| 코스피 | 8,303.41 | ▼ 173.07 | -2.04% |
+| 코스닥 | 929.35 | ▲ 13.17 | +1.44% |
+
+코스피는 간밤 미국 증시 강세(나스닥 +1.52%, 필라델피아반도체 +3.92%)에 힘입어 8,592선까지 오르며 강하게 출발했습니다. 하지만 오전 9시 30분을 전후해 삼성전자와 SK하이닉스 등 반도체 대형주가 하락 전환하면서 낙폭이 빠르게 커졌고, 오전 11시 11분에는 장중 저점 8,143.33까지 밀렸습니다. 이후 전력 인프라·방산·건설 테마의 저가 매수세가 유입되며 낙폭을 일부 회복했지만, 결국 전일 대비 2.04% 내린 8,303.41로 마감했습니다. 반면 코스닥은 반도체 장비주와 제약·바이오 강세에 힘입어 1.44% 오른 929.35로 반등하며 지수가 엇갈렸습니다.
+
+💰 수급 한눈에 (코스피)
+
+| 주체 | 순매수 |
+|---|---|
+| 외국인 | -1조 7,029억 원 |
+| 기관 | -368억 원 |
+| 개인 | +1조 7,397억 원 |
+
+오늘 수급의 핵심은 &#x27;외국인의 매도를 개인이 홀로 받아냈다&#x27;는 점입니다. 외국인은 코스피에서 1.7조 원을 순매도하며 지수 하락을 이끌었고, 기관도 소폭(368억) 순매도에 가담했습니다. 그 매물을 개인이 1.74조 원 순매수로 받아내며 지수 하단을 지지했습니다. 반면 코스닥에서는 외국인이 2,471억 원을 순매수하며 반도체 장비주 반등을 이끌었고, 개인(-1,095억)·기관(-1,376억)은 순매도했습니다. 코스피와 코스닥에서 외국인의 방향이 정반대였던 하루입니다.
+
+🚀 오늘의 상승률 상위 (코스피)
+
+1. 가온전선 +29.98% — 303,500원, 전력 인프라 전선주 상한가
+2. 대원전선 +29.97% — 13,400원, 전선주 동반 상한가
+3. 금호건설 +29.94% — 14,540원, 건설 테마 상한가 직행
+4. LS ELECTRIC +10.92% — 264,000원, 전력기기 대형주 강세
+5. 한화에어로스페이스 +9.45% — 1,089,000원, 방산 대형주 급등
+
+오늘 장의 주인공은 전력 인프라·방산·건설이었습니다. 코스피에서는 LS ELECTRIC +10.92%, 대한전선 +8.55%, 삼성E&amp;A +8.19% 등 전력·인프라주가 강세였고, 가온전선·대원전선·금호건설 등이 상한가로 직행했습니다. 방산주 한화에어로스페이스는 9.45% 올랐고, 조선주 HD현대중공업(+4.73%)도 강했습니다. 반면 반도체 대형주는 삼성전자 -4.79%, SK하이닉스 -2.87%, LG이노텍 -8.15%로 급락했고, 지주사 SK -8.99%, 삼성물산 -7.68%도 약세였습니다. 코스닥에서는 주성엔지니어링 +19.40%, 유진테크 +10.66%, 테크윙 +8.96%, 피에스케이 +6.58%, 심텍 +4.91% 등 반도체 장비주가 반등을 주도했지만, 이차전지 대장주 에코프로(-12.85%)·에코프로비엠(-7.37%)은 급락했습니다.
+
+🔗 관련 종목 한눈에
+
+| 종목 | 종가·등락 | 한 줄 코멘트 |
+|---|---|---|
+| 삼성전자 | 318,000원 -4.79% | 반도체 대형주 급락의 진원지, 코스피 하락 주도 |
+| LS ELECTRIC | 264,000원 +10.92% | 전력 인프라 대형주, 방산·건설과 함께 지수 방어 |
+| 주성엔지니어링 | 240,000원 +19.40% | 코스닥 반도체 장비주 대장, 코스닥 반등 견인 |
+
+❓ 오늘의 용어 — 지수 디커플링(엇갈림)
+
+오늘처럼 코스피는 내리는데 코스닥은 오르는, 두 지수가 반대로 움직이는 현상을 &#x27;디커플링(decoupling)&#x27;이라고 합니다. 코스피 하락의 주범은 시가총액 비중이 큰 삼성전자·SK하이닉스 같은 반도체 대형주였습니다. 대형주 몇 개가 크게 빠지면 지수 전체가 눌리는데, 실제로 오늘 코스피는 하락 종목보다 상승 종목이 더 많았는데도(상승 678·하락 218) 지수는 2% 넘게 빠졌습니다. 반대로 코스닥은 반도체 장비주와 제약·바이오가 지수를 밀어 올렸습니다. 이렇게 지수 등락률만 봐서는 시장 전체 분위기를 놓칠 수 있으니, 어떤 업종에 돈이 몰리고 빠졌는지 함께 보는 게 중요합니다.
+
+💡 내 생각
+
+오늘 가장 주목할 장면은 미국 반도체 훈풍에 강하게 출발한 코스피가 정작 반도체 대형주 급락에 무너졌다는 점입니다. 상승 출발 후 -2%까지 밀린 변동성은 반도체 고점 논란과 외국인 매도가 여전히 시장의 무거운 짐이라는 신호로 읽힙니다. 그 사이 자금은 전력 인프라·방산·건설, 그리고 코스닥 반도체 장비주로 옮겨갔는데요. 대형 반도체에서 소부장·인프라로 온기가 번지는 순환매 흐름이 하반기 첫날부터 뚜렷해졌습니다. 개인이 1.74조를 받아낸 만큼, 외국인 매도가 언제 멈추는지가 다음 반등의 열쇠가 될 것으로 보입니다. 오후 영상 분석에서는 반도체에서 전력·장비주로 옮겨가는 이 순환매 장세의 대응 전략을 더 깊이 짚어보겠습니다.
+
+---
+
+본 글은 공개된 시세·수급 데이터를 기반으로 한 개인 분석이며, 종목 추천이 아닙니다. 모든 투자 판단과 그 책임은 본인에게 있습니다. 참고용으로만 활용해 주세요.
+
+태그
+
+</div>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">2</span> 인포그래픽 1장 — 시장 분석 (market)</div>
+  <p style="font-size:13px;color:#dc2626;">⚠️ 인포그래픽 이미지 없음</p>
+</div>
+
+<div class="step">
+  <div class="step-title"><span class="order">3</span> 태그 30개 (개별 클릭 또는 전체 복사)</div>
+  <div class="tag-box">
+    <span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#삼성전자</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#LS일렉트릭</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘코스피하락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥반등이유</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘코스피시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피8303</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스닥929</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#외국인순매도</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#개인순매수</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#지수디커플링</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#전력인프라</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#SK하이닉스</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#주성엔지니어링</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#반도체장비주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#한화에어로스페이스</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#방산주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#건설주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#에코프로</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#이차전지</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#순환매</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#전선주</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#7월1일시황</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#장마감시황정리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#오늘주식시황정리</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#코스피수급</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#국내증시하락</span>
+<span class="tag-chip" onclick="copyOneTag(this, this.innerText)">#하반기첫거래일</span>
+  </div>
+  <button class="btn btn-tag" onclick="copyTags()">🏷️ 태그 전체 복사</button>
+  <span class="toast" id="toastTags">✅ 복사됨!</span>
+  <div class="hidden-body" id="allTags">#코스피 #코스닥 #삼성전자 #LS일렉트릭 #반도체 #오늘코스피하락 #코스닥반등이유 #오늘코스피시황 #코스피8303 #코스닥929 #외국인순매도 #개인순매수 #지수디커플링 #전력인프라 #SK하이닉스 #주성엔지니어링 #반도체장비주 #한화에어로스페이스 #방산주 #건설주 #에코프로 #이차전지 #순환매 #전선주 #7월1일시황 #장마감시황정리 #오늘주식시황정리 #코스피수급 #국내증시하락 #하반기첫거래일</div>
+</div>
+
+<script>
+async function copyOneTag(el, tag) {
+  await navigator.clipboard.writeText(tag);
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1200);
+}
+async function copyTags() {
+  const t = document.getElementById('allTags').innerText;
+  await navigator.clipboard.writeText(t);
+  showToast('toastTags');
+}
+function showToast(id) {
+  const e = document.getElementById(id);
+  e.style.display = 'inline';
+  setTimeout(() => { e.style.display = 'none'; }, 1500);
+}
+async function copyPlain(boxId, toastId) {
+  const text = document.getElementById(boxId).innerText;
+  await navigator.clipboard.writeText(text);
+  showToast(toastId);
+}
+async function copyText() {
+  const html = document.getElementById('blogBodyHtml').innerHTML;
+  const plain = document.getElementById('blogBodyPlain').innerText;
+  try {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    });
+    await navigator.clipboard.write([item]);
+  } catch(e) {
+    await navigator.clipboard.writeText(plain);
+  }
+  showToast('toastText');
+}
+function loadImgToCanvas(canvasId, src) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() { canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0); };
+  img.src = src;
+}
+function copyImg(canvasId, toastId) {
+  const canvas = document.getElementById(canvasId);
+  canvas.toBlob(async (blob) => {
+    await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+    showToast(toastId);
+  }, 'image/png');
+}
+</script>
+</body>
+</html>
