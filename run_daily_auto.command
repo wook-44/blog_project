@@ -106,6 +106,8 @@ find "$BLOG/.git" -maxdepth 1 -name "*.lock" -mmin +5 -delete 2>/dev/null
 find "$BLOG/.git" -maxdepth 1 -name "*.lock.*" -delete 2>/dev/null
 rm -rf "$BLOG/.git/junk_locks" 2>/dev/null
 find "$BLOG/.git/refs" -name "*.lock*" -delete 2>/dev/null
+# MERGE_AUTOSTASH 잔존 ref 정리 (2026-07-01 pull 연쇄 실패 원인)
+rm -f "$BLOG/.git/MERGE_AUTOSTASH" 2>/dev/null
 
 # 1-b. pull (실패 시 lock 재정리 후 1회 재시도, 그래도 실패면 원인 보고)
 PULL_OUT=$(git -C "$BLOG" pull --rebase origin main 2>&1)
@@ -113,8 +115,18 @@ PULL_RC=$?
 echo "$PULL_OUT"
 if [ $PULL_RC -ne 0 ]; then
   echo "  ⚠️ pull 실패 — lock 정리 후 재시도..."
-  rm -f "$BLOG/.git/index.lock" "$BLOG/.git/HEAD.lock" 2>/dev/null
+  rm -f "$BLOG/.git/index.lock" "$BLOG/.git/HEAD.lock" "$BLOG/.git/MERGE_AUTOSTASH" 2>/dev/null
   git -C "$BLOG" rebase --abort 2>/dev/null
+  # untracked 파일이 pull을 막는 경우: 해당 파일을 휴지통으로 치우고 재시도
+  #   (샌드박스 플러밍 푸시가 같은 내용의 untracked 사본을 남기는 패턴 — 2026-07-01)
+  if echo "$PULL_OUT" | grep -q "would be overwritten"; then
+    TRASH="$BLOG/_정리휴지통_$(date +%Y-%m-%d)/pull_conflict"
+    mkdir -p "$TRASH"
+    echo "$PULL_OUT" | sed -n '/would be overwritten/,/Please move or remove/p' \
+      | sed '1d;$d' | sed 's/^[[:space:]]*//' | while read -r f; do
+      [ -f "$BLOG/$f" ] && mkdir -p "$TRASH/$(dirname "$f")" && mv "$BLOG/$f" "$TRASH/$f" && echo "  ↪ 충돌 untracked 치움: $f"
+    done
+  fi
   PULL_OUT=$(git -C "$BLOG" pull --rebase origin main 2>&1)
   PULL_RC=$?
   echo "$PULL_OUT"

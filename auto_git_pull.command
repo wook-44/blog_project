@@ -19,6 +19,10 @@ find "$BLOG/.git" -maxdepth 1 -name "*.lock" -mmin +30 -delete 2>/dev/null
 find "$BLOG/.git" -maxdepth 1 -name "*.lock.*" -delete 2>/dev/null
 rm -rf "$BLOG/.git/junk_locks" 2>/dev/null
 find "$BLOG/.git/refs" -name "*.lock*" -delete 2>/dev/null
+# MERGE_AUTOSTASH 잔존 ref 정리 (2026-07-01 pull 연쇄 실패 원인)
+rm -f "$BLOG/.git/MERGE_AUTOSTASH" 2>/dev/null
+# 샌드박스 세션이 park해 둔 lock 잔해 폴더 정리
+rm -rf "$BLOG"/_정리휴지통_*/git_locks 2>/dev/null
 if [ -f "$BLOG/.git/index.lock" ]; then
   echo "활성 lock(30분 미만) 존재 — 다른 작업 중으로 보고 종료"
   exit 2
